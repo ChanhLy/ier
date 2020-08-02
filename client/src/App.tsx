@@ -13,15 +13,17 @@ function App() {
   return (
     <BrowserRouter>
       <Layout className='layout'>
-        <Header />
-        <Content />
-        <Layout.Footer>IER ©{thisYear} Created by Chanh Ly</Layout.Footer>
+        <Sider />
+        <Layout>
+          <Content />
+          <Layout.Footer>IER ©{thisYear} Created by Chanh Ly</Layout.Footer>
+        </Layout>
       </Layout>
     </BrowserRouter>
   );
 }
 
-export function Header() {
+export function Sider() {
   const [defaultSelectedMenuItem, setDefaultSelectedMenuItem] = useState(['']);
 
   const location = useLocation();
@@ -35,8 +37,9 @@ export function Header() {
   }, [location.pathname]);
 
   return (
-    <Layout.Header>
-      <Menu theme='dark' mode='horizontal' selectedKeys={defaultSelectedMenuItem}>
+    <Layout.Sider>
+      <div className='logo' />
+      <Menu theme='dark' selectedKeys={defaultSelectedMenuItem}>
         <Menu.Item key={URLS.CONTRACTS}>
           <Link to={URLS.CONTRACTS}>{CONTRACT}</Link>
         </Menu.Item>
@@ -44,7 +47,7 @@ export function Header() {
           <Link to={URLS.SAMPLES}>{SAMPLE}</Link>
         </Menu.Item>
       </Menu>
-    </Layout.Header>
+    </Layout.Sider>
   );
 }
 

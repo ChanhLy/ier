@@ -2,6 +2,7 @@
   "name": "client",
   "version": "0.1.0",
   "private": true,
+  "proxy": "http://localhost:3000",
   "jest": {
     "transformIgnorePatterns": [
       "node_modules/(?!(antd|rc-.*|@babel|@ant-design)/)"

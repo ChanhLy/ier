@@ -1,4 +1,5 @@
 import { ok, strictEqual } from 'assert';
+import Axios from 'axios';
 import dayjs from 'dayjs';
 import { Customer } from '../customers/customers.model';
 import { Contract, ContractDocument } from './contracts.model';
@@ -15,32 +16,45 @@ const mockContract: Partial<ContractDocument> = {
   resultReturnDate: new Date(),
 };
 
-describe('#Contracts Service', () => {
-  let contractService = new ContractService();
-  beforeEach(() => {
-    contractService = new ContractService();
-  });
+describe('#Contracts', () => {
+  describe('#Contracts Service', () => {
+    let contractService = new ContractService();
+    beforeEach(() => {
+      contractService = new ContractService();
+    });
 
-  after(async () => {
-    const promises = [Contract.deleteMany({}), Customer.deleteMany({})];
-    await Promise.all(promises);
-  });
+    after(async () => {
+      const promises = [Contract.deleteMany({}), Customer.deleteMany({})];
+      await Promise.all(promises);
+    });
 
-  describe('#create', () => {
-    it('can create a contract', async () => {
-      const contract = await contractService.createContract(mockContract);
+    describe('#create', () => {
+      it('can create a contract', async () => {
+        const contract = await contractService.createContract(mockContract);
 
-      ok(contract);
-      strictEqual(contract.numberInMonth, 1);
-      strictEqual(contract.date, dayjs().format('YYYYMMDD'));
+        ok(contract);
+        strictEqual(contract.numberInMonth, 1);
+        strictEqual(contract.date, dayjs().format('YYYYMMDD'));
+      });
+    });
+    describe('#find', () => {
+      it('can find find previously created contract', async () => {
+        const contracts = await contractService.findContracts({});
+
+        ok(contracts);
+        ok(Array.isArray(contracts) && contracts.length);
+      });
     });
   });
-  describe('#find', () => {
-    it('can find find previously created contract', async () => {
-      const contracts = await contractService.findContracts({});
+  describe('#Contracts Routes', () => {
+    it('can get contracts', async () => {
+      const response = await Axios.get('http://localhost:3000/api/contracts');
 
-      ok(contracts);
-      ok(Array.isArray(contracts) && contracts.length);
+      ok(response && Array.isArray(response.data));
+    });
+    it('can create new Contract', async () => {
+      const response = await Axios.post('http://localhost:3000/api/contracts');
+      ok(response && response.data._id);
     });
   });
 });

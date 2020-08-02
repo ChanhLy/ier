@@ -94,6 +94,8 @@ export function CreateContract() {
   );
 
   async function onFinish(values: Store) {
+    console.log(values);
+
     setIsSubmitting(true);
     try {
       await Axios.post('/api/contracts', values);

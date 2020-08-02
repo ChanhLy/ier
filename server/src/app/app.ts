@@ -1,16 +1,27 @@
 import Application = require('koa');
-import koaBody = require('koa-body');
+import koaBodyParser = require('koa-body');
 import koaLogger = require('koa-logger');
-import * as httpStatus from 'http-status';
+import Router from '@koa/router';
+import { apiRoutes } from './routes';
 import koaSession = require('koa-session');
-
+import httpStatus = require('http-status');
+const router = new Router({ prefix: '/api' });
+router.get('/contracts', (ctx) => (ctx.body = 'a'));
 const app = new Application();
 
 app.keys = [process.env.SECRET || 'laptop key secrets'];
 
 app.use(koaSession(app));
-app.use(koaLogger);
-app.use(koaBody);
+app.use(koaLogger());
+app.use(koaBodyParser());
+
+app.use(async (context, next) => {
+  context.state.user = {
+    id: 1,
+    username: 'admin',
+  };
+  await next();
+});
 
 app.use(async (context, next) => {
   try {
@@ -20,17 +31,6 @@ app.use(async (context, next) => {
   }
 });
 
-app.use((context, next) => {
-  context.state.user = {
-    id: 1,
-    username: 'admin',
-  };
-  next();
-});
-
-app.use((context, next) => {
-  context.assert(context.state.user, httpStatus.UNAUTHORIZED, 'User not found. Please login!');
-  next();
-});
+app.use(apiRoutes);
 
 export default app;

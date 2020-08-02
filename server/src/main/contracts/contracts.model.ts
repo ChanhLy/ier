@@ -23,7 +23,7 @@ export const contractSchema = new mongoose.Schema(
     sampleReceivedDate: { type: Date, required: true },
     resultReturnDate: { type: Date, required: true },
 
-    numberInMonth: { type: Number, required: true },
+    numberInMonth: { type: Number, required: true, default: 1 },
 
     date: {
       type: String,

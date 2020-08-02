@@ -19,7 +19,7 @@ export class ContractService {
     projection?: Partial<ContractDocument> | null,
     options?: QueryFindOptions
   ): Promise<ContractDocument[]> {
-    const contracts = await Contract.find(condition, projection, options);
+    const contracts = await Contract.find();
     return contracts;
   }
 }
