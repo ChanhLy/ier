@@ -1,14 +1,25 @@
-import { Layout, Menu, PageHeader } from 'antd';
+import { Layout, Menu, message, PageHeader } from 'antd';
+import Axios from 'axios';
 import React, { useEffect, useState } from 'react';
 import { BrowserRouter, Link, Switch, useHistory, useLocation } from 'react-router-dom';
 import './App.css';
 import { CreateContractRoute, EditContractRoute, ListContractsRoute } from './contracts/RouteContracts';
 import { CreateSampleRoute, EditSampleRoute, ListSamplesRoute } from './samples/RouteSamples';
 import { UserContext } from './users/UserContext';
-import { CONTRACT, SAMPLE, Titles } from './utils/constants';
+import { CONTRACT, FAILURE, SAMPLE, SUCCESS, Titles } from './utils/constants';
 import { URLs } from './utils/urls';
 
 const thisYear = new Date().getFullYear();
+
+Axios.interceptors.response.use(
+  (response) => {
+    if (response.status === 201) message.success(SUCCESS);
+    return response;
+  },
+  (error) => {
+    message.error(FAILURE);
+  }
+);
 
 function App() {
   return (
