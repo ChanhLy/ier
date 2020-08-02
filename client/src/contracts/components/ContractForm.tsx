@@ -57,7 +57,7 @@ export function ContractForm(props: Props) {
       <Item label={TAX_CODE} name={['customer', 'tax']}>
         <Input />
       </Item>
-      <Item label={REPRESENTATIVES} name={['customer', 'representatives']}>
+      <Item label={REPRESENTATIVES} name={['customer', 'representative']}>
         <Input />
       </Item>
       <Item label={FAX} name={['customer', 'fax']}>
