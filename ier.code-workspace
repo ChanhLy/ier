@@ -1,0 +1,33 @@
+{
+  "folders": [
+    {
+      "path": "client"
+    },
+    {
+      "path": "server"
+    }
+  ],
+  "settings": {
+    "editor.suggestSelection": "first",
+    "vsintellicode.modify.editor.suggestSelection": "automaticallyOverrodeDefaultValue",
+    "workbench.iconTheme": "vscode-icons",
+    "files.autoSave": "onFocusChange",
+    "git.enableSmartCommit": true,
+    "git.autofetch": true,
+    "window.zoomLevel": 1,
+    "typescript.updateImportsOnFileMove.enabled": "always",
+    "cSpell.userWords": ["antd", "browserslist"],
+    "explorer.confirmDragAndDrop": false,
+    "cSpell.words": [
+      "Chanh",
+      "Postgres",
+      "YYYYMM",
+      "YYYYMMDD",
+      "prestart",
+      "respawn"
+    ],
+    "editor.formatOnSave": true,
+    "editor.tabSize": 2,
+    "prettier.printWidth": 120
+  }
+}

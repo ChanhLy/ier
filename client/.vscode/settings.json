@@ -1,0 +1,11 @@
+{
+  // "editor.defaultFormatter": "esbenp.prettier-vscode",
+  // "prettier.singleQuote": true,
+  // "prettier.jsxSingleQuote": true
+  "eslint.format.enable": true,
+  "eslint.workingDirectories": ["./src"],
+  "editor.codeActionsOnSave": {
+    "source.fixAll": true,
+    "source.organizeImports": true
+  }
+}
