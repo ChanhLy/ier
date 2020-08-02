@@ -13,6 +13,10 @@ export type ContractDocument = mongoose.Document & {
 
   numberInMonth: number;
   date: string;
+
+  readBy: string[];
+
+  updatedAt: Date;
 };
 
 export const contractSchema = new mongoose.Schema(
@@ -30,6 +34,8 @@ export const contractSchema = new mongoose.Schema(
       required: true,
       default: dayjs().format('YYYYMMDD'),
     },
+
+    readBy: [String],
   },
   { timestamps: true }
 );

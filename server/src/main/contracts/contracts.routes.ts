@@ -6,6 +6,13 @@ const contractService = new ContractService();
 
 const contractRouter = new Router({ prefix: '/contracts' });
 
+contractRouter.get('/:id', async (ctx) => {
+  const contract = await contractService.findContractById(ctx.params.id);
+  if (contract) await contractService.addReadByUser(contract, ctx.state.user.id);
+
+  ctx.response.body = contract;
+});
+
 contractRouter.get('/', async (ctx) => {
   const contracts = await contractService.findContracts({});
   ctx.response.body = contracts;
@@ -14,6 +21,11 @@ contractRouter.get('/', async (ctx) => {
 contractRouter.post('/', async (ctx) => {
   const contract = await contractService.createContract(ctx.request.body);
   ctx.response.status = httpStatus.CREATED;
+  ctx.response.body = contract;
+});
+
+contractRouter.put('/:id', async (ctx) => {
+  const contract = await contractService.updateContractById(ctx.params.id, ctx.request.body);
   ctx.response.body = contract;
 });
 

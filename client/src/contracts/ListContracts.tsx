@@ -1,30 +1,48 @@
-import { Button, Col, Row, Table } from 'antd';
+import { Button, Table } from 'antd';
 import Axios from 'axios';
-import React, { useEffect, useState } from 'react';
+import React, { useContext, useEffect, useState } from 'react';
 import { Link } from 'react-router-dom';
+import { UserContext } from '../users/UserContext';
 import { CREATE_NEW_CONTRACT } from '../utils/constants';
-import { URLS } from '../utils/urls';
+import { URLs } from '../utils/urls';
 import { contractColumns } from './components/contractColumns';
+import { Contract } from './Contract';
+import './ListContract.css';
 
 export function ListContracts() {
+  const user = useContext(UserContext);
+
+  const [loading, setLoading] = useState(true);
   const [contracts, setContracts] = useState([]);
   useEffect(() => {
     Axios.get('/api/contracts').then((response) => {
+      setLoading(false);
       setContracts(response.data);
     });
   }, []);
 
   return (
-    <Col>
-      <Row>
-        <Button>
-          <Link to={URLS.CONTRACTS_CREATE}>{CREATE_NEW_CONTRACT}</Link>
-        </Button>
-      </Row>
+    <>
+      <Button>
+        <Link to={URLs.CONTRACTS_CREATE}>{CREATE_NEW_CONTRACT}</Link>
+      </Button>
       <br />
-      <Row>
-        <Table columns={contractColumns} dataSource={contracts} rowKey='_id' bordered={true}></Table>
-      </Row>
-    </Col>
+      <br />
+      <Table
+        columns={contractColumns}
+        dataSource={contracts}
+        rowKey='_id'
+        bordered={true}
+        loading={loading}
+        rowClassName={rowClassName}
+      ></Table>
+    </>
   );
+
+  function rowClassName(contract: Contract, index: number): string {
+    if (!contract.readBy?.includes(user.id)) {
+      return 'unread-row';
+    }
+    return '';
+  }
 }

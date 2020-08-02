@@ -1,24 +1,27 @@
 import { Layout, Menu, PageHeader } from 'antd';
 import React, { useEffect, useState } from 'react';
-import { BrowserRouter, Link, Redirect, Switch, useHistory, useLocation } from 'react-router-dom';
+import { BrowserRouter, Link, Switch, useHistory, useLocation } from 'react-router-dom';
 import './App.css';
 import { CreateContractRoute, EditContractRoute, ListContractsRoute } from './contracts/RouteContracts';
 import { CreateSampleRoute, EditSampleRoute, ListSamplesRoute } from './samples/RouteSamples';
-import { CONTRACT, CREATE_NEW_CONTRACT_TITLE, SAMPLE } from './utils/constants';
-import { URLS } from './utils/urls';
+import { UserContext } from './users/UserContext';
+import { CONTRACT, SAMPLE, Titles } from './utils/constants';
+import { URLs } from './utils/urls';
 
 const thisYear = new Date().getFullYear();
 
 function App() {
   return (
     <BrowserRouter>
-      <Layout className='layout'>
-        <Header />
-        <Layout>
-          <Content />
-          <Layout.Footer>IER ©{thisYear} Created by Chanh Ly</Layout.Footer>
+      <UserContext.Provider value={{ id: '1' }}>
+        <Layout className='layout'>
+          <Header />
+          <Layout>
+            <Content />
+            <Layout.Footer>IER ©{thisYear} Created by Chanh Ly</Layout.Footer>
+          </Layout>
         </Layout>
-      </Layout>
+      </UserContext.Provider>
     </BrowserRouter>
   );
 }
@@ -29,21 +32,21 @@ export function Header() {
   const location = useLocation();
 
   useEffect(() => {
-    if (location.pathname.includes(URLS.CONTRACTS)) {
-      setDefaultSelectedMenuItem([URLS.CONTRACTS]);
-    } else if (location.pathname.includes(URLS.SAMPLES)) {
-      setDefaultSelectedMenuItem([URLS.SAMPLES]);
+    if (location.pathname.includes(URLs.CONTRACTS)) {
+      setDefaultSelectedMenuItem([URLs.CONTRACTS]);
+    } else if (location.pathname.includes(URLs.SAMPLES)) {
+      setDefaultSelectedMenuItem([URLs.SAMPLES]);
     }
   }, [location.pathname]);
 
   return (
     <Layout.Header>
       <Menu theme='dark' mode='horizontal' selectedKeys={defaultSelectedMenuItem}>
-        <Menu.Item key={URLS.CONTRACTS}>
-          <Link to={URLS.CONTRACTS}>{CONTRACT}</Link>
+        <Menu.Item key={URLs.CONTRACTS}>
+          <Link to={URLs.CONTRACTS}>{CONTRACT}</Link>
         </Menu.Item>
-        <Menu.Item key={URLS.SAMPLES}>
-          <Link to={URLS.SAMPLES}>{SAMPLE}</Link>
+        <Menu.Item key={URLs.SAMPLES}>
+          <Link to={URLs.SAMPLES}>{SAMPLE}</Link>
         </Menu.Item>
       </Menu>
     </Layout.Header>
@@ -76,7 +79,6 @@ function Content() {
           {CreateSampleRoute}
           {EditSampleRoute}
           {ListSamplesRoute}
-          <Redirect to={'/'} />
         </Switch>
       </div>
     </Layout.Content>
@@ -84,6 +86,3 @@ function Content() {
 }
 
 export default App;
-
-const Titles = new Map();
-Titles.set(URLS.CONTRACTS_CREATE, CREATE_NEW_CONTRACT_TITLE);

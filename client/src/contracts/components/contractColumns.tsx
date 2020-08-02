@@ -1,16 +1,35 @@
 import { ColumnsType } from 'antd/lib/table';
 import dayjs from 'dayjs';
+import React from 'react';
+import { Link } from 'react-router-dom';
+import {
+  ADDRESS,
+  CUSTOMER_NAME,
+  FAX,
+  ID,
+  PHONE_NUMBER,
+  REPRESENTATIVES,
+  RESULT_RETURN_DATE,
+  SAMPLE_RECEIVED_DATE,
+  SAMPLING_LOCATION,
+  TAX_CODE,
+} from '../../utils/constants';
 import { Contract } from '../Contract';
 
 export const contractColumns: ColumnsType<Contract> = [
-  { title: 'Id', render: (contract: Contract) => contract.date.slice(-4) + '-' + contract.numberInMonth },
-  { title: 'customer name', dataIndex: ['customer', 'name'] },
-  { title: 'tax', dataIndex: ['customer', 'tax'] },
-  { title: 'representative', dataIndex: ['customer', 'representative'] },
-  { title: 'phone', dataIndex: ['customer', 'phone'] },
-  { title: 'fax', dataIndex: ['customer', 'fax'] },
-  { title: 'address', dataIndex: ['customer', 'address'] },
-  { title: 'sampling Location', dataIndex: 'samplingLocation' },
-  { title: 'sample Received Date', dataIndex: 'sampleReceivedDate', render: (value) => dayjs(value).format('MM/DD') },
-  { title: 'result Return Date', dataIndex: 'resultReturnDate', render: (value) => dayjs(value).format('MM/DD') },
+  {
+    title: ID,
+    render: (contract: Contract) => (
+      <Link to={'contracts/' + contract._id}>{contract.date.slice(-4) + '-' + contract.numberInMonth}</Link>
+    ),
+  },
+  { title: CUSTOMER_NAME, dataIndex: ['customer', 'name'] },
+  { title: TAX_CODE, dataIndex: ['customer', 'tax'] },
+  { title: REPRESENTATIVES, dataIndex: ['customer', 'representative'] },
+  { title: PHONE_NUMBER, dataIndex: ['customer', 'phone'] },
+  { title: FAX, dataIndex: ['customer', 'fax'] },
+  { title: ADDRESS, dataIndex: ['customer', 'address'] },
+  { title: SAMPLING_LOCATION, dataIndex: 'samplingLocation' },
+  { title: SAMPLE_RECEIVED_DATE, dataIndex: 'sampleReceivedDate', render: (value) => dayjs(value).format('MM/DD') },
+  { title: RESULT_RETURN_DATE, dataIndex: 'resultReturnDate', render: (value) => dayjs(value).format('MM/DD') },
 ];
