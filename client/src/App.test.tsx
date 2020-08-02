@@ -1,7 +1,7 @@
 import { render } from '@testing-library/react';
 import React from 'react';
 import { BrowserRouter } from 'react-router-dom';
-import App, { Sider } from './App';
+import App, { Header } from './App';
 
 test('renders IER text', () => {
   const { getByText } = render(<App />);
@@ -13,7 +13,7 @@ test('render header menu with contracts and samples', () => {
   const { getByText } = render(
     <BrowserRouter>
       {' '}
-      <Sider />
+      <Header />
     </BrowserRouter>
   );
   const contractsMenuItem = getByText(/Hợp đồng/i);

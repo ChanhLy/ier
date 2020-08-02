@@ -10,6 +10,16 @@ export type CustomerDocument = mongoose.Document & {
   fax?: string;
 };
 
-const customerSchema = new mongoose.Schema({}, { timestamps: true });
+const customerSchema = new mongoose.Schema(
+  {
+    name: { type: String, required: true },
+    phone: { type: String, required: true },
+    address: { type: String, required: true },
+    tax: String,
+    representative: String,
+    fax: String,
+  },
+  { timestamps: true }
+);
 
 export const Customer = mongoose.connection.models[name] || mongoose.model<CustomerDocument>(name, customerSchema);

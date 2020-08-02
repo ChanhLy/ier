@@ -13,7 +13,7 @@ function App() {
   return (
     <BrowserRouter>
       <Layout className='layout'>
-        <Sider />
+        <Header />
         <Layout>
           <Content />
           <Layout.Footer>IER ©{thisYear} Created by Chanh Ly</Layout.Footer>
@@ -23,7 +23,7 @@ function App() {
   );
 }
 
-export function Sider() {
+export function Header() {
   const [defaultSelectedMenuItem, setDefaultSelectedMenuItem] = useState(['']);
 
   const location = useLocation();
@@ -37,9 +37,8 @@ export function Sider() {
   }, [location.pathname]);
 
   return (
-    <Layout.Sider>
-      <div className='logo' />
-      <Menu theme='dark' selectedKeys={defaultSelectedMenuItem}>
+    <Layout.Header>
+      <Menu theme='dark' mode='horizontal' selectedKeys={defaultSelectedMenuItem}>
         <Menu.Item key={URLS.CONTRACTS}>
           <Link to={URLS.CONTRACTS}>{CONTRACT}</Link>
         </Menu.Item>
@@ -47,7 +46,7 @@ export function Sider() {
           <Link to={URLS.SAMPLES}>{SAMPLE}</Link>
         </Menu.Item>
       </Menu>
-    </Layout.Sider>
+    </Layout.Header>
   );
 }
 
