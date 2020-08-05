@@ -38,71 +38,17 @@ export function ContractForm(props: Props) {
 
   return (
     <Form form={form} labelCol={{ span: 4 }} wrapperCol={{ span: 12 }} onFinish={onFinish}>
-      <Item
-        label={CUSTOMER_NAME}
-        name={['customer', 'name']}
-        rules={[{ required: true, message: 'Vui lòng nhập tên khách hàng!' }]}
-      >
-        <Input />
-      </Item>
-      <Item
-        label={PHONE_NUMBER}
-        name={['customer', 'phone']}
-        rules={[
-          { required: true, message: 'Vui lòng nhập số điện thoại!' },
-          { pattern: /\d{8,12}/, message: '8 ~ 12 chữ số' },
-        ]}
-      >
-        <Input />
-      </Item>
-      <Item label={TAX_CODE} name={['customer', 'tax']}>
-        <Input />
-      </Item>
-      <Item label={REPRESENTATIVES} name={['customer', 'representative']}>
-        <Input />
-      </Item>
-      <Item label={FAX} name={['customer', 'fax']}>
-        <Input />
-      </Item>
-      <Item
-        label={ADDRESS}
-        name={['customer', 'address']}
-        rules={[{ required: true, message: 'Vui lòng nhập địa chỉ khách hàng!' }]}
-      >
-        <Input />
-      </Item>
-      <Item
-        label={SAMPLING_LOCATION}
-        name='samplingLocation'
-        rules={[{ required: true, message: 'Vui lòng nhập vị trí lấy mẫu!' }]}
-      >
-        <Input />
-      </Item>
-      <Item
-        label={SAMPLE_RECEIVED_DATE}
-        name='sampleReceivedDate'
-        rules={[{ required: true, message: 'Vui lòng nhập tên khách hàng!' }]}
-      >
-        <DatePicker format='DD-MM-YYYY' />
-      </Item>
-
-      <Item
-        label={RESULT_RETURN_DATE}
-        name='resultReturnDate'
-        rules={[{ required: true, message: 'Vui lòng nhập tên khách hàng!' }]}
-      >
-        <DatePicker format='DD-MM-YYYY' showToday={false} renderExtraFooter={renderExtraFooter} />
-      </Item>
-
-      <Item label={NOTE} name='note'>
-        <Input />
-      </Item>
-
-      <Item wrapperCol={{ offset: 4 }}>
-        <Button htmlType='submit' type='primary' loading={isSubmitting}>
-          Xác nhận
-        </Button>
-      </Item>
+      {CustomerName()}
+      {CustomerPhone()}
+      {CustomerAddress()}
+      {CustomerTax()}
+      {CustomerRepresentative()}
+      {CustomerFax()}
+      {SamplingLocation()}
+      {SampleReceivedDate()}
+      {ResultReturnDate()}
+      {Note()}
+      {SubmitButton()}
     </Form>
   );
 
@@ -133,5 +79,112 @@ export function ContractForm(props: Props) {
     setIsSubmitting(true);
     await props.onFinish(value);
     setIsSubmitting(false);
+  }
+  function ResultReturnDate() {
+    return (
+      <Item
+        label={RESULT_RETURN_DATE}
+        name='resultReturnDate'
+        rules={[{ required: true, message: 'Vui lòng nhập tên khách hàng!' }]}
+      >
+        <DatePicker format='DD-MM-YYYY' showToday={false} renderExtraFooter={renderExtraFooter} />
+      </Item>
+    );
+  }
+  function SubmitButton() {
+    return (
+      <Item wrapperCol={{ offset: 4 }}>
+        <Button htmlType='submit' type='primary' loading={isSubmitting}>
+          Xác nhận
+        </Button>
+      </Item>
+    );
+  }
+
+  function CustomerName() {
+    return (
+      <Item
+        label={CUSTOMER_NAME}
+        name={['customer', 'name']}
+        rules={[{ required: true, message: 'Vui lòng nhập tên khách hàng!' }]}
+      >
+        <Input />
+      </Item>
+    );
+  }
+  function CustomerPhone() {
+    return (
+      <Item
+        label={PHONE_NUMBER}
+        name={['customer', 'phone']}
+        rules={[
+          { required: true, message: 'Vui lòng nhập số điện thoại!' },
+          { pattern: /\d{8,12}/, message: '8 ~ 12 chữ số' },
+        ]}
+      >
+        <Input />
+      </Item>
+    );
+  }
+  function CustomerAddress() {
+    return (
+      <Item
+        label={ADDRESS}
+        name={['customer', 'address']}
+        rules={[{ required: true, message: 'Vui lòng nhập địa chỉ khách hàng!' }]}
+      >
+        <Input />
+      </Item>
+    );
+  }
+  function CustomerTax() {
+    return (
+      <Item label={TAX_CODE} name={['customer', 'tax']}>
+        <Input />
+      </Item>
+    );
+  }
+  function CustomerRepresentative() {
+    return (
+      <Item label={REPRESENTATIVES} name={['customer', 'representative']}>
+        <Input />
+      </Item>
+    );
+  }
+  function CustomerFax() {
+    return (
+      <Item label={FAX} name={['customer', 'fax']}>
+        <Input />
+      </Item>
+    );
+  }
+  function SamplingLocation() {
+    return (
+      <Item
+        label={SAMPLING_LOCATION}
+        name='samplingLocation'
+        rules={[{ required: true, message: 'Vui lòng nhập vị trí lấy mẫu!' }]}
+      >
+        <Input />
+      </Item>
+    );
+  }
+  function SampleReceivedDate() {
+    return (
+      <Item
+        label={SAMPLE_RECEIVED_DATE}
+        name='sampleReceivedDate'
+        rules={[{ required: true, message: 'Vui lòng nhập tên khách hàng!' }]}
+      >
+        <DatePicker format='DD-MM-YYYY' />
+      </Item>
+    );
+  }
+  function Note() {
+    return (
+      <Item label={NOTE} name='note'>
+        <Input />
+      </Item>
+    );
   }
 }

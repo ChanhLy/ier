@@ -1,12 +1,12 @@
-import { Layout, Menu, message, PageHeader } from 'antd';
+import { Layout, Menu, message } from 'antd';
 import Axios from 'axios';
 import React, { useEffect, useState } from 'react';
-import { BrowserRouter, Link, Switch, useHistory, useLocation } from 'react-router-dom';
+import { BrowserRouter, Link, Route, Switch, useLocation } from 'react-router-dom';
 import './App.css';
-import { CreateContractRoute, EditContractRoute, ListContractsRoute } from './contracts/RouteContracts';
+import { CreateContractPage, EditContractPage, ListContractsPage } from './contracts/RouteContracts';
 import { CreateSampleRoute, EditSampleRoute, ListSamplesRoute } from './samples/RouteSamples';
 import { UserContext } from './users/UserContext';
-import { CONTRACT, FAILURE, SAMPLE, SUCCESS, Titles } from './utils/constants';
+import { CONTRACT, FAILURE, SAMPLE, SUCCESS } from './utils/constants';
 import { URLs } from './utils/urls';
 
 const thisYear = new Date().getFullYear();
@@ -65,33 +65,22 @@ export function Header() {
 }
 
 function Content() {
-  const location = useLocation();
-  const history = useHistory();
-  const [title, setTitle] = useState('dsa');
-  const [onBack, setOnBack] = useState<((e: React.MouseEvent) => void) | undefined>();
-
-  useEffect(() => {
-    setTitle(Titles.get(location.pathname) || 'Welcome');
-    if (location.pathname.match(/^\/.*\//)) {
-      setOnBack((e: React.MouseEvent) => history.goBack);
-    } else {
-      setOnBack(undefined);
-    }
-  }, [location, history.goBack]);
-
   return (
     <Layout.Content>
-      <PageHeader title={title} onBack={onBack}></PageHeader>
-      <div style={{ padding: 24, backgroundColor: 'white' }}>
-        <Switch>
-          {CreateContractRoute}
-          {ListContractsRoute}
-          {EditContractRoute}
-          {CreateSampleRoute}
-          {EditSampleRoute}
-          {ListSamplesRoute}
-        </Switch>
-      </div>
+      <Switch>
+        <Route exact={true} path={URLs.CONTRACTS_CREATE}>
+          <CreateContractPage />
+        </Route>
+        <Route exact={true} path={URLs.CONTRACTS}>
+          <ListContractsPage />
+        </Route>
+        <Route path={URLs.CONTRACTS_ID}>
+          <EditContractPage />
+        </Route>
+        {CreateSampleRoute}
+        {EditSampleRoute}
+        {ListSamplesRoute}
+      </Switch>
     </Layout.Content>
   );
 }
