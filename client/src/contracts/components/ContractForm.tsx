@@ -9,6 +9,7 @@ import {
   CUSTOMER_NAME,
   DAY,
   FAX,
+  NOTE,
   PHONE_NUMBER,
   REPRESENTATIVES,
   RESULT_RETURN_DATE,
@@ -91,6 +92,10 @@ export function ContractForm(props: Props) {
         rules={[{ required: true, message: 'Vui lòng nhập tên khách hàng!' }]}
       >
         <DatePicker format='DD-MM-YYYY' showToday={false} renderExtraFooter={renderExtraFooter} />
+      </Item>
+
+      <Item label={NOTE} name='note'>
+        <Input />
       </Item>
 
       <Item wrapperCol={{ offset: 4 }}>

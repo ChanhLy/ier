@@ -18,6 +18,7 @@ export const SAMPLING_LOCATION = 'Vị trí lấy mẫu';
 export const SAMPLE_RECEIVED_DATE = 'Ngày nhận mẫu';
 export const RESULT_RETURN_DATE = 'Ngày trả kết quả';
 export const ID = 'Mã số';
+export const NOTE = 'Ghi chú';
 
 export const SUCCESS = 'Thành công';
 export const FAILURE = 'Thất bại';

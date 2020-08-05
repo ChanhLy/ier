@@ -7,6 +7,7 @@ import {
   CUSTOMER_NAME,
   FAX,
   ID,
+  NOTE,
   PHONE_NUMBER,
   REPRESENTATIVES,
   RESULT_RETURN_DATE,
@@ -32,4 +33,5 @@ export const contractColumns: ColumnsType<Contract> = [
   { title: SAMPLING_LOCATION, dataIndex: 'samplingLocation' },
   { title: SAMPLE_RECEIVED_DATE, dataIndex: 'sampleReceivedDate', render: (value) => dayjs(value).format('MM/DD') },
   { title: RESULT_RETURN_DATE, dataIndex: 'resultReturnDate', render: (value) => dayjs(value).format('MM/DD') },
+  { title: NOTE, dataIndex: 'note' },
 ];
