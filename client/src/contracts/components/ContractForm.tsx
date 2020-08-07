@@ -1,4 +1,4 @@
-import { Button, Form, Input, Space } from 'antd';
+import { Button, Divider, Form, Input, Space } from 'antd';
 import { useForm } from 'antd/lib/form/Form';
 import { Store } from 'antd/lib/form/interface';
 import dayjs from 'dayjs';
@@ -6,6 +6,7 @@ import React, { useEffect, useState } from 'react';
 import { DatePicker } from '../../components';
 import {
   ADDRESS,
+  CUSTOMER_INFORMATION,
   CUSTOMER_NAME,
   DAY,
   FAX,
@@ -38,12 +39,14 @@ export function ContractForm(props: Props) {
 
   return (
     <Form form={form} labelCol={{ span: 4 }} wrapperCol={{ span: 12 }} onFinish={onFinish}>
-      {CustomerName()}
+      <Divider orientation='left'>{CUSTOMER_INFORMATION}</Divider>
       {CustomerPhone()}
+      {CustomerName()}
       {CustomerAddress()}
       {CustomerTax()}
       {CustomerRepresentative()}
       {CustomerFax()}
+      <Divider />
       {SamplingLocation()}
       {SampleReceivedDate()}
       {ResultReturnDate()}

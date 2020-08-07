@@ -1,6 +1,6 @@
 import dayjs from 'dayjs';
 import mongoose from 'mongoose';
-import { Customer, CustomerDocument } from '../customers/customers.model';
+import { customerDefinition, CustomerDocument } from '../customers/customers.model';
 
 const name = 'contracts';
 
@@ -23,7 +23,7 @@ export type ContractDocument = mongoose.Document & {
 
 export const contractSchema = new mongoose.Schema(
   {
-    customer: { type: Customer.schema, required: true },
+    customer: customerDefinition,
 
     samplingLocation: { type: String, required: true },
     sampleReceivedDate: { type: Date, required: true },
