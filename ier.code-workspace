@@ -5,6 +5,9 @@
     },
     {
       "path": "server"
+    },
+    {
+      "path": "."
     }
   ],
   "settings": {
@@ -18,15 +21,7 @@
     "typescript.updateImportsOnFileMove.enabled": "always",
     "cSpell.userWords": ["antd", "browserslist"],
     "explorer.confirmDragAndDrop": false,
-    "cSpell.words": [
-      "Chanh",
-      "Postgres",
-      "Sider",
-      "YYYYMM",
-      "YYYYMMDD",
-      "prestart",
-      "respawn"
-    ],
+    "cSpell.words": ["Chanh", "Postgres", "Sider", "YYYYMM", "YYYYMMDD", "prestart", "respawn"],
     "editor.formatOnSave": true,
     "editor.tabSize": 2,
     "prettier.printWidth": 120,
