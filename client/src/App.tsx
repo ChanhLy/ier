@@ -4,7 +4,7 @@ import React, { useEffect, useState } from 'react';
 import { BrowserRouter, Link, Switch, useLocation } from 'react-router-dom';
 import './App.css';
 import { contractsRoutes } from './contracts';
-import { CreateSampleRoute, EditSampleRoute, ListSamplesRoute } from './samples/RouteSamples';
+import { samplesRoutes } from './samples';
 import { UserContext } from './users/UserContext';
 import { CONTRACT, FAILURE, SAMPLE, SUCCESS } from './utils/constants';
 import { URLs } from './utils/urls';
@@ -68,10 +68,8 @@ function Content() {
   return (
     <Layout.Content>
       <Switch>
-        {...contractsRoutes}
-        {CreateSampleRoute}
-        {EditSampleRoute}
-        {ListSamplesRoute}
+        {contractsRoutes}
+        {samplesRoutes}
       </Switch>
     </Layout.Content>
   );

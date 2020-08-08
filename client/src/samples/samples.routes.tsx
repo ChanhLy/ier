@@ -1,24 +1,26 @@
 import React from 'react';
 import { Route } from 'react-router-dom';
 import { URLs } from '../utils/urls';
-import { CreateSample } from './CreateSample';
-import { EditSample } from './EditSample';
-import { ListSamples } from './ListSamples';
+import { CreateSample } from './components/CreateSample';
+import { EditSample } from './components/EditSample';
+import { ListSamples } from './components/ListSamples';
 
-export const CreateSampleRoute = (
+const createSampleRoute = (
   <Route exact={true} path={URLs.SAMPLES_CREATE}>
     <CreateSample />
   </Route>
 );
 
-export const EditSampleRoute = (
+const editSampleRoute = (
   <Route path={URLs.SAMPLES_ID}>
     <EditSample />
   </Route>
 );
 
-export const ListSamplesRoute = (
+const listSamplesRoute = (
   <Route exact={true} path={URLs.SAMPLES}>
     <ListSamples />
   </Route>
 );
+
+export const samplesRoutes = [createSampleRoute, editSampleRoute, listSamplesRoute];
