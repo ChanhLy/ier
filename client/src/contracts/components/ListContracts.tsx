@@ -6,7 +6,7 @@ import { UserContext } from '../../users/UserContext';
 import { CREATE_NEW_CONTRACT } from '../../utils/constants';
 import { URLs } from '../../utils/urls';
 import { Contract } from '../contracts.model';
-import { contractColumns } from './contractColumns';
+import { contractColumns } from '../helpers/contractColumns';
 
 export function ListContracts() {
   const user = useContext(UserContext);
