@@ -15,7 +15,7 @@ import {
   SAMPLING_LOCATION,
   TAX_CODE,
 } from '../../utils/constants';
-import { Contract } from '../Contract';
+import { Contract } from '../contracts.model';
 
 export const contractColumns: ColumnsType<Contract> = [
   {

@@ -1,9 +1,9 @@
 import { Layout, Menu, message } from 'antd';
 import Axios from 'axios';
 import React, { useEffect, useState } from 'react';
-import { BrowserRouter, Link, Route, Switch, useLocation } from 'react-router-dom';
+import { BrowserRouter, Link, Switch, useLocation } from 'react-router-dom';
 import './App.css';
-import { CreateContractPage, EditContractPage, ListContractsPage } from './contracts/RouteContracts';
+import { contractsRoutes } from './contracts';
 import { CreateSampleRoute, EditSampleRoute, ListSamplesRoute } from './samples/RouteSamples';
 import { UserContext } from './users/UserContext';
 import { CONTRACT, FAILURE, SAMPLE, SUCCESS } from './utils/constants';
@@ -68,15 +68,7 @@ function Content() {
   return (
     <Layout.Content>
       <Switch>
-        <Route exact={true} path={URLs.CONTRACTS_CREATE}>
-          <CreateContractPage />
-        </Route>
-        <Route exact={true} path={URLs.CONTRACTS}>
-          <ListContractsPage />
-        </Route>
-        <Route path={URLs.CONTRACTS_ID}>
-          <EditContractPage />
-        </Route>
+        {...contractsRoutes}
         {CreateSampleRoute}
         {EditSampleRoute}
         {ListSamplesRoute}

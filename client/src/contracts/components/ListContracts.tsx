@@ -2,11 +2,11 @@ import { Button, Table } from 'antd';
 import Axios from 'axios';
 import React, { useContext, useEffect, useState } from 'react';
 import { Link } from 'react-router-dom';
-import { UserContext } from '../users/UserContext';
-import { CREATE_NEW_CONTRACT } from '../utils/constants';
-import { URLs } from '../utils/urls';
-import { contractColumns } from './components/contractColumns';
-import { Contract } from './Contract';
+import { UserContext } from '../../users/UserContext';
+import { CREATE_NEW_CONTRACT } from '../../utils/constants';
+import { URLs } from '../../utils/urls';
+import { Contract } from '../contracts.model';
+import { contractColumns } from './contractColumns';
 import './ListContract.css';
 
 export function ListContracts() {

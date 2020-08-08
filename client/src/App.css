@@ -25,3 +25,7 @@
   padding: 24px;
   background-color: white;
 }
+
+.unread-row {
+  background-color: #ffffb8;
+}

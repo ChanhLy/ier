@@ -22,7 +22,7 @@ import {
   TAX_CODE,
   UPDATE_CUSTOMER_INFORMATION,
 } from '../../utils/constants';
-import { Contract } from '../Contract';
+import { Contract } from '../contracts.model';
 
 const { Item } = Form;
 

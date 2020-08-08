@@ -2,8 +2,8 @@ import { Store } from 'antd/lib/form/interface';
 import Axios from 'axios';
 import React from 'react';
 import { useHistory } from 'react-router-dom';
-import { URLs } from '../utils/urls';
-import { ContractForm } from './components/ContractForm';
+import { URLs } from '../../utils/urls';
+import { ContractForm } from './ContractForm';
 
 export function CreateContract() {
   const history = useHistory();

@@ -2,9 +2,9 @@ import { Store } from 'antd/lib/form/interface';
 import Axios from 'axios';
 import React from 'react';
 import { useHistory } from 'react-router-dom';
-import { APIs, URLs } from '../utils/urls';
-import { ContractForm } from './components/ContractForm';
-import { Contract } from './Contract';
+import { APIs, URLs } from '../../utils/urls';
+import { Contract } from '../contracts.model';
+import { ContractForm } from './ContractForm';
 
 interface Props {
   contract: Contract;
