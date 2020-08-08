@@ -1,5 +1,3 @@
-import { URLs } from './urls';
-
 export const CONTRACT = 'Hợp đồng';
 export const SAMPLE = 'Mẫu';
 export const CREATE_NEW_CONTRACT = 'Tạo hợp đồng mới';
@@ -26,6 +24,5 @@ export const NOTE = 'Ghi chú';
 export const SUCCESS = 'Thành công';
 export const FAILURE = 'Thất bại';
 
-export const Titles = new Map();
-Titles.set(URLs.CONTRACTS_CREATE, CREATE_NEW_CONTRACT_TITLE);
-Titles.set(URLs.CONTRACTS, LIST_CONTRACT);
+export const CUSTOMER_NOT_FOUND = 'Không tìm thấy khách hàng';
+export const UPDATE_CUSTOMER_INFORMATION = 'Cập nhật thông tin khách hàng';

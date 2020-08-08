@@ -9,13 +9,12 @@ export class ContractService {
 
   async createContract(data: Partial<ContractDocument>): Promise<ContractDocument> {
     const contract = new Contract(data);
-    contract.numberInMonth = (await Contract.find({ date: dayjs().format('YYYYMMDD') })).length + 1;
+    contract.numberInMonth = (await Contract.find({ date: dayjs().format('YYYYMMDD') }).exec()).length + 1;
     return contract.save();
   }
 
   async findContractById(id: string): Promise<ContractDocument | null> {
-    const contract = await Contract.findById(id);
-    return contract;
+    return Contract.findById(id);
   }
 
   async findContracts(
@@ -23,12 +22,9 @@ export class ContractService {
     projection?: Partial<ContractDocument> | null,
     options?: QueryFindOptions
   ): Promise<ContractDocument[]> {
-    const contracts = await Contract.find(
-      { ...condition, date: { $gt: this.lastSixMonths() } },
-      projection,
-      options
-    ).sort({ updatedAt: -1 });
-    return contracts;
+    return Contract.find({ ...condition, date: { $gt: this.lastSixMonths() } }, projection, options).sort({
+      updatedAt: -1,
+    });
   }
 
   async addReadByUser(contract: ContractDocument, userId: string): Promise<ContractDocument> {

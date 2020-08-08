@@ -25,7 +25,8 @@ contractRouter.post('/', async (ctx) => {
 });
 
 contractRouter.put('/:id', async (ctx) => {
-  const contract = await contractService.updateContractById(ctx.params.id, ctx.request.body);
+  const id = ctx.params.id as string;
+  const contract = await contractService.updateContractById(id, ctx.request.body);
   ctx.response.body = contract;
 });
 

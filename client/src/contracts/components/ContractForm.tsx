@@ -1,13 +1,16 @@
-import { Button, Divider, Form, Input, Space } from 'antd';
+import { Button, Checkbox, Divider, Form, Input, Space } from 'antd';
 import { useForm } from 'antd/lib/form/Form';
 import { Store } from 'antd/lib/form/interface';
+import Axios from 'axios';
 import dayjs from 'dayjs';
 import React, { useEffect, useState } from 'react';
 import { DatePicker } from '../../components';
+import { Customer } from '../../customers/Customer';
 import {
   ADDRESS,
   CUSTOMER_INFORMATION,
   CUSTOMER_NAME,
+  CUSTOMER_NOT_FOUND,
   DAY,
   FAX,
   NOTE,
@@ -17,6 +20,7 @@ import {
   SAMPLE_RECEIVED_DATE,
   SAMPLING_LOCATION,
   TAX_CODE,
+  UPDATE_CUSTOMER_INFORMATION,
 } from '../../utils/constants';
 import { Contract } from '../Contract';
 
@@ -30,6 +34,7 @@ interface Props {
 export function ContractForm(props: Props) {
   const [form] = useForm();
   const [isSubmitting, setIsSubmitting] = useState(false);
+  const [updateCustomer, setUpdateCustomer] = useState(false);
 
   useEffect(() => {
     if (props.value) {
@@ -80,9 +85,14 @@ export function ContractForm(props: Props) {
 
   async function onFinish(value: Store) {
     setIsSubmitting(true);
+    if (updateCustomer) {
+      const customer = form.getFieldsValue().customer as Customer;
+      await Axios.put('/api/customers', customer, { params: { phone: customer.phone } });
+    }
     await props.onFinish(value);
     setIsSubmitting(false);
   }
+
   function ResultReturnDate() {
     return (
       <Item
@@ -116,6 +126,8 @@ export function ContractForm(props: Props) {
     );
   }
   function CustomerPhone() {
+    const [loading, setLoading] = useState(false);
+    const [help, setHelp] = useState<string | undefined>();
     return (
       <Item
         label={PHONE_NUMBER}
@@ -124,10 +136,36 @@ export function ContractForm(props: Props) {
           { required: true, message: 'Vui lòng nhập số điện thoại!' },
           { pattern: /\d{8,12}/, message: '8 ~ 12 chữ số' },
         ]}
+        help={help}
+        extra={
+          <Checkbox checked={updateCustomer} onChange={onChange}>
+            {UPDATE_CUSTOMER_INFORMATION}
+          </Checkbox>
+        }
       >
-        <Input />
+        <Input.Search enterButton={true} onSearch={onSearch} loading={loading} />
       </Item>
     );
+
+    function onChange() {
+      setUpdateCustomer(!updateCustomer);
+    }
+
+    async function onSearch(value: string) {
+      setLoading(true);
+      try {
+        const customers = (await Axios.get('/api/customers', { params: { phone: value } })).data as Customer[];
+        if (customers && Array.isArray(customers) && customers.length) {
+          form.setFieldsValue({ ...form.getFieldsValue(), customer: customers[0] });
+          setHelp(undefined);
+        } else {
+          throw new Error(CUSTOMER_NOT_FOUND);
+        }
+      } catch (error) {
+        setHelp(CUSTOMER_NOT_FOUND);
+      }
+      setLoading(false);
+    }
   }
   function CustomerAddress() {
     return (

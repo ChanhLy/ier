@@ -1,4 +1,4 @@
-import mongoose from 'mongoose';
+import mongoose, { Model } from 'mongoose';
 const name = 'customer';
 
 type CustomerBase = {
@@ -22,4 +22,6 @@ export const customerDefinition: mongoose.SchemaDefinition = {
 };
 const customerSchema = new mongoose.Schema(customerDefinition, { timestamps: true });
 
-export const Customer = mongoose.connection.models[name] || mongoose.model<CustomerDocument>(name, customerSchema);
+export const Customer =
+  (mongoose.connection.models[name] as Model<CustomerDocument>) ||
+  mongoose.model<CustomerDocument>(name, customerSchema);
