@@ -29,6 +29,9 @@ export function ContractsTable() {
     socket.on('Refresh_Contracts', function () {
       setLoading(true);
     });
+    return () => {
+      socket.off('Refresh_Contracts');
+    };
   }, []);
 
   return (
