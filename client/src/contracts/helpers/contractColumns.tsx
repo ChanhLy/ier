@@ -21,7 +21,7 @@ export const contractColumns: ColumnsType<Contract> = [
   {
     title: ID,
     render: (contract: Contract) => (
-      <Link to={'contracts/' + contract._id}>{contract.date.slice(-4) + '-' + contract.numberInMonth}</Link>
+      <Link to={'/contracts/' + contract._id}>{contract.date.slice(-4) + '-' + contract.numberInMonth}</Link>
     ),
   },
   { title: CUSTOMER_NAME, dataIndex: ['customer', 'name'] },

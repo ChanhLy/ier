@@ -8,7 +8,7 @@ export const CreateContractPage = () => {
   const history = useHistory();
   return (
     <>
-      <PageHeader title={CREATE_NEW_CONTRACT_TITLE} onBack={() => history.goBack()}></PageHeader>
+      <PageHeader title={CREATE_NEW_CONTRACT_TITLE} onBack={history.goBack}></PageHeader>
       <div className='content'>
         <CreateContract />
       </div>

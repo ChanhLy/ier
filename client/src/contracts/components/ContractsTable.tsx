@@ -2,21 +2,32 @@ import { Button, Table } from 'antd';
 import Axios from 'axios';
 import React, { useContext, useEffect, useState } from 'react';
 import { Link } from 'react-router-dom';
+import io from 'socket.io-client';
 import { UserContext } from '../../users/UserContext';
 import { CREATE_NEW_CONTRACT } from '../../utils/constants';
 import { URLs } from '../../utils/urls';
 import { Contract } from '../contracts.model';
 import { contractColumns } from '../helpers/contractColumns';
 
-export function ListContracts() {
+const socket = io();
+
+export function ContractsTable() {
   const user = useContext(UserContext);
 
   const [loading, setLoading] = useState(true);
   const [contracts, setContracts] = useState([]);
   useEffect(() => {
-    Axios.get('/api/contracts').then((response) => {
-      setLoading(false);
-      setContracts(response.data);
+    if (loading) {
+      Axios.get('/api/contracts').then((response) => {
+        setLoading(false);
+        setContracts(response.data);
+      });
+    }
+  }, [loading]);
+
+  useEffect(() => {
+    socket.on('Refresh_Contracts', function () {
+      setLoading(true);
     });
   }, []);
 

@@ -1,5 +1,6 @@
 import dayjs from 'dayjs';
 import mongoose from 'mongoose';
+import { socket } from '../..';
 import { customerDefinition, CustomerDocument } from '../customers/customers.model';
 
 const name = 'contracts';
@@ -21,7 +22,7 @@ export type ContractDocument = mongoose.Document & {
   updatedAt: Date;
 };
 
-export const contractSchema = new mongoose.Schema(
+export const contractSchema = new mongoose.Schema<ContractDocument>(
   {
     customer: customerDefinition,
 
@@ -43,6 +44,19 @@ export const contractSchema = new mongoose.Schema(
   { timestamps: true }
 );
 
+contractSchema.pre<ContractDocument>('save', async function () {
+  this.numberInMonth =
+    this.numberInMonth || (await Contract.find({ date: dayjs().format('YYYYMMDD') }).exec()).length + 1;
+});
+
+contractSchema.post('save', async function () {
+  socket.emit('Refresh_Contracts');
+});
+
 export const Contract =
   (mongoose.connection.models[name] as mongoose.Model<ContractDocument>) ||
   mongoose.model<ContractDocument>(name, contractSchema);
+
+setInterval(() => {
+  socket.emit('hello');
+}, 1000);

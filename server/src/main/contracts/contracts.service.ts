@@ -9,7 +9,6 @@ export class ContractService {
 
   async createContract(data: Partial<ContractDocument>): Promise<ContractDocument> {
     const contract = new Contract(data);
-    contract.numberInMonth = (await Contract.find({ date: dayjs().format('YYYYMMDD') }).exec()).length + 1;
     return contract.save();
   }
 
