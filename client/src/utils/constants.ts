@@ -11,6 +11,7 @@ export const LIST_CONTRACT = 'Danh sách hợp đồng';
 export const CUSTOMER_INFORMATION = 'Thông tin khách hàng';
 
 export const CUSTOMER_NAME = 'Tên khách hàng';
+export const CUSTOMER_ID = 'Mã số KH';
 export const TAX_CODE = 'Mã số thuế';
 export const REPRESENTATIVES = 'Đại diện';
 export const PHONE_NUMBER = 'Số điện thoại';

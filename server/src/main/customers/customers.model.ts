@@ -1,3 +1,4 @@
+import dayjs from 'dayjs';
 import mongoose, { Model } from 'mongoose';
 const name = 'customer';
 
@@ -8,6 +9,9 @@ type CustomerBase = {
   tax?: string;
   representative?: string;
   fax?: string;
+
+  createdAt: Date;
+  updatedAt: Date;
 };
 
 export type CustomerDocument = mongoose.Document & CustomerBase;
@@ -21,6 +25,15 @@ export const customerDefinition: mongoose.SchemaDefinition = {
   fax: String,
 };
 const customerSchema = new mongoose.Schema(customerDefinition, { timestamps: true });
+
+customerSchema.pre<CustomerDocument>('build', async function () {
+  this._id =
+    (
+      await Customer.find({ createdAt: { $gt: dayjs().startOf('d').toDate() } })
+        .select('_id')
+        .exec()
+    ).length + 1;
+});
 
 export const Customer =
   (mongoose.connection.models[name] as Model<CustomerDocument>) ||

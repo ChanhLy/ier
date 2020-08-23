@@ -33,7 +33,7 @@ describe('#Contracts', () => {
         const contract = await contractService.createContract(mockContract);
 
         ok(contract);
-        strictEqual(contract.numberInMonth, 1);
+        strictEqual(contract.customerId, 1);
         strictEqual(contract.date, dayjs().format('YYYYMMDD'));
       });
     });

@@ -4,12 +4,11 @@ import { Customer } from '../customers/Customer';
 
 export interface Contract extends Model {
   customer: Partial<Customer>;
+  customerId: string;
 
   samplingLocation: string;
   sampleReceivedDate: Dayjs;
   resultReturnDate: Dayjs;
 
-  numberInMonth: number;
-  date: string;
   readBy?: string[];
 }

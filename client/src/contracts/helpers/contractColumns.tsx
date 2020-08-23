@@ -1,12 +1,10 @@
 import { ColumnsType } from 'antd/lib/table';
 import dayjs from 'dayjs';
-import React from 'react';
-import { Link } from 'react-router-dom';
 import {
   ADDRESS,
+  CUSTOMER_ID,
   CUSTOMER_NAME,
   FAX,
-  ID,
   NOTE,
   PHONE_NUMBER,
   REPRESENTATIVES,
@@ -19,10 +17,8 @@ import { Contract } from '../contracts.model';
 
 export const contractColumns: ColumnsType<Contract> = [
   {
-    title: ID,
-    render: (contract: Contract) => (
-      <Link to={'/contracts/' + contract._id}>{contract.date.slice(-4) + '-' + contract.numberInMonth}</Link>
-    ),
+    title: CUSTOMER_ID,
+    dataIndex: 'customerId',
   },
   { title: CUSTOMER_NAME, dataIndex: ['customer', 'name'] },
   { title: PHONE_NUMBER, dataIndex: ['customer', 'phone'] },

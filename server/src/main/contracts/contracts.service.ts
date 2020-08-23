@@ -3,12 +3,15 @@ import { FilterQuery, QueryFindOptions } from 'mongoose';
 import { Contract, ContractDocument } from './contracts.model';
 
 export class ContractService {
-  lastSixMonths(): string {
-    return dayjs().subtract(6, 'month').format('YYYYMMDD');
-  }
-
   async createContract(data: Partial<ContractDocument>): Promise<ContractDocument> {
     const contract = new Contract(data);
+    const no =
+      (
+        await Contract.find({ createdAt: { $gt: dayjs().startOf('d').toDate() } })
+          .select('_id')
+          .exec()
+      ).length + 1;
+    contract.customerId = dayjs().format('YYYYMMDD') + no.toString();
     return contract.save();
   }
 
@@ -21,7 +24,11 @@ export class ContractService {
     projection?: Partial<ContractDocument> | null,
     options?: QueryFindOptions
   ): Promise<ContractDocument[]> {
-    return Contract.find({ ...condition, date: { $gt: this.lastSixMonths() } }, projection, options).sort({
+    return Contract.find(
+      { ...condition, createdAt: { $gt: dayjs().subtract(3, 'month').startOf('month') } },
+      projection,
+      options
+    ).sort({
       updatedAt: -1,
     });
   }
