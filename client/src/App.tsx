@@ -6,22 +6,33 @@ import './App.css';
 import { contractsRoutes } from './contracts';
 import { samplesRoutes } from './samples';
 import { UserContext } from './users/UserContext';
-import { CONTRACT, FAILURE, SAMPLE, SUCCESS } from './utils/constants';
+import { CONTRACT, FAILURE, SAMPLE } from './utils/constants';
 import { URLs } from './utils/urls';
 
-const thisYear = new Date().getFullYear();
+const source = Axios.CancelToken.source();
+
+export function cancelRequest() {
+  source.cancel('Cancel');
+}
+
+Axios.interceptors.request.use((config) => {
+  config.cancelToken = source.token;
+  return config;
+});
 
 Axios.interceptors.response.use(
-  (response) => {
-    if (response.status === 201) message.success(SUCCESS);
-    return response;
-  },
+  (response) => response,
   (error) => {
+    if (Axios.isCancel(error)) {
+      return;
+    }
+    console.error(error);
     message.error(FAILURE);
   }
 );
 
 function App() {
+  const thisYear = new Date().getFullYear();
   return (
     <BrowserRouter>
       <UserContext.Provider value={{ id: '1' }}>

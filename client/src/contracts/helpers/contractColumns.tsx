@@ -1,9 +1,10 @@
 import { ColumnsType } from 'antd/lib/table';
 import dayjs from 'dayjs';
+import React from 'react';
+import { Link } from 'react-router-dom';
 import {
   ADDRESS,
   CUSTOMER_ID,
-  CUSTOMER_NAME,
   FAX,
   NOTE,
   PHONE_NUMBER,
@@ -13,14 +14,16 @@ import {
   SAMPLING_LOCATION,
   TAX_CODE,
 } from '../../utils/constants';
+import { URLs } from '../../utils/urls';
 import { Contract } from '../contracts.model';
 
 export const contractColumns: ColumnsType<Contract> = [
   {
     title: CUSTOMER_ID,
     dataIndex: 'customerId',
+    render: (value, record, index: number) => <Link to={URLs.CONTRACTS + '/' + record._id}>{value}</Link>,
   },
-  { title: CUSTOMER_NAME, dataIndex: ['customer', 'name'] },
+  {},
   { title: PHONE_NUMBER, dataIndex: ['customer', 'phone'] },
   { title: ADDRESS, dataIndex: ['customer', 'address'] },
   { title: TAX_CODE, dataIndex: ['customer', 'tax'] },

@@ -1,5 +1,4 @@
 import { Button, Table } from 'antd';
-import Axios from 'axios';
 import React, { useContext, useEffect, useState } from 'react';
 import { Link } from 'react-router-dom';
 import io from 'socket.io-client';
@@ -7,6 +6,7 @@ import { UserContext } from '../../users/UserContext';
 import { CREATE_NEW_CONTRACT } from '../../utils/constants';
 import { URLs } from '../../utils/urls';
 import { Contract } from '../contracts.model';
+import { getContracts } from '../contracts.service';
 import { contractColumns } from '../helpers/contractColumns';
 
 const socket = io();
@@ -18,9 +18,9 @@ export function ContractsTable() {
   const [contracts, setContracts] = useState([]);
   useEffect(() => {
     if (loading) {
-      Axios.get('/api/contracts').then((response) => {
+      getContracts().then((value) => {
         setLoading(false);
-        setContracts(response.data);
+        setContracts(value);
       });
     }
   }, [loading]);
