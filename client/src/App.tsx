@@ -32,7 +32,6 @@ Axios.interceptors.response.use(
 );
 
 function App() {
-  const thisYear = new Date().getFullYear();
   return (
     <BrowserRouter>
       <UserContext.Provider value={{ id: '1' }}>
@@ -40,12 +39,17 @@ function App() {
           <Header />
           <Layout>
             <Content />
-            <Layout.Footer>IER ©{thisYear} Created by Chanh Ly</Layout.Footer>
+            <Footer />
           </Layout>
         </Layout>
       </UserContext.Provider>
     </BrowserRouter>
   );
+}
+
+function Footer() {
+  const thisYear = new Date().getFullYear();
+  return <Layout.Footer>IER ©{thisYear} Created by Chanh Ly</Layout.Footer>;
 }
 
 export function Header() {
