@@ -14,7 +14,10 @@ export function EditContract(props: Props) {
   const history = useHistory();
   const contract = props.contract;
 
-  return <ContractForm value={contract} onFinish={onFinish} />;
+  const labelCol = { span: 4 };
+  const wrapperCol = { span: 12 };
+
+  return <ContractForm value={contract} onFinish={onFinish} labelCol={labelCol} wrapperCol={wrapperCol} />;
 
   async function onFinish(value: Store) {
     await Axios.put(APIs.CONTRACTS + '/' + contract._id, value);

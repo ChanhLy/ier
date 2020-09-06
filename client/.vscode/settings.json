@@ -7,5 +7,15 @@
   "editor.codeActionsOnSave": {
     "source.fixAll": true,
     "source.organizeImports": true
-  }
+  },
+  "cSpell.words": [
+    "Chanh",
+    "Postgres",
+    "Sider",
+    "VCTR",
+    "YYYYMM",
+    "YYYYMMDD",
+    "prestart",
+    "respawn"
+  ]
 }

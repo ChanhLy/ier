@@ -18,7 +18,6 @@ import {
   REPRESENTATIVES,
   RESULT_RETURN_DATE,
   SAMPLE_RECEIVED_DATE,
-  SAMPLING_LOCATION,
   TAX_CODE,
   UPDATE_CUSTOMER_INFORMATION,
 } from '../../utils/constants';
@@ -29,6 +28,8 @@ const { Item } = Form;
 interface Props {
   onFinish: (value: Store) => Promise<void>;
   value?: Contract;
+  labelCol: { span: number };
+  wrapperCol: { span: number };
 }
 
 export function ContractForm(props: Props) {
@@ -43,20 +44,19 @@ export function ContractForm(props: Props) {
   }, [form, props.value]);
 
   return (
-    <Form form={form} labelCol={{ span: 4 }} wrapperCol={{ span: 12 }} onFinish={onFinish}>
+    <Form form={form} onFinish={onFinish} labelCol={props.labelCol} wrapperCol={props.wrapperCol}>
       <Divider orientation='left'>{CUSTOMER_INFORMATION}</Divider>
-      {CustomerPhone()}
-      {CustomerName()}
-      {CustomerAddress()}
-      {CustomerTax()}
-      {CustomerRepresentative()}
-      {CustomerFax()}
+      <CustomerPhone />
+      <CustomerName />
+      <CustomerAddress />
+      <CustomerTax />
+      <CustomerRepresentative />
+      <CustomerFax />
       <Divider />
-      {SamplingLocation()}
-      {SampleReceivedDate()}
-      {ResultReturnDate()}
-      {Note()}
-      {SubmitButton()}
+      <SampleReceivedDate />
+      <ResultReturnDate />
+      <Note />
+      <SubmitButton />
     </Form>
   );
 
@@ -64,13 +64,13 @@ export function ContractForm(props: Props) {
     function setResultReturnDate(days: number) {
       form.setFieldsValue({ resultReturnDate: dayjs().add(days, 'day') });
     }
-    function PickDate(props: { days: number }) {
+    function PickDate(pickDateProps: { days: number }) {
       function onSetResultReturnDateClick() {
-        setResultReturnDate(props.days);
+        setResultReturnDate(pickDateProps.days);
       }
       return (
         <Button onClick={onSetResultReturnDateClick} type='link'>
-          {props.days} {DAY}
+          {pickDateProps.days} {DAY}
         </Button>
       );
     }
@@ -195,17 +195,6 @@ export function ContractForm(props: Props) {
   function CustomerFax() {
     return (
       <Item label={FAX} name={['customer', 'fax']}>
-        <Input />
-      </Item>
-    );
-  }
-  function SamplingLocation() {
-    return (
-      <Item
-        label={SAMPLING_LOCATION}
-        name='samplingLocation'
-        rules={[{ required: true, message: 'Vui lòng nhập vị trí lấy mẫu!' }]}
-      >
         <Input />
       </Item>
     );
