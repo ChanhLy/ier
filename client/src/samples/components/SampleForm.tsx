@@ -3,7 +3,7 @@ import { Button, Col, Form, Input, Row, Select, Space } from 'antd';
 import { useForm } from 'antd/lib/form/Form';
 import React from 'react';
 import { METHOD, TARGET } from '../../utils/constants';
-import { SYMBOLS } from '../samples.model';
+import { SYMBOLS } from '../helpers/symbols';
 
 export function SampleForm() {
   const [form] = useForm();

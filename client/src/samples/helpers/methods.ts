@@ -1,4 +1,4 @@
-export const methods = {
+export const TYPES_TARGETS_METHODS = {
   'Nước mặt': {
     pH: ['TCVN 6492:2011'],
     'Nhiệt độ': ['SMEWW 2550B:2017'],
