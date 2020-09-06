@@ -33,19 +33,19 @@ export function SampleForm() {
                   <Space align='start'>
                     <Form.Item
                       {...field}
-                      name={[field.name, 'method']}
-                      fieldKey={[field.fieldKey, 'method']}
-                      rules={[{ required: true, message: 'Missing method' }]}
-                    >
-                      <Input placeholder='Methods' />
-                    </Form.Item>
-                    <Form.Item
-                      {...field}
                       name={[field.name, 'targets']}
                       fieldKey={[field.fieldKey, 'targets']}
                       rules={[{ required: true, message: 'Missing targets' }]}
                     >
                       <Input placeholder='Targets' />
+                    </Form.Item>
+                    <Form.Item
+                      {...field}
+                      name={[field.name, 'method']}
+                      fieldKey={[field.fieldKey, 'method']}
+                      rules={[{ required: true, message: 'Missing method' }]}
+                    >
+                      <Input placeholder='Methods' />
                     </Form.Item>
 
                     <Button
