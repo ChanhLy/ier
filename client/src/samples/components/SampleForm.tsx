@@ -2,6 +2,7 @@ import { MinusCircleOutlined, PlusOutlined } from '@ant-design/icons';
 import { Button, Col, Form, Input, Row, Select, Space } from 'antd';
 import { useForm } from 'antd/lib/form/Form';
 import React from 'react';
+import { METHOD, TARGET } from '../../utils/constants';
 import { SYMBOLS } from '../samples.model';
 
 export function SampleForm() {
@@ -37,7 +38,7 @@ export function SampleForm() {
                       fieldKey={[field.fieldKey, 'targets']}
                       rules={[{ required: true, message: 'Missing targets' }]}
                     >
-                      <Input placeholder='Targets' />
+                      <Select placeholder={TARGET} />
                     </Form.Item>
                     <Form.Item
                       {...field}
@@ -45,7 +46,7 @@ export function SampleForm() {
                       fieldKey={[field.fieldKey, 'method']}
                       rules={[{ required: true, message: 'Missing method' }]}
                     >
-                      <Input placeholder='Methods' />
+                      <Input placeholder={METHOD} />
                     </Form.Item>
 
                     <Button

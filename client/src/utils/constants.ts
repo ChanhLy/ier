@@ -29,3 +29,6 @@ export const FAILURE = 'Thất bại';
 
 export const CUSTOMER_NOT_FOUND = 'Không tìm thấy khách hàng';
 export const UPDATE_CUSTOMER_INFORMATION = 'Cập nhật thông tin khách hàng';
+
+export const TARGET = 'Chỉ tiêu';
+export const METHOD = 'Phương pháp';
