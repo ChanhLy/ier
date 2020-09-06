@@ -1,3 +1,3 @@
 import './styles.css';
 
-export { contractsRoutes } from './contracts.routes';
+export { ContractsRoutes } from './contracts.routes';

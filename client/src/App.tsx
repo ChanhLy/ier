@@ -3,8 +3,8 @@ import Axios from 'axios';
 import React, { useEffect, useState } from 'react';
 import { BrowserRouter, Link, Switch, useLocation } from 'react-router-dom';
 import './App.css';
-import { contractsRoutes } from './contracts';
-import { samplesRoutes } from './samples';
+import { ContractsRoutes } from './contracts/contracts.routes';
+import { SampleRoutes } from './samples';
 import { UserContext } from './users/UserContext';
 import { CONTRACT, FAILURE, SAMPLE } from './utils/constants';
 import { URLs } from './utils/urls';
@@ -83,8 +83,8 @@ function Content() {
   return (
     <Layout.Content>
       <Switch>
-        {contractsRoutes}
-        {samplesRoutes}
+        <ContractsRoutes />
+        <SampleRoutes />
       </Switch>
     </Layout.Content>
   );

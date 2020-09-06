@@ -1,3 +1,3 @@
 import './styles.css';
 
-export { samplesRoutes } from './samples.routes';
+export { SampleRoutes } from './samples.routes';
