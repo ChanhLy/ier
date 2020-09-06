@@ -8,7 +8,7 @@ import { DatePicker } from '../../components';
 import { Customer } from '../../customers/Customer';
 import {
   ADDRESS,
-  CUSTOMER_INFORMATION,
+  CONTRACT_INFORMATION,
   CUSTOMER_NAME,
   CUSTOMER_NOT_FOUND,
   DAY,
@@ -45,14 +45,13 @@ export function ContractForm(props: Props) {
 
   return (
     <Form form={form} onFinish={onFinish} labelCol={props.labelCol} wrapperCol={props.wrapperCol}>
-      <Divider orientation='left'>{CUSTOMER_INFORMATION}</Divider>
+      <Divider orientation='left'>{CONTRACT_INFORMATION}</Divider>
       <CustomerPhone />
       <CustomerName />
       <CustomerAddress />
       <CustomerTax />
       <CustomerRepresentative />
       <CustomerFax />
-      <Divider />
       <SampleReceivedDate />
       <ResultReturnDate />
       <Note />

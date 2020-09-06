@@ -9,6 +9,7 @@ export const DAY = 'ngày';
 export const LIST_CONTRACT = 'Danh sách hợp đồng';
 
 export const CUSTOMER_INFORMATION = 'Thông tin khách hàng';
+export const CONTRACT_INFORMATION = 'Thông tin hợp đồng';
 
 export const CUSTOMER_NAME = 'Tên khách hàng';
 export const CUSTOMER_ID = 'Mã số KH';
