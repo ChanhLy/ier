@@ -8,6 +8,7 @@ import { DatePicker } from '../../components';
 import { Customer } from '../../customers/Customer';
 import {
   ADDRESS,
+  CONFIRM,
   CONTRACT_INFORMATION,
   CUSTOMER_NAME,
   CUSTOMER_NOT_FOUND,
@@ -107,7 +108,7 @@ export function ContractForm(props: Props) {
     return (
       <Item wrapperCol={{ offset: 4 }}>
         <Button htmlType='submit' type='primary' loading={isSubmitting}>
-          Xác nhận
+          {CONFIRM}
         </Button>
       </Item>
     );
