@@ -32,3 +32,7 @@ export const UPDATE_CUSTOMER_INFORMATION = 'Cập nhật thông tin khách hàng
 
 export const TARGET = 'Chỉ tiêu';
 export const METHOD = 'Phương pháp';
+
+export const CONFIRM = 'Xác nhận';
+
+export const ADD_TARGET = 'Thêm chỉ tiêu';

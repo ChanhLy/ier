@@ -13,15 +13,17 @@ export function CreateContract() {
   const wrapperCol = { span: 12 };
 
   return (
-    <div>
+    <>
       <ContractForm onFinish={onFinish} labelCol={labelCol} wrapperCol={wrapperCol} />
       <Divider></Divider>
-      <SampleForm />
-    </div>
+      <SampleForm onFinish={onSubmitSample} />
+    </>
   );
 
   async function onFinish(value: Store) {
     await createContract(value);
     history.push(URLs.CONTRACTS);
   }
+
+  async function onSubmitSample(values: Store) {}
 }

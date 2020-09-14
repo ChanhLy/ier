@@ -213,7 +213,7 @@ export function ContractForm(props: Props) {
   function Note() {
     return (
       <Item label={NOTE} name='note'>
-        <Input />
+        <Input.TextArea />
       </Item>
     );
   }
