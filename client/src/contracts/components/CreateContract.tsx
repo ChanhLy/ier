@@ -24,7 +24,7 @@ export function CreateContract() {
     if (!visible) {
       sampleForm.resetFields();
     }
-  }, [visible]);
+  }, [visible, sampleForm]);
 
   return (
     <>
