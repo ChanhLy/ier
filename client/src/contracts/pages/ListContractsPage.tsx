@@ -10,7 +10,7 @@ export const ListContractsPage = () => {
     <>
       <PageHeader title={LIST_CONTRACT}></PageHeader>
       <div className='content'>
-        <Button>
+        <Button type='primary'>
           <Link to={URLs.CONTRACTS_CREATE}>{CREATE_NEW_CONTRACT}</Link>
         </Button>
         <br />
