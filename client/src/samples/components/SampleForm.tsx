@@ -20,17 +20,30 @@ export function SampleForm(props: Props) {
   const [target, setTarget] = useState<string>();
   const [disabledSelectMethods, setDisabledSelectMethods] = useState(true);
 
-  const [isSubmitting, setIsSubmitting] = useState(false);
-
   return (
     <Form form={form} labelCol={{ span: 4 }} onFinish={onFinish}>
-      <Form.Item label='Ký hiệu mẫu' name='symbol' required wrapperCol={{ span: 2 }}>
+      <Form.Item
+        label='Ký hiệu mẫu'
+        name='symbol'
+        wrapperCol={{ span: 2 }}
+        rules={[{ required: true, message: 'Symbol required' }]}
+      >
         <Select autoFocus options={SYMBOLS}></Select>
       </Form.Item>
-      <Form.Item label='Vị trí lấy mẫu' name='location' required wrapperCol={{ span: 8 }}>
+      <Form.Item
+        label='Vị trí lấy mẫu'
+        name='location'
+        rules={[{ required: true, message: 'location required' }]}
+        wrapperCol={{ span: 8 }}
+      >
         <Input />
       </Form.Item>
-      <Form.Item label='Mô tả mẫu' name='description' required wrapperCol={{ span: 8 }}>
+      <Form.Item
+        label='Mô tả mẫu'
+        name='description'
+        rules={[{ required: true, message: 'description required' }]}
+        wrapperCol={{ span: 8 }}
+      >
         <Input />
       </Form.Item>
       <Form.Item label='Số lượng ' name='amount' wrapperCol={{ span: 2 }}>
@@ -39,7 +52,12 @@ export function SampleForm(props: Props) {
       <Form.Item label='Đơn vị' name='unit' wrapperCol={{ span: 2 }}>
         <Input />
       </Form.Item>
-      <Form.Item label='Loại mẫu theo nhóm chỉ tiêu' name='type' wrapperCol={{ span: 8 }}>
+      <Form.Item
+        label='Loại mẫu theo nhóm chỉ tiêu'
+        name='type'
+        wrapperCol={{ span: 8 }}
+        rules={[{ required: true, message: 'type required' }]}
+      >
         <Select options={typeOptions} onChange={onChangeType}></Select>
       </Form.Item>
       <Form.List name='experiments'>
@@ -63,12 +81,7 @@ export function SampleForm(props: Props) {
                         style={{ width: 200 }}
                       />
                     </Form.Item>
-                    <Form.Item
-                      {...field}
-                      name={[field.name, 'method']}
-                      fieldKey={[field.fieldKey, 'method']}
-                      rules={[{ required: true, message: 'Missing method' }]}
-                    >
+                    <Form.Item {...field} name={[field.name, 'method']} fieldKey={[field.fieldKey, 'method']}>
                       <Select
                         mode='multiple'
                         placeholder={METHOD}
@@ -110,7 +123,7 @@ export function SampleForm(props: Props) {
       </Form.Item>
 
       <Form.Item wrapperCol={{ offset: 4 }}>
-        <Button htmlType='submit' type='primary' loading={isSubmitting}>
+        <Button htmlType='submit' type='primary'>
           {CONFIRM}
         </Button>
       </Form.Item>
@@ -128,13 +141,11 @@ export function SampleForm(props: Props) {
   }
 
   function onFinish(values: Store) {
-    setIsSubmitting(true);
     console.log(values);
 
     props.onFinish(values).catch((error) => {
       console.error(error);
       message.error('Lỗi máy chủ');
-      setIsSubmitting(false);
     });
   }
 }
