@@ -1,6 +1,8 @@
-import { PageHeader } from 'antd';
+import { Button, PageHeader } from 'antd';
 import React from 'react';
-import { LIST_CONTRACT } from '../../utils/constants';
+import { Link } from 'react-router-dom';
+import { CREATE_NEW_CONTRACT, LIST_CONTRACT } from '../../utils/constants';
+import { URLs } from '../../utils/urls';
 import { ContractsTable } from '../components/ContractsTable';
 
 export const ListContractsPage = () => {
@@ -8,6 +10,11 @@ export const ListContractsPage = () => {
     <>
       <PageHeader title={LIST_CONTRACT}></PageHeader>
       <div className='content'>
+        <Button>
+          <Link to={URLs.CONTRACTS_CREATE}>{CREATE_NEW_CONTRACT}</Link>
+        </Button>
+        <br />
+        <br />
         <ContractsTable />
       </div>
     </>

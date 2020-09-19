@@ -1,10 +1,7 @@
-import { Button, Table } from 'antd';
+import { Table } from 'antd';
 import React, { useContext, useEffect, useState } from 'react';
-import { Link } from 'react-router-dom';
 import io from 'socket.io-client';
 import { UserContext } from '../../users/UserContext';
-import { CREATE_NEW_CONTRACT } from '../../utils/constants';
-import { URLs } from '../../utils/urls';
 import { Contract } from '../contracts.model';
 import { getContracts } from '../contracts.service';
 import { contractColumns } from '../helpers/contractColumns';
@@ -35,21 +32,14 @@ export function ContractsTable() {
   }, []);
 
   return (
-    <>
-      <Button>
-        <Link to={URLs.CONTRACTS_CREATE}>{CREATE_NEW_CONTRACT}</Link>
-      </Button>
-      <br />
-      <br />
-      <Table
-        columns={contractColumns}
-        dataSource={contracts}
-        rowKey='_id'
-        bordered={true}
-        loading={loading}
-        rowClassName={rowClassName}
-      ></Table>
-    </>
+    <Table
+      columns={contractColumns}
+      dataSource={contracts}
+      rowKey='_id'
+      bordered={true}
+      loading={loading}
+      rowClassName={rowClassName}
+    />
   );
 
   function rowClassName(contract: Contract, index: number): string {
