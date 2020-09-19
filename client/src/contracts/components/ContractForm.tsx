@@ -1,5 +1,5 @@
 import { Button, Checkbox, Divider, Form, Input, Space } from 'antd';
-import { useForm } from 'antd/lib/form/Form';
+import { FormInstance, useForm } from 'antd/lib/form/Form';
 import { Store } from 'antd/lib/form/interface';
 import Axios from 'axios';
 import dayjs from 'dayjs';
@@ -27,14 +27,16 @@ import { Contract } from '../contracts.model';
 const { Item } = Form;
 
 interface Props {
-  onFinish: (value: Store) => Promise<void>;
+  onFinish: (values: Store) => Promise<void>;
   value?: Contract;
   labelCol: { span: number };
   wrapperCol: { span: number };
+  children?: React.ReactNode;
+  form?: FormInstance;
 }
 
 export function ContractForm(props: Props) {
-  const [form] = useForm();
+  const [form] = useForm(props.form);
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [updateCustomer, setUpdateCustomer] = useState(false);
 
@@ -56,6 +58,7 @@ export function ContractForm(props: Props) {
       <SampleReceivedDate />
       <ResultReturnDate />
       <Note />
+      {props.children}
       <SubmitButton />
     </Form>
   );

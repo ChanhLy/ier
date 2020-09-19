@@ -41,4 +41,8 @@ export const SAMPLING_LOCATION = 'Vị trí lấy mẫu';
 export const SAMPLE_DESCRIPTION = 'Mô tả mẫu';
 export const AMOUNT = 'Số lượng';
 export const UNIT = 'Đơn vị';
-export const SAMPLE_TYPE = 'Loại mẫu theo nhóm chỉ tiêu';
+export const SAMPLE_TYPE = 'Loại mẫu';
+export const SAMPLE_TYPE_TARGET = 'Loại mẫu theo nhóm chỉ tiêu';
+
+export const TARGET_AND_METHOD = 'Chỉ tiêu và phương pháp';
+export const ADD_NEW_SAMPLE = 'Thêm mẫu mới';

@@ -1,4 +1,4 @@
-export const SYMBOLS = [
+export const SYMBOLS_LABEL_VALUE = [
   {
     label: 'NT',
     value: 'Nước thải',
@@ -24,3 +24,5 @@ export const SYMBOLS = [
     value: 'Chất thải rắn',
   },
 ];
+
+export const SYMBOLS = ['NT', 'NC', 'KK', 'VB', 'VD', 'VCTR'];

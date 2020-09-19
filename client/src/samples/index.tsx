@@ -5,6 +5,24 @@ import { CreateSample } from './components/CreateSample';
 import { EditSample } from './components/EditSample';
 import { ListSamples } from './components/ListSamples';
 
+export { CreateSamplesTable } from './components/CreateSamplesTable';
+export { SampleForm } from './components/SampleForm';
+export { SampleTable } from './components/SampleTable';
+
+export interface Experiment {
+  methods?: string[];
+  target: string;
+}
+
+export interface Sample {
+  symbol: string;
+  location: string;
+  amount: string;
+  description: string;
+  type: string;
+  experiments: [Experiment];
+}
+
 export function SampleRoutes() {
   return (
     <Switch>

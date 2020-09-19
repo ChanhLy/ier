@@ -1,30 +1,52 @@
 import { Table } from 'antd';
 import { ColumnsType } from 'antd/lib/table';
 import React from 'react';
+import { Experiment, Sample } from '..';
 import {
   AMOUNT,
-  METHOD,
   NOTE,
   SAMPLE_DESCRIPTION,
   SAMPLE_SYMBOL,
   SAMPLE_TYPE,
   SAMPLING_LOCATION,
-  TARGET,
+  TARGET_AND_METHOD,
   UNIT,
 } from '../../utils/constants';
-import { Sample } from '../samples.model';
 
-export function CreateSamplesTable() {
-  return <Table columns={columns} bordered></Table>;
+interface Props {
+  dataSource: Sample[];
 }
+
+export function CreateSamplesTable(props: Props) {
+  return <Table<Sample> columns={columns} bordered dataSource={props.dataSource}></Table>;
+}
+
 const columns: ColumnsType<Sample> = [
-  { title: SAMPLE_SYMBOL },
-  { title: SAMPLING_LOCATION },
-  { title: SAMPLE_DESCRIPTION },
-  { title: AMOUNT },
-  { title: UNIT },
-  { title: SAMPLE_TYPE },
-  { title: TARGET },
-  { title: METHOD },
-  { title: NOTE },
+  { title: SAMPLE_SYMBOL, dataIndex: 'symbol' },
+  { title: SAMPLING_LOCATION, dataIndex: 'location' },
+  { title: SAMPLE_DESCRIPTION, dataIndex: 'description' },
+  { title: AMOUNT, dataIndex: 'amount' },
+  { title: UNIT, dataIndex: 'unit' },
+  { title: SAMPLE_TYPE, dataIndex: 'type' },
+  {
+    title: TARGET_AND_METHOD,
+    dataIndex: 'experiments',
+    render: (value: Experiment[], record: Sample, index: number) => {
+      return toTargetAndMethods(value);
+    },
+  },
+  { title: NOTE, dataIndex: 'note' },
 ];
+
+export function toTargetAndMethods(value: Experiment[]) {
+  return (
+    value
+      .map((experiment) => {
+        console.log(experiment);
+        const target = experiment.target;
+        const methods = experiment.methods?.join(',');
+        return target + (methods ? ` (${methods})` : '');
+      })
+      .join(', ') + ` (${value.length} chỉ tiêu)`
+  );
+}

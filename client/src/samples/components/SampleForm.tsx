@@ -1,6 +1,6 @@
 import { MinusCircleOutlined, PlusOutlined } from '@ant-design/icons';
 import { Button, Col, Form, Input, message, Row, Select, Space } from 'antd';
-import { useForm } from 'antd/lib/form/Form';
+import { FormInstance, useForm } from 'antd/lib/form/Form';
 import { Store } from 'antd/lib/form/interface';
 import React, { useState } from 'react';
 import {
@@ -11,7 +11,7 @@ import {
   NOTE,
   SAMPLE_DESCRIPTION,
   SAMPLE_SYMBOL,
-  SAMPLE_TYPE,
+  SAMPLE_TYPE_TARGET,
   SAMPLING_LOCATION,
   TARGET,
   UNIT,
@@ -21,17 +21,17 @@ import { SYMBOLS } from '../helpers/symbols';
 
 interface Props {
   onFinish: (values: Store) => Promise<void>;
+  form?: FormInstance;
 }
 
 export function SampleForm(props: Props) {
-  const [form] = useForm();
+  const [form] = useForm(props.form);
 
   const [type, setType] = useState<string>();
   const [disabledAddTargetButton, setDisabledAddTargetButton] = useState(true);
 
   const [target, setTarget] = useState<string>();
   const [disabledSelectMethods, setDisabledSelectMethods] = useState(true);
-
   return (
     <Form form={form} labelCol={{ span: 4 }} onFinish={onFinish}>
       <Form.Item
@@ -40,7 +40,7 @@ export function SampleForm(props: Props) {
         wrapperCol={{ span: 2 }}
         rules={[{ required: true, message: 'Symbol required' }]}
       >
-        <Select autoFocus options={SYMBOLS}></Select>
+        <Select autoFocus options={symbols}></Select>
       </Form.Item>
       <Form.Item
         label={SAMPLING_LOCATION}
@@ -65,7 +65,7 @@ export function SampleForm(props: Props) {
         <Input />
       </Form.Item>
       <Form.Item
-        label={SAMPLE_TYPE}
+        label={SAMPLE_TYPE_TARGET}
         name='type'
         wrapperCol={{ span: 8 }}
         rules={[{ required: true, message: 'type required' }]}
@@ -82,8 +82,8 @@ export function SampleForm(props: Props) {
                   <Space align='start'>
                     <Form.Item
                       {...field}
-                      name={[field.name, 'targets']}
-                      fieldKey={[field.fieldKey, 'targets']}
+                      name={[field.name, 'target']}
+                      fieldKey={[field.fieldKey, 'target']}
                       rules={[{ required: true, message: 'Missing targets' }]}
                     >
                       <Select
@@ -93,7 +93,7 @@ export function SampleForm(props: Props) {
                         style={{ width: 200 }}
                       />
                     </Form.Item>
-                    <Form.Item {...field} name={[field.name, 'method']} fieldKey={[field.fieldKey, 'method']}>
+                    <Form.Item {...field} name={[field.name, 'methods']} fieldKey={[field.fieldKey, 'methods']}>
                       <Select
                         mode='multiple'
                         placeholder={METHOD}
@@ -161,3 +161,7 @@ export function SampleForm(props: Props) {
     });
   }
 }
+
+const symbols = SYMBOLS.map((symbol) => {
+  return { label: symbol, value: symbol };
+});
