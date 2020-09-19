@@ -4,7 +4,7 @@ import { Store } from 'antd/lib/form/interface';
 import React, { useEffect, useState } from 'react';
 import { useHistory } from 'react-router-dom';
 import { CreateSamplesTable, Sample, SampleForm } from '../../samples';
-import { CREATE_NEW_CONTRACT } from '../../utils/constants';
+import { ADD_NEW_SAMPLE, CREATE_NEW_CONTRACT } from '../../utils/constants';
 import { URLs } from '../../utils/urls';
 import { createContract } from '../contracts.service';
 import { ContractForm } from './ContractForm';
@@ -37,7 +37,7 @@ export function CreateContract() {
         <CreateSamplesTable dataSource={samples} />
         <br />
       </ContractForm>
-      <Modal visible={visible} onCancel={closeSampleForm}>
+      <Modal visible={visible} onCancel={closeSampleForm} title={ADD_NEW_SAMPLE} width={800}>
         <SampleForm onFinish={onSubmitSample} form={sampleForm} />
       </Modal>
     </>

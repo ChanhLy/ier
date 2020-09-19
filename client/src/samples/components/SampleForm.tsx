@@ -6,7 +6,6 @@ import React, { useState } from 'react';
 import {
   ADD_TARGET,
   AMOUNT,
-  CONFIRM,
   METHOD,
   NOTE,
   SAMPLE_DESCRIPTION,
@@ -33,43 +32,27 @@ export function SampleForm(props: Props) {
   const [target, setTarget] = useState<string>();
   const [disabledSelectMethods, setDisabledSelectMethods] = useState(true);
   return (
-    <Form form={form} labelCol={{ span: 4 }} onFinish={onFinish}>
-      <Form.Item
-        label={SAMPLE_SYMBOL}
-        name='symbol'
-        wrapperCol={{ span: 2 }}
-        rules={[{ required: true, message: 'Symbol required' }]}
-      >
+    <Form form={form} onFinish={onFinish} labelCol={{ style: { width: 200 } }}>
+      <Form.Item label={SAMPLE_SYMBOL} name='symbol' rules={[{ required: true, message: 'Symbol required' }]}>
         <Select autoFocus options={symbols}></Select>
       </Form.Item>
-      <Form.Item
-        label={SAMPLING_LOCATION}
-        name='location'
-        rules={[{ required: true, message: 'location required' }]}
-        wrapperCol={{ span: 8 }}
-      >
+      <Form.Item label={SAMPLING_LOCATION} name='location' rules={[{ required: true, message: 'location required' }]}>
         <Input />
       </Form.Item>
       <Form.Item
         label={SAMPLE_DESCRIPTION}
         name='description'
         rules={[{ required: true, message: 'description required' }]}
-        wrapperCol={{ span: 8 }}
       >
         <Input />
       </Form.Item>
-      <Form.Item label={AMOUNT} name='amount' wrapperCol={{ span: 2 }}>
+      <Form.Item label={AMOUNT} name='amount'>
         <Input />
       </Form.Item>
-      <Form.Item label={UNIT} name='unit' wrapperCol={{ span: 2 }}>
+      <Form.Item label={UNIT} name='unit'>
         <Input />
       </Form.Item>
-      <Form.Item
-        label={SAMPLE_TYPE_TARGET}
-        name='type'
-        wrapperCol={{ span: 8 }}
-        rules={[{ required: true, message: 'type required' }]}
-      >
+      <Form.Item label={SAMPLE_TYPE_TARGET} name='type' rules={[{ required: true, message: 'type required' }]}>
         <Select options={typeOptions} onChange={onChangeType}></Select>
       </Form.Item>
       <Form.List name='experiments'>
@@ -113,7 +96,7 @@ export function SampleForm(props: Props) {
                 </Row>
               ))}
 
-              <Form.Item wrapperCol={{ span: 8, offset: 4 }}>
+              <Form.Item>
                 <Button
                   type='dashed'
                   onClick={() => {
@@ -130,14 +113,8 @@ export function SampleForm(props: Props) {
         }}
       </Form.List>
 
-      <Form.Item label={NOTE} wrapperCol={{ span: 12 }} name='note'>
+      <Form.Item label={NOTE} name='note'>
         <Input.TextArea />
-      </Form.Item>
-
-      <Form.Item wrapperCol={{ offset: 4 }}>
-        <Button htmlType='submit' type='primary'>
-          {CONFIRM}
-        </Button>
       </Form.Item>
     </Form>
   );
