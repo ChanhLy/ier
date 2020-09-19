@@ -3,7 +3,19 @@ import { Button, Col, Form, Input, message, Row, Select, Space } from 'antd';
 import { useForm } from 'antd/lib/form/Form';
 import { Store } from 'antd/lib/form/interface';
 import React, { useState } from 'react';
-import { ADD_TARGET, CONFIRM, METHOD, NOTE, TARGET } from '../../utils/constants';
+import {
+  ADD_TARGET,
+  AMOUNT,
+  CONFIRM,
+  METHOD,
+  NOTE,
+  SAMPLE_DESCRIPTION,
+  SAMPLE_SYMBOL,
+  SAMPLE_TYPE,
+  SAMPLING_LOCATION,
+  TARGET,
+  UNIT,
+} from '../../utils/constants';
 import { methodOptions, targetOptions, typeOptions } from '../helpers/methods';
 import { SYMBOLS } from '../helpers/symbols';
 
@@ -23,7 +35,7 @@ export function SampleForm(props: Props) {
   return (
     <Form form={form} labelCol={{ span: 4 }} onFinish={onFinish}>
       <Form.Item
-        label='Ký hiệu mẫu'
+        label={SAMPLE_SYMBOL}
         name='symbol'
         wrapperCol={{ span: 2 }}
         rules={[{ required: true, message: 'Symbol required' }]}
@@ -31,7 +43,7 @@ export function SampleForm(props: Props) {
         <Select autoFocus options={SYMBOLS}></Select>
       </Form.Item>
       <Form.Item
-        label='Vị trí lấy mẫu'
+        label={SAMPLING_LOCATION}
         name='location'
         rules={[{ required: true, message: 'location required' }]}
         wrapperCol={{ span: 8 }}
@@ -39,21 +51,21 @@ export function SampleForm(props: Props) {
         <Input />
       </Form.Item>
       <Form.Item
-        label='Mô tả mẫu'
+        label={SAMPLE_DESCRIPTION}
         name='description'
         rules={[{ required: true, message: 'description required' }]}
         wrapperCol={{ span: 8 }}
       >
         <Input />
       </Form.Item>
-      <Form.Item label='Số lượng ' name='amount' wrapperCol={{ span: 2 }}>
+      <Form.Item label={AMOUNT} name='amount' wrapperCol={{ span: 2 }}>
         <Input />
       </Form.Item>
-      <Form.Item label='Đơn vị' name='unit' wrapperCol={{ span: 2 }}>
+      <Form.Item label={UNIT} name='unit' wrapperCol={{ span: 2 }}>
         <Input />
       </Form.Item>
       <Form.Item
-        label='Loại mẫu theo nhóm chỉ tiêu'
+        label={SAMPLE_TYPE}
         name='type'
         wrapperCol={{ span: 8 }}
         rules={[{ required: true, message: 'type required' }]}

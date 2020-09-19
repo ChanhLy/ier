@@ -18,7 +18,6 @@ export const REPRESENTATIVES = 'Đại diện';
 export const PHONE_NUMBER = 'Số điện thoại';
 export const FAX = 'Fax';
 export const ADDRESS = 'Địa chỉ';
-export const SAMPLING_LOCATION = 'Vị trí lấy mẫu';
 export const SAMPLE_RECEIVED_DATE = 'Ngày nhận mẫu';
 export const RESULT_RETURN_DATE = 'Ngày trả kết quả';
 export const ID = 'Mã số';
@@ -36,3 +35,10 @@ export const METHOD = 'Phương pháp';
 export const CONFIRM = 'Xác nhận';
 
 export const ADD_TARGET = 'Thêm chỉ tiêu';
+
+export const SAMPLE_SYMBOL = 'Ký hiệu mẫu';
+export const SAMPLING_LOCATION = 'Vị trí lấy mẫu';
+export const SAMPLE_DESCRIPTION = 'Mô tả mẫu';
+export const AMOUNT = 'Số lượng';
+export const UNIT = 'Đơn vị';
+export const SAMPLE_TYPE = 'Loại mẫu theo nhóm chỉ tiêu';
