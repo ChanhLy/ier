@@ -2,7 +2,7 @@ import { Divider } from 'antd';
 import { Store } from 'antd/lib/form/interface';
 import React from 'react';
 import { useHistory } from 'react-router-dom';
-import { SampleForm } from '../../samples/components/SampleForm';
+import { SampleForm, SampleTable } from '../../samples';
 import { URLs } from '../../utils/urls';
 import { createContract } from '../contracts.service';
 import { ContractForm } from './ContractForm';
@@ -16,6 +16,7 @@ export function CreateContract() {
     <>
       <ContractForm onFinish={onFinish} labelCol={labelCol} wrapperCol={wrapperCol} />
       <Divider></Divider>
+      <SampleTable />
       <SampleForm onFinish={onSubmitSample} />
     </>
   );

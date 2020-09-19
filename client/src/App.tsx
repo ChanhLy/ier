@@ -3,7 +3,7 @@ import Axios from 'axios';
 import React, { useEffect, useState } from 'react';
 import { BrowserRouter, Link, Switch, useLocation } from 'react-router-dom';
 import './App.css';
-import { ContractsRoutes } from './contracts/contracts.routes';
+import { ContractsRoutes } from './contracts';
 import { SampleRoutes } from './samples';
 import { UserContext } from './users/UserContext';
 import { CONTRACT, FAILURE, SAMPLE } from './utils/constants';

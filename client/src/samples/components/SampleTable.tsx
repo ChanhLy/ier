@@ -1,6 +1,6 @@
 import { Table } from 'antd';
 import React from 'react';
 
-export function SampleForm() {
+export function SampleTable() {
   return <Table></Table>;
 }
