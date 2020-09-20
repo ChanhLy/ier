@@ -1,14 +1,12 @@
 import { Button, Modal } from 'antd';
 import { Store } from 'antd/lib/form/interface';
 import React, { useState } from 'react';
-import { useHistory } from 'react-router-dom';
 import { CreateSamplesTable, Sample, SampleForm } from '../../samples';
 import { ADD_NEW_SAMPLE, CREATE_NEW_CONTRACT } from '../../utils/constants';
 import { createContract } from '../contracts.service';
 import { ContractForm } from './ContractForm';
 
 export function CreateContract() {
-  const history = useHistory();
   const labelCol = { span: 4 };
   const wrapperCol = { span: 12 };
 
