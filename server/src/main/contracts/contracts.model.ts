@@ -7,7 +7,6 @@ const name = 'contracts';
 export type ContractDocument = mongoose.Document & {
   customer: Partial<CustomerDocument>;
 
-  samplingLocation: string;
   sampleReceivedDate: Date;
   resultReturnDate: Date;
 
@@ -25,7 +24,6 @@ export const contractSchema = new mongoose.Schema<ContractDocument>(
   {
     customer: customerDefinition,
 
-    samplingLocation: { type: String, required: true },
     sampleReceivedDate: { type: Date, required: true },
     resultReturnDate: { type: Date, required: true },
 
