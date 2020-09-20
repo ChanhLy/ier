@@ -1,11 +1,12 @@
 import { MinusCircleOutlined, PlusOutlined } from '@ant-design/icons';
 import { Button, Col, Form, Input, message, Row, Select, Space } from 'antd';
-import { FormInstance, useForm } from 'antd/lib/form/Form';
+import { useForm } from 'antd/lib/form/Form';
 import { Store } from 'antd/lib/form/interface';
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import {
   ADD_TARGET,
   AMOUNT,
+  CONFIRM,
   METHOD,
   NOTE,
   SAMPLE_DESCRIPTION,
@@ -20,11 +21,18 @@ import { SYMBOLS } from '../helpers/symbols';
 
 interface Props {
   onFinish: (values: Store) => Promise<void>;
-  form?: FormInstance;
+  visible?: boolean;
+  id?: string;
 }
 
 export function SampleForm(props: Props) {
-  const [form] = useForm(props.form);
+  const [form] = useForm();
+
+  useEffect(() => {
+    if (props.visible) {
+      form.resetFields();
+    }
+  }, [props.visible]);
 
   const [type, setType] = useState<string>();
   const [disabledAddTargetButton, setDisabledAddTargetButton] = useState(true);
@@ -32,7 +40,7 @@ export function SampleForm(props: Props) {
   const [target, setTarget] = useState<string>();
   const [disabledSelectMethods, setDisabledSelectMethods] = useState(true);
   return (
-    <Form form={form} onFinish={onFinish} labelCol={{ style: { width: 200 } }}>
+    <Form form={form} onFinish={onFinish} labelCol={{ style: { width: 200 } }} id={props.id}>
       <Form.Item label={SAMPLE_SYMBOL} name='symbol' rules={[{ required: true, message: 'Symbol required' }]}>
         <Select autoFocus options={symbols}></Select>
       </Form.Item>
@@ -116,6 +124,14 @@ export function SampleForm(props: Props) {
       <Form.Item label={NOTE} name='note'>
         <Input.TextArea />
       </Form.Item>
+
+      {!props.id ? (
+        <Form.Item style={{ marginLeft: 200 }}>
+          <Button htmlType='submit' type='primary'>
+            {CONFIRM}
+          </Button>
+        </Form.Item>
+      ) : undefined}
     </Form>
   );
 

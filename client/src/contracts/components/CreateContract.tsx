@@ -1,11 +1,9 @@
 import { Button, Modal } from 'antd';
-import { useForm } from 'antd/lib/form/Form';
 import { Store } from 'antd/lib/form/interface';
-import React, { useEffect, useState } from 'react';
+import React, { useState } from 'react';
 import { useHistory } from 'react-router-dom';
 import { CreateSamplesTable, Sample, SampleForm } from '../../samples';
 import { ADD_NEW_SAMPLE, CREATE_NEW_CONTRACT } from '../../utils/constants';
-import { URLs } from '../../utils/urls';
 import { createContract } from '../contracts.service';
 import { ContractForm } from './ContractForm';
 
@@ -18,14 +16,6 @@ export function CreateContract() {
 
   const [visible, setVisible] = useState(false);
 
-  const [sampleForm] = useForm();
-
-  useEffect(() => {
-    if (!visible) {
-      sampleForm.resetFields();
-    }
-  }, [visible, sampleForm]);
-
   return (
     <>
       <ContractForm onFinish={onFinish} labelCol={labelCol} wrapperCol={wrapperCol}>
@@ -37,16 +27,24 @@ export function CreateContract() {
         <CreateSamplesTable dataSource={samples} />
         <br />
       </ContractForm>
-      <Modal visible={visible} onCancel={closeSampleForm} title={ADD_NEW_SAMPLE} width={800}>
-        <SampleForm onFinish={onSubmitSample} form={sampleForm} />
+      <Modal
+        visible={visible}
+        onCancel={closeSampleForm}
+        title={ADD_NEW_SAMPLE}
+        width={800}
+        okButtonProps={{ htmlType: 'submit', form: 'sampleForm' }}
+      >
+        <SampleForm onFinish={onSubmitSample} visible={visible} id='sampleForm' />
       </Modal>
     </>
   );
 
   async function onFinish(values: Store) {
     values.samples = samples;
+    console.log(values);
+
     await createContract(values);
-    history.push(URLs.CONTRACTS);
+    // history.push(URLs.CONTRACTS);
   }
 
   async function onSubmitSample(values: Store) {
