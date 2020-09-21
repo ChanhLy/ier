@@ -11,7 +11,6 @@ const mockContract: Partial<ContractDocument> = {
     phone: 'phone number',
     address: '123 address',
   },
-  samplingLocation: 'vietnam',
   sampleReceivedDate: new Date(),
   resultReturnDate: new Date(),
 };
@@ -39,7 +38,7 @@ describe('#Contracts', () => {
     });
     describe('#find', () => {
       it('can find find previously created contract', async () => {
-        const contracts = await contractService.findContracts({});
+        const contracts = await contractService.findContractsLastThreeMonths({});
 
         ok(contracts);
         ok(Array.isArray(contracts) && contracts.length);

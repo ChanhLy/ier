@@ -4,7 +4,7 @@ import { customerDefinition, CustomerDocument } from '../customers/customers.mod
 
 const name = 'contracts';
 
-export type ContractDocument = mongoose.Document & {
+export type ContractBase = {
   customer: Partial<CustomerDocument>;
 
   sampleReceivedDate: Date;
@@ -19,6 +19,8 @@ export type ContractDocument = mongoose.Document & {
 
   updatedAt: Date;
 };
+
+export type ContractDocument = mongoose.Document & ContractBase;
 
 export const contractSchema = new mongoose.Schema<ContractDocument>(
   {

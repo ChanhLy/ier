@@ -19,8 +19,8 @@ export class ContractService {
     return Contract.findById(id);
   }
 
-  async findContracts(
-    condition: FilterQuery<ContractDocument>,
+  async findContractsLastThreeMonths(
+    condition?: FilterQuery<ContractDocument>,
     projection?: Partial<ContractDocument> | null,
     options?: QueryFindOptions
   ): Promise<ContractDocument[]> {
@@ -29,6 +29,16 @@ export class ContractService {
       projection,
       options
     ).sort({
+      updatedAt: -1,
+    });
+  }
+
+  async findContracts(
+    condition?: FilterQuery<ContractDocument>,
+    projection?: Partial<ContractDocument> | null,
+    options?: QueryFindOptions
+  ): Promise<ContractDocument[]> {
+    return Contract.find({ ...condition }, { ...projection }, { ...options, limit: 1000 }).sort({
       updatedAt: -1,
     });
   }

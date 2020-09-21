@@ -2,7 +2,7 @@ import dayjs from 'dayjs';
 import mongoose, { Model } from 'mongoose';
 const name = 'customer';
 
-type CustomerBase = {
+export type CustomerBase = {
   name: string;
   phone: string;
   address: string;
