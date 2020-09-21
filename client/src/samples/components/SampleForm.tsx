@@ -32,7 +32,7 @@ export function SampleForm(props: Props) {
     if (props.visible) {
       form.resetFields();
     }
-  }, [props.visible]);
+  }, [props.visible, form]);
 
   const [type, setType] = useState<string>();
   const [disabledAddTargetButton, setDisabledAddTargetButton] = useState(true);
