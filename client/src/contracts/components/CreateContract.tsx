@@ -2,7 +2,7 @@ import { Button, Modal } from 'antd';
 import { Store } from 'antd/lib/form/interface';
 import React, { useState } from 'react';
 import { CreateSamplesTable, Sample, SampleForm } from '../../samples';
-import { ADD_NEW_SAMPLE, CREATE_NEW_CONTRACT } from '../../utils/constants';
+import { ADD_NEW_SAMPLE } from '../../utils/constants';
 import { createContract } from '../contracts.service';
 import { ContractForm } from './ContractForm';
 
@@ -18,7 +18,7 @@ export function CreateContract() {
     <>
       <ContractForm onFinish={onFinish} labelCol={labelCol} wrapperCol={wrapperCol}>
         <Button type='primary' onClick={onClickAddSample}>
-          {CREATE_NEW_CONTRACT}
+          {ADD_NEW_SAMPLE}
         </Button>
         <br />
         <br />
