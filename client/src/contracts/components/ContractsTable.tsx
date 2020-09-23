@@ -14,7 +14,6 @@ import {
   REPRESENTATIVES,
   RESULT_RETURN_DATE,
   SAMPLE_RECEIVED_DATE,
-  SAMPLING_LOCATION,
   TAX_CODE,
 } from '../../utils/constants';
 import { URLs } from '../../utils/urls';
@@ -76,7 +75,6 @@ const contractColumns: ColumnsType<Contract> = [
   { title: TAX_CODE, dataIndex: ['customer', 'tax'] },
   { title: REPRESENTATIVES, dataIndex: ['customer', 'representative'] },
   { title: FAX, dataIndex: ['customer', 'fax'] },
-  { title: SAMPLING_LOCATION, dataIndex: 'samplingLocation' },
   { title: SAMPLE_RECEIVED_DATE, dataIndex: 'sampleReceivedDate', render: (value) => dayjs(value).format('MM/DD') },
   { title: RESULT_RETURN_DATE, dataIndex: 'resultReturnDate', render: (value) => dayjs(value).format('MM/DD') },
   { title: NOTE, dataIndex: 'note' },
