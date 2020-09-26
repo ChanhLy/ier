@@ -11,7 +11,7 @@ import {
   symbolColumn,
   typeColumn,
   unitColumn,
-} from './SampleTable';
+} from '../helpers/sampleColumns';
 
 interface Props {
   dataSource: Sample[];
