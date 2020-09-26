@@ -28,9 +28,12 @@ contractRouter.get('/lastThreeMonths', async (ctx) => {
 
 contractRouter.post('/', async (ctx) => {
   const samplesValue = ctx.request.body.samples as SampleBase[];
-  for (const sample of samplesValue) await sampleService.createSample(sample);
-
-  const contract = await contractService.createContract(ctx.request.body);
+  const samples = [];
+  for (const sample of samplesValue) {
+    samples.push(await sampleService.createSample(sample));
+  }
+  const contractValue = { ...ctx.request.body, samples: samples };
+  const contract = await contractService.createContract(contractValue);
   ctx.response.status = httpStatus.CREATED;
   ctx.response.body = contract;
 });

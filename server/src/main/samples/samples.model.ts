@@ -1,4 +1,4 @@
-import mongoose from 'mongoose';
+import mongoose, { SchemaDefinition } from 'mongoose';
 import { socket } from '../..';
 import { ExperimentBase } from '../experiments';
 
@@ -22,20 +22,18 @@ export type SampleBase = {
 
 export type SampleDocument = mongoose.Document & SampleBase;
 
-export const sampleSchema = new mongoose.Schema<SampleDocument>(
-  {
-    _id: { type: String, required: true },
-    symbol: { type: String, required: true },
-    location: { type: String, required: true },
-    description: { type: String, required: true },
-    amount: String,
-    unit: String,
-    type: { type: String, required: true },
-    readBy: [String],
-    note: String,
-  },
-  { timestamps: true }
-);
+export const sampleDefinition: SchemaDefinition = {
+  _id: { type: String, required: true },
+  symbol: { type: String, required: true },
+  location: { type: String, required: true },
+  description: { type: String, required: true },
+  amount: String,
+  unit: String,
+  type: { type: String, required: true },
+  readBy: [String],
+  note: String,
+};
+export const sampleSchema = new mongoose.Schema<SampleDocument>(sampleDefinition, { timestamps: true });
 
 sampleSchema.post('save', async function () {
   socket.emit('Refresh_Contracts');
