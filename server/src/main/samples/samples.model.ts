@@ -1,5 +1,4 @@
 import mongoose, { Schema, SchemaDefinition } from 'mongoose';
-import { socket } from '../..';
 import { ContractBase, ContractDocument } from '../contracts/contracts.model';
 import { ExperimentBase } from '../experiments';
 
@@ -35,12 +34,10 @@ export const sampleDefinition: SchemaDefinition = {
   readBy: [String],
   note: String,
   contract: { type: Schema.Types.ObjectId, ref: 'contracts' },
+  experiments: [{ type: Schema.Types.ObjectId, ref: 'experiments' }],
 };
-export const sampleSchema = new mongoose.Schema<SampleDocument>(sampleDefinition, { timestamps: true });
 
-sampleSchema.post('save', async function () {
-  socket.emit('Refresh_Contracts');
-});
+export const sampleSchema = new mongoose.Schema<SampleDocument>(sampleDefinition, { timestamps: true });
 
 export const Sample =
   (mongoose.connection.models[name] as mongoose.Model<SampleDocument>) ||

@@ -1,7 +1,10 @@
 import dayjs from 'dayjs';
 import { FilterQuery, QueryFindOptions } from 'mongoose';
+import { Experiment } from '../experiments/experiments.model';
+import { ExperimentService } from '../experiments/experiments.service';
 import { Sample, SampleBase, SampleDocument } from './samples.model';
 
+const experimentService = new ExperimentService();
 export class SampleService {
   async createSample(value: SampleBase): Promise<SampleDocument> {
     const no =
@@ -11,13 +14,13 @@ export class SampleService {
           .exec()
       ).length + 1;
     value._id = dayjs().format('YYYYMMDD') + value.symbol + no.toString();
+
     const sample = await Sample.create(value);
     return sample.save();
   }
 
   async findSampleById(id: string): Promise<SampleDocument | null> {
-    const sample = await Sample.findById(id).populate('contract').exec();
-    return sample;
+    return Sample.findById(id).populate({ path: 'experiments', model: Experiment });
   }
 
   async findSamples(
@@ -25,9 +28,11 @@ export class SampleService {
     projection?: Partial<SampleDocument> | null,
     options?: QueryFindOptions
   ): Promise<SampleDocument[]> {
-    return Sample.find({ ...condition }, { ...projection }, { ...options, limit: 1000 }).sort({
-      updatedAt: -1,
-    });
+    return Sample.find({ ...condition }, { ...projection }, { ...options, limit: 1000 })
+      .sort({
+        updatedAt: -1,
+      })
+      .populate({ path: 'experiments', model: Experiment });
   }
 
   async findSamplesLastThreeMonths(
