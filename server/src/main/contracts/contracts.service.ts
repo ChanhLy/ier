@@ -1,6 +1,7 @@
 import dayjs from 'dayjs';
 import { FilterQuery, QueryFindOptions } from 'mongoose';
 import { Customer } from '../customers/customers.model';
+import { Experiment } from '../experiments/experiments.model';
 import { Sample } from '../samples';
 import { Contract, ContractBase, ContractDocument } from './contracts.model';
 
@@ -11,7 +12,7 @@ export class ContractService {
 
   async findContractById(id: string): Promise<ContractDocument | null> {
     return Contract.findById(id)
-      .populate({ path: 'samples', model: Sample })
+      .populate({ path: 'samples', model: Sample, populate: { path: 'experiments', model: Experiment } })
       .populate({ path: 'customer', model: Customer });
   }
 
