@@ -36,6 +36,7 @@ export const CONFIRM = 'Xác nhận';
 
 export const ADD_TARGET = 'Thêm chỉ tiêu';
 
+export const SAMPLE_ID = 'Mã mẫu';
 export const SAMPLE_SYMBOL = 'Ký hiệu mẫu';
 export const SAMPLING_LOCATION = 'Vị trí lấy mẫu';
 export const SAMPLE_DESCRIPTION = 'Mô tả mẫu';

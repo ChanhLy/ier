@@ -3,6 +3,7 @@ import {
   AMOUNT,
   NOTE,
   SAMPLE_DESCRIPTION,
+  SAMPLE_ID,
   SAMPLE_SYMBOL,
   SAMPLE_TYPE,
   SAMPLING_LOCATION,
@@ -37,3 +38,4 @@ function toTargetAndMethods(value: Experiment[]) {
       .join(', ') + ` (${value.length} chỉ tiêu)`
   );
 }
+export const idColumn = { title: SAMPLE_ID, dataIndex: '_id' };

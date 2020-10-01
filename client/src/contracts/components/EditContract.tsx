@@ -1,9 +1,9 @@
-import { Button } from 'antd';
+import { Button, Modal } from 'antd';
 import { Store } from 'antd/lib/form/interface';
 import Axios from 'axios';
 import React, { useEffect, useState } from 'react';
 import { useHistory } from 'react-router-dom';
-import { Sample, SampleTable } from '../../samples';
+import { Sample, SampleForm, SampleTable } from '../../samples';
 import { ADD_NEW_SAMPLE } from '../../utils/constants';
 import { APIs, URLs } from '../../utils/urls';
 import { Contract } from '../contracts.model';
@@ -39,7 +39,7 @@ export function EditContract(props: Props) {
         <SampleTable dataSource={samples} />
         <br />
       </ContractForm>
-      {/* <Modal
+      <Modal
         visible={visible}
         onCancel={closeSampleForm}
         title={ADD_NEW_SAMPLE}
@@ -47,7 +47,7 @@ export function EditContract(props: Props) {
         okButtonProps={{ htmlType: 'submit', form: 'sampleForm' }}
       >
         <SampleForm onFinish={onSubmitSample} visible={visible} id='sampleForm' />
-      </Modal> */}
+      </Modal>
     </>
   );
 

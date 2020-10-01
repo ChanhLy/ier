@@ -6,6 +6,7 @@ import {
   amountColumn,
   descriptionColumn,
   experimentsColumn,
+  idColumn,
   locationColumn,
   noteColumn,
   symbolColumn,
@@ -22,6 +23,7 @@ export function SampleTable(props: Props) {
 }
 
 const columns: ColumnsType<Sample> = [
+  idColumn,
   symbolColumn,
   locationColumn,
   descriptionColumn,
