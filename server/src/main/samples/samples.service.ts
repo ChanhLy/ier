@@ -16,7 +16,7 @@ export class SampleService {
   }
 
   async findSampleById(id: string): Promise<SampleDocument | null> {
-    const sample = await Sample.findById(id).exec();
+    const sample = await Sample.findById(id).populate('contract').exec();
     return sample;
   }
 

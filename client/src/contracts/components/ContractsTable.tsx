@@ -67,7 +67,7 @@ export function ContractsTable() {
 const contractColumns: ColumnsType<Contract> = [
   {
     title: CUSTOMER_ID,
-    dataIndex: 'customerId',
+    dataIndex: ['customer', '_id'],
     render: (value, record, index: number) => <Link to={URLs.CONTRACTS + '/' + record._id}>{value}</Link>,
   },
   { title: PHONE_NUMBER, dataIndex: ['customer', 'phone'] },

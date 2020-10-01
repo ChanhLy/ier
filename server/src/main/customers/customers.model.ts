@@ -3,6 +3,7 @@ import mongoose, { Model } from 'mongoose';
 const name = 'customer';
 
 export type CustomerBase = {
+  _id: string;
   name: string;
   phone: string;
   address: string;
@@ -17,6 +18,7 @@ export type CustomerBase = {
 export type CustomerDocument = mongoose.Document & CustomerBase;
 
 export const customerDefinition: mongoose.SchemaDefinition = {
+  _id: { type: String, required: true },
   name: { type: String, required: true },
   phone: { type: String, required: true },
   address: { type: String, required: true },

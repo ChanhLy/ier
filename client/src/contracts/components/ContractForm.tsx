@@ -1,4 +1,4 @@
-import { Button, Checkbox, Divider, Form, Input, Space } from 'antd';
+import { Button, Divider, Form, Input, Space } from 'antd';
 import { FormInstance, useForm } from 'antd/lib/form/Form';
 import { Store } from 'antd/lib/form/interface';
 import Axios from 'axios';
@@ -20,7 +20,6 @@ import {
   RESULT_RETURN_DATE,
   SAMPLE_RECEIVED_DATE,
   TAX_CODE,
-  UPDATE_CUSTOMER_INFORMATION,
 } from '../../utils/constants';
 import { Contract } from '../contracts.model';
 
@@ -140,11 +139,11 @@ export function ContractForm(props: Props) {
           { pattern: /\d{8,12}/, message: '8 ~ 12 chữ số' },
         ]}
         help={help}
-        extra={
-          <Checkbox checked={updateCustomer} onChange={onChange}>
-            {UPDATE_CUSTOMER_INFORMATION}
-          </Checkbox>
-        }
+        // extra={
+        //   <Checkbox checked={updateCustomer} onChange={onChange}>
+        //     {UPDATE_CUSTOMER_INFORMATION}
+        //   </Checkbox>
+        // }
       >
         <Input.Search enterButton={true} onSearch={onSearch} loading={loading} />
       </Item>

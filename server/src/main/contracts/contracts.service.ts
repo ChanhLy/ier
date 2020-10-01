@@ -1,22 +1,18 @@
 import dayjs from 'dayjs';
 import { FilterQuery, QueryFindOptions } from 'mongoose';
-import { Contract, ContractDocument } from './contracts.model';
+import { Customer } from '../customers/customers.model';
+import { Sample } from '../samples';
+import { Contract, ContractBase, ContractDocument } from './contracts.model';
 
 export class ContractService {
-  async createContract(data: Partial<ContractDocument>): Promise<ContractDocument> {
-    const contract = new Contract(data);
-    const no =
-      (
-        await Contract.find({ createdAt: { $gt: dayjs().startOf('d').toDate() } })
-          .select('_id')
-          .exec()
-      ).length + 1;
-    contract.customerId = dayjs().format('YYYYMMDD') + no.toString();
-    return contract.save();
+  async createContract(data: ContractBase): Promise<ContractDocument> {
+    return Contract.create(data);
   }
 
   async findContractById(id: string): Promise<ContractDocument | null> {
-    return Contract.findById(id);
+    return Contract.findById(id)
+      .populate({ path: 'samples', model: Sample })
+      .populate({ path: 'customer', model: Customer });
   }
 
   async findContractsLastThreeMonths(
@@ -38,9 +34,11 @@ export class ContractService {
     projection?: Partial<ContractDocument> | null,
     options?: QueryFindOptions
   ): Promise<ContractDocument[]> {
-    return Contract.find({ ...condition }, { ...projection }, { ...options, limit: 1000 }).sort({
-      updatedAt: -1,
-    });
+    return Contract.find({ ...condition }, { ...projection }, { ...options, limit: 1000 })
+      .populate({ path: 'customer', model: Customer })
+      .sort({
+        updatedAt: -1,
+      });
   }
 
   async addReadByUser(contract: ContractDocument, userId: string): Promise<ContractDocument> {

@@ -1,7 +1,7 @@
 import mongoose from 'mongoose';
 import { socket } from '../..';
-import { customerDefinition, CustomerDocument } from '../customers/customers.model';
-import { sampleDefinition, SampleDocument } from '../samples/samples.model';
+import { CustomerDocument } from '../customers/customers.model';
+import { SampleDocument } from '../samples/samples.model';
 
 const name = 'contracts';
 
@@ -12,7 +12,6 @@ export type ContractBase = {
   sampleReceivedDate: Date;
   resultReturnDate: Date;
 
-  customerId: string;
   date: string;
 
   note?: string;
@@ -26,13 +25,11 @@ export type ContractDocument = mongoose.Document & ContractBase;
 
 export const contractSchema = new mongoose.Schema<ContractDocument>(
   {
-    customer: customerDefinition,
-    samples: [sampleDefinition],
+    customer: { type: String, ref: 'customers' },
+    samples: [{ type: String, ref: 'samples' }],
 
     sampleReceivedDate: { type: Date, required: true },
     resultReturnDate: { type: Date, required: true },
-
-    customerId: { type: String, required: true },
 
     readBy: [String],
     note: String,

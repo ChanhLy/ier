@@ -1,11 +1,13 @@
 import Router from '@koa/router';
 import httpStatus from 'http-status';
+import { CustomerService } from '../customers/customers.service';
 import { SampleService } from '../samples';
 import { SampleBase } from '../samples/samples.model';
 import { ContractService } from './contracts.service';
 
 const contractService = new ContractService();
 const sampleService = new SampleService();
+const customerService = new CustomerService();
 
 const contractRouter = new Router({ prefix: '/contracts' });
 
@@ -27,15 +29,21 @@ contractRouter.get('/lastThreeMonths', async (ctx) => {
 });
 
 contractRouter.post('/', async (ctx) => {
+  const contractValue = ctx.request.body;
   const samplesValue = ctx.request.body.samples as SampleBase[];
+  const customerValue = ctx.request.body.customer;
+  delete contractValue.samples;
+  delete contractValue.customer;
+  const contract = await contractService.createContract(contractValue);
   const samples = [];
   for (const sample of samplesValue) {
-    samples.push(await sampleService.createSample(sample));
+    sample.contract = contract._id;
+    samples.push((await sampleService.createSample(sample))._id);
   }
-  const contractValue = { ...ctx.request.body, samples: samples };
-  const contract = await contractService.createContract(contractValue);
+  const customer = (await customerService.createCustomer(customerValue))._id;
+  const body = await contractService.updateContractById(contract._id, { samples, customer });
   ctx.response.status = httpStatus.CREATED;
-  ctx.response.body = contract;
+  ctx.response.body = body;
 });
 
 contractRouter.put('/:id', async (ctx) => {

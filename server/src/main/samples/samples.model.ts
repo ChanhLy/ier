@@ -1,5 +1,6 @@
-import mongoose, { SchemaDefinition } from 'mongoose';
+import mongoose, { Schema, SchemaDefinition } from 'mongoose';
 import { socket } from '../..';
+import { ContractBase, ContractDocument } from '../contracts/contracts.model';
 import { ExperimentBase } from '../experiments';
 
 const name = 'samples';
@@ -18,6 +19,7 @@ export type SampleBase = {
   readBy: string[];
 
   updatedAt: Date;
+  contract: string | ContractBase | ContractDocument;
 };
 
 export type SampleDocument = mongoose.Document & SampleBase;
@@ -32,6 +34,7 @@ export const sampleDefinition: SchemaDefinition = {
   type: { type: String, required: true },
   readBy: [String],
   note: String,
+  contract: { type: Schema.Types.ObjectId, ref: 'contracts' },
 };
 export const sampleSchema = new mongoose.Schema<SampleDocument>(sampleDefinition, { timestamps: true });
 
