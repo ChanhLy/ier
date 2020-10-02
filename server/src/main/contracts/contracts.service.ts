@@ -11,9 +11,19 @@ export class ContractService {
   }
 
   async findContractById(id: string): Promise<ContractDocument | null> {
-    return Contract.findById(id)
-      .populate({ path: 'samples', model: Sample, populate: { path: 'experiments', model: Experiment } })
-      .populate({ path: 'customer', model: Customer });
+    const contract = (await Contract.findById(id).populate({ path: 'customer', model: Customer }))?.toJSON();
+    if (contract) {
+      const samples = (await Sample.find({ contract: contract._id })).map((sample) => sample.toJSON());
+      contract.samples = await Promise.all(
+        samples.map(async (sample) => {
+          const experiments = (await Experiment.find({ sample: sample._id })).map((experiments) =>
+            experiments.toJSON()
+          );
+          return { ...sample, experiments };
+        })
+      );
+    }
+    return contract;
   }
 
   async findContractsLastThreeMonths(

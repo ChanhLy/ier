@@ -31,26 +31,27 @@ contractRouter.get('/lastThreeMonths', async (ctx) => {
 });
 
 contractRouter.post('/', async (ctx) => {
-  const contractValue = ctx.request.body;
-  const samplesValue = ctx.request.body.samples as SampleBase[];
-  const customerValue = ctx.request.body.customer;
+  const contract = ctx.request.body;
+  const samples = ctx.request.body.samples as SampleBase[];
+  const customer = ctx.request.body.customer;
 
-  delete contractValue.samples;
-  delete contractValue.customer;
-  const contract = await contractService.createContract(contractValue);
-  const samples = [];
-  for (const sample of samplesValue) {
-    const experiments = (await experimentService.createExperiments(sample.experiments)).map(
-      (experiment) => experiment._id
-    );
-    sample.contract = contract._id;
-    sample.experiments = experiments;
-    samples.push((await sampleService.createSample(sample))._id);
+  // Create customer
+  const customerId = customer._id || (await customerService.createCustomer(customer))._id;
+
+  // Create contract
+  const contractId = (await contractService.createContract({ ...contract, customer: customerId }))._id;
+
+  for (const sample of samples) {
+    // Create samples
+    sample.contract = contractId;
+    const sampleId = (await sampleService.createSample(sample))._id;
+
+    // Create experiments
+    const experiments = sample.experiments.map((experiment) => ({ ...experiment, sample: sampleId }));
+    await experimentService.createExperiments(experiments);
   }
-  const customer = (await customerService.createCustomer(customerValue))._id;
-  const body = await contractService.updateContractById(contract._id, { samples, customer });
+
   ctx.response.status = httpStatus.CREATED;
-  ctx.response.body = body;
 });
 
 contractRouter.put('/:id', async (ctx) => {

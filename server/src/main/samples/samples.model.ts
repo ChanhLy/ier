@@ -34,7 +34,6 @@ export const sampleDefinition: SchemaDefinition = {
   readBy: [String],
   note: String,
   contract: { type: Schema.Types.ObjectId, ref: 'contracts' },
-  experiments: [{ type: Schema.Types.ObjectId, ref: 'experiments' }],
 };
 
 export const sampleSchema = new mongoose.Schema<SampleDocument>(sampleDefinition, { timestamps: true });

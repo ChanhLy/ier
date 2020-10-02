@@ -1,10 +1,8 @@
 import dayjs from 'dayjs';
 import { FilterQuery, QueryFindOptions } from 'mongoose';
 import { Experiment } from '../experiments/experiments.model';
-import { ExperimentService } from '../experiments/experiments.service';
 import { Sample, SampleBase, SampleDocument } from './samples.model';
 
-const experimentService = new ExperimentService();
 export class SampleService {
   async createSample(value: SampleBase): Promise<SampleDocument> {
     const no =
