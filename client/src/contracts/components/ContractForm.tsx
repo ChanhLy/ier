@@ -37,7 +37,7 @@ interface Props {
 export function ContractForm(props: Props) {
   const [form] = useForm(props.form);
   const [isSubmitting, setIsSubmitting] = useState(false);
-  const [updateCustomer, setUpdateCustomer] = useState(false);
+  // const [updateCustomer, setUpdateCustomer] = useState(false);
 
   useEffect(() => {
     if (props.value) {
@@ -87,10 +87,10 @@ export function ContractForm(props: Props) {
 
   async function onFinish(value: Store) {
     setIsSubmitting(true);
-    if (updateCustomer) {
-      const customer = form.getFieldsValue().customer as Customer;
-      await Axios.put('/api/customers', customer, { params: { phone: customer.phone } });
-    }
+    // if (updateCustomer) {
+    //   const customer = form.getFieldsValue().customer as Customer;
+    //   await Axios.put('/api/customers', customer, { params: { phone: customer.phone } });
+    // }
     await props.onFinish(value);
     setIsSubmitting(false);
   }
@@ -149,9 +149,9 @@ export function ContractForm(props: Props) {
       </Item>
     );
 
-    function onChange() {
-      setUpdateCustomer(!updateCustomer);
-    }
+    // function onChange() {
+    //   setUpdateCustomer(!updateCustomer);
+    // }
 
     async function onSearch(value: string) {
       setLoading(true);
