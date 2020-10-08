@@ -13,6 +13,7 @@ export function CreateContract() {
   const [samples, setSamples] = useState<Sample[]>([]);
 
   const [visible, setVisible] = useState(false);
+  const actions = { onEdit, onDelete };
 
   return (
     <>
@@ -22,7 +23,7 @@ export function CreateContract() {
         </Button>
         <br />
         <br />
-        <CreateSamplesTable dataSource={samples} />
+        <CreateSamplesTable dataSource={samples} actions={actions} />
         <br />
       </ContractForm>
       <Modal
@@ -36,6 +37,14 @@ export function CreateContract() {
       </Modal>
     </>
   );
+
+  function onEdit(i: string | number) {}
+  function onDelete(i: string | number) {
+    Modal.confirm({
+      title: 'Xóa mẫu thứ ' + (Number(i) + 1),
+      onOk: () => setSamples(samples.filter((sample, index) => index !== i)),
+    });
+  }
 
   async function onFinish(values: Store) {
     values.samples = samples;

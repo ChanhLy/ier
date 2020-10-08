@@ -3,6 +3,8 @@ import { ColumnsType } from 'antd/lib/table';
 import React from 'react';
 import { Sample } from '..';
 import {
+  actionColumn,
+  Actions,
   amountColumn,
   descriptionColumn,
   experimentsColumn,
@@ -16,20 +18,22 @@ import {
 
 interface Props {
   dataSource: Sample[];
+  actions: Actions;
 }
 
 export function SampleTable(props: Props) {
+  const columns: ColumnsType<Sample> = [
+    idColumn,
+    symbolColumn,
+    locationColumn,
+    descriptionColumn,
+    amountColumn,
+    unitColumn,
+    typeColumn,
+    experimentsColumn,
+    noteColumn,
+    actionColumn(props.actions),
+  ];
+
   return <Table<Sample> columns={columns} bordered dataSource={props.dataSource}></Table>;
 }
-
-const columns: ColumnsType<Sample> = [
-  idColumn,
-  symbolColumn,
-  locationColumn,
-  descriptionColumn,
-  amountColumn,
-  unitColumn,
-  typeColumn,
-  experimentsColumn,
-  noteColumn,
-];

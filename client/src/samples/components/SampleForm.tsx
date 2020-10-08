@@ -3,6 +3,7 @@ import { Button, Col, Form, Input, message, Row, Select, Space } from 'antd';
 import { useForm } from 'antd/lib/form/Form';
 import { Store } from 'antd/lib/form/interface';
 import React, { useEffect, useState } from 'react';
+import { Sample } from '..';
 import {
   ADD_TARGET,
   AMOUNT,
@@ -23,6 +24,7 @@ interface Props {
   onFinish: (values: Store) => Promise<void>;
   visible?: boolean;
   id?: string;
+  initialValues?: Sample;
 }
 
 export function SampleForm(props: Props) {
@@ -40,7 +42,13 @@ export function SampleForm(props: Props) {
   const [target, setTarget] = useState<string>();
   const [disabledSelectMethods, setDisabledSelectMethods] = useState(true);
   return (
-    <Form form={form} onFinish={onFinish} labelCol={{ style: { width: 200 } }} id={props.id}>
+    <Form
+      form={form}
+      onFinish={onFinish}
+      labelCol={{ style: { width: 200 } }}
+      id={props.id}
+      initialValues={props.initialValues}
+    >
       <Form.Item label={SAMPLE_SYMBOL} name='symbol' rules={[{ required: true, message: 'Symbol required' }]}>
         <Select autoFocus options={symbols}></Select>
       </Form.Item>

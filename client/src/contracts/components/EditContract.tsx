@@ -13,12 +13,12 @@ interface Props {
   contract: Contract;
 }
 
+const labelCol = { span: 4 };
+const wrapperCol = { span: 12 };
+
 export function EditContract(props: Props) {
   const history = useHistory();
-  const contract = props.contract;
-
-  const labelCol = { span: 4 };
-  const wrapperCol = { span: 12 };
+  const { contract } = props;
 
   const [samples, setSamples] = useState<Sample[]>([]);
 
@@ -28,6 +28,7 @@ export function EditContract(props: Props) {
 
   const [visible, setVisible] = useState(false);
 
+  const actions = { onEdit, onDelete };
   return (
     <>
       <ContractForm value={contract} onFinish={onFinish} labelCol={labelCol} wrapperCol={wrapperCol}>
@@ -36,7 +37,7 @@ export function EditContract(props: Props) {
         </Button>
         <br />
         <br />
-        <SampleTable dataSource={samples} />
+        <SampleTable dataSource={samples} actions={actions} />
         <br />
       </ContractForm>
       <Modal
@@ -50,6 +51,9 @@ export function EditContract(props: Props) {
       </Modal>
     </>
   );
+
+  function onEdit(i: string | number) {}
+  function onDelete(i: string | number) {}
 
   async function onFinish(value: Store) {
     await Axios.put(APIs.CONTRACTS + '/' + contract._id, value);
