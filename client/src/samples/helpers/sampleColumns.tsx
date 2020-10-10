@@ -1,5 +1,5 @@
 import { DeleteOutlined, EditOutlined } from '@ant-design/icons';
-import { Button } from 'antd';
+import { Button, Space } from 'antd';
 import { ColumnType } from 'antd/lib/table';
 import React from 'react';
 import { Experiment, Sample } from '..';
@@ -48,10 +48,10 @@ export const idColumn: ColumnType<Sample> = { title: SAMPLE_ID, dataIndex: '_id'
 export const actionColumn: (actions: Actions) => ColumnType<Sample> = (actions) => ({
   dataIndex: '_id',
   render: (value, record, index) => (
-    <>
+    <Space>
       <Button icon={<EditOutlined />} onClick={() => actions.onEdit(value || index)} />
       <Button icon={<DeleteOutlined />} onClick={() => actions.onDelete(value || index)} danger />
-    </>
+    </Space>
   ),
 });
 
