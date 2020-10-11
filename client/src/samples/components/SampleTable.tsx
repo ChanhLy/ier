@@ -19,6 +19,7 @@ import {
 interface Props {
   dataSource: Sample[];
   actions: Actions;
+  loading?: boolean;
 }
 
 export function SampleTable(props: Props) {
@@ -35,5 +36,5 @@ export function SampleTable(props: Props) {
     actionColumn(props.actions),
   ];
 
-  return <Table<Sample> columns={columns} bordered dataSource={props.dataSource}></Table>;
+  return <Table<Sample> columns={columns} bordered dataSource={props.dataSource} loading={props.loading}></Table>;
 }

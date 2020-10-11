@@ -1,10 +1,10 @@
-import { Button, Modal } from 'antd';
+import { Button, Modal, notification } from 'antd';
 import { Store } from 'antd/lib/form/interface';
 import Axios from 'axios';
 import React, { useEffect, useState } from 'react';
 import { useHistory } from 'react-router-dom';
 import { Sample, SampleForm, SampleTable } from '../../samples';
-import { ADD_NEW_SAMPLE, DELETE_SAMPLE, SUCCESSFULLY } from '../../utils/constants';
+import { ADD_NEW_SAMPLE, DELETE_SAMPLE, FAILURE, SUCCESS, SUCCESSFULLY } from '../../utils/constants';
 import { APIs, URLs } from '../../utils/urls';
 import { Contract } from '../contracts.model';
 import { ContractForm } from './ContractForm';
@@ -29,6 +29,20 @@ export function EditContract(props: Props) {
   const [visible, setVisible] = useState(false);
   const [loadingDeleteSample, setLoadingDeleteSample] = useState(false);
 
+  const [loadingSamples, setLoadingSamples] = useState(false);
+
+  useEffect(() => {
+    if (loadingSamples) {
+      Axios.get('/api/samples/', { params: { contract: contract._id } })
+        .then((response) => {
+          if (response.data) {
+            setSamples(response.data);
+          }
+        })
+        .finally(() => setLoadingSamples(false));
+    }
+  }, [loadingSamples]);
+
   const actions = { onEdit, onDelete };
   return (
     <>
@@ -38,7 +52,7 @@ export function EditContract(props: Props) {
         </Button>
         <br />
         <br />
-        <SampleTable dataSource={samples} actions={actions} />
+        <SampleTable dataSource={samples} actions={actions} loading={loadingSamples} />
         <br />
       </ContractForm>
       <Modal
@@ -64,9 +78,13 @@ export function EditContract(props: Props) {
       },
       onOk: async () => {
         setLoadingDeleteSample(true);
-        const response = await Axios.delete(`/api/samples/${id}`, { cancelToken: source.token });
-        if (response) Modal.success({ content: `${DELETE_SAMPLE} ${id} ${SUCCESSFULLY}` });
-        setLoadingDeleteSample(false);
+        try {
+          await Axios.delete(`/api/samples/${id}`, { cancelToken: source.token });
+          notification.success({ message: `${DELETE_SAMPLE} ${id} ${SUCCESSFULLY}` });
+        } finally {
+          setLoadingDeleteSample(false);
+          setLoadingSamples(true);
+        }
       },
       okButtonProps: { loading: loadingDeleteSample },
     });
@@ -77,8 +95,14 @@ export function EditContract(props: Props) {
     history.push(URLs.CONTRACTS);
   }
   async function onSubmitSample(values: Store) {
-    setSamples([...samples, values as Sample]);
+    try {
+      await Axios.post('/api/samples', { ...values, contract: contract._id });
+      notification.success({ message: SUCCESS });
+    } catch (error) {
+      notification.error({ message: FAILURE });
+    }
     setVisible(false);
+    setLoadingSamples(true);
   }
 
   function onClickAddSample(e: React.MouseEvent) {
