@@ -20,8 +20,8 @@ export class SampleService {
     return sample.save();
   }
 
-  async findSampleById(id: string): Promise<SampleDocument | null> {
-    return Sample.findOne({ id, deletedAt: undefined }).populate({ path: 'experiments', model: Experiment });
+  async findSampleById(_id: string): Promise<SampleDocument | null> {
+    return Sample.findOne({ _id, deletedAt: undefined }).populate({ path: 'experiments', model: Experiment });
   }
 
   async findSamples(

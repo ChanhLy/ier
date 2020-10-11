@@ -10,9 +10,9 @@ export class ContractService {
     return Contract.create(data);
   }
 
-  async findContractById(id: string): Promise<ContractDocument | null> {
+  async findContractById(_id: string): Promise<ContractDocument | null> {
     const contract = (
-      await Contract.findOne({ id, deletedAt: undefined }).populate({ path: 'customer', model: Customer }).exec()
+      await Contract.findOne({ _id, deletedAt: undefined }).populate({ path: 'customer', model: Customer }).exec()
     )?.toJSON();
     if (contract) {
       const samples = (await Sample.find({ contract: contract._id, deletedAt: undefined }).exec()).map((sample) =>
