@@ -4,8 +4,8 @@ import { Experiment } from '../experiments/experiments.model';
 import { Sample, SampleBase, SampleDocument } from './samples.model';
 
 export class SampleService {
-  async deleteSampleById(id: string): Promise<number> {
-    return Sample.findById(id).update({ deletedAt: new Date() }).exec();
+  async deleteSampleById(_id: string): Promise<number> {
+    return Sample.updateOne({ _id }, { deletedAt: new Date() }).exec();
   }
   async createSample(value: SampleBase): Promise<SampleDocument> {
     const no =
