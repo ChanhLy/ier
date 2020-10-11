@@ -6,6 +6,7 @@ export type ExperimentBase = {
   target: string;
   methods: string[];
   sample: Partial<SampleDocument>;
+  deletedAt: Date;
 };
 
 export type ExperimentDocument = mongoose.Document & ExperimentBase;
@@ -14,6 +15,7 @@ export const experimentDefinition: SchemaDefinition = {
   target: String,
   methods: [String],
   sample: { type: String, ref: 'sample' },
+  deletedAt: Date,
 };
 
 export const experimentSchema = new mongoose.Schema<ExperimentDocument>(experimentDefinition, { timestamps: true });

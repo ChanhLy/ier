@@ -4,7 +4,7 @@ import Axios from 'axios';
 import React, { useEffect, useState } from 'react';
 import { useHistory } from 'react-router-dom';
 import { Sample, SampleForm, SampleTable } from '../../samples';
-import { ADD_NEW_SAMPLE } from '../../utils/constants';
+import { ADD_NEW_SAMPLE, DELETE_SAMPLE, SUCCESSFULLY } from '../../utils/constants';
 import { APIs, URLs } from '../../utils/urls';
 import { Contract } from '../contracts.model';
 import { ContractForm } from './ContractForm';
@@ -27,6 +27,7 @@ export function EditContract(props: Props) {
   }, [contract.samples]);
 
   const [visible, setVisible] = useState(false);
+  const [loadingDeleteSample, setLoadingDeleteSample] = useState(false);
 
   const actions = { onEdit, onDelete };
   return (
@@ -53,7 +54,23 @@ export function EditContract(props: Props) {
   );
 
   function onEdit(i: string | number) {}
-  function onDelete(i: string | number) {}
+  function onDelete(id: string | number) {
+    const source = Axios.CancelToken.source();
+    Modal.confirm({
+      title: DELETE_SAMPLE,
+      content: `${DELETE_SAMPLE} ${id}`,
+      onCancel: () => {
+        return source.cancel();
+      },
+      onOk: async () => {
+        setLoadingDeleteSample(true);
+        const response = await Axios.delete(`/api/samples/${id}`, { cancelToken: source.token });
+        if (response) Modal.success({ content: `${DELETE_SAMPLE} ${id} ${SUCCESSFULLY}` });
+        setLoadingDeleteSample(false);
+      },
+      okButtonProps: { loading: loadingDeleteSample },
+    });
+  }
 
   async function onFinish(value: Store) {
     await Axios.put(APIs.CONTRACTS + '/' + contract._id, value);

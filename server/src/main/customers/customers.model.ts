@@ -13,6 +13,7 @@ export type CustomerBase = {
 
   createdAt: Date;
   updatedAt: Date;
+  deletedAt: Date;
 };
 
 export type CustomerDocument = mongoose.Document & CustomerBase;
@@ -25,6 +26,7 @@ export const customerDefinition: mongoose.SchemaDefinition = {
   tax: String,
   representative: String,
   fax: String,
+  deletedAt: Date,
 };
 const customerSchema = new mongoose.Schema(customerDefinition, { timestamps: true });
 

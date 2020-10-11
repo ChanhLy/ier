@@ -47,3 +47,7 @@ export const SAMPLE_TYPE_TARGET = 'Loại mẫu theo nhóm chỉ tiêu';
 
 export const TARGET_AND_METHOD = 'Chỉ tiêu và phương pháp';
 export const ADD_NEW_SAMPLE = 'Thêm mẫu mới';
+
+export const DELETE_SAMPLE = 'Xóa mẫu';
+export const SUCCESSFULLY = 'thành công';
+export const FAILED = 'thất bại';

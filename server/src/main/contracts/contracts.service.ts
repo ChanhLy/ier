@@ -11,14 +11,18 @@ export class ContractService {
   }
 
   async findContractById(id: string): Promise<ContractDocument | null> {
-    const contract = (await Contract.findById(id).populate({ path: 'customer', model: Customer }))?.toJSON();
+    const contract = (
+      await Contract.findOne({ id, deletedAt: undefined }).populate({ path: 'customer', model: Customer }).exec()
+    )?.toJSON();
     if (contract) {
-      const samples = (await Sample.find({ contract: contract._id })).map((sample) => sample.toJSON());
+      const samples = (await Sample.find({ contract: contract._id, deletedAt: undefined }).exec()).map((sample) =>
+        sample.toJSON()
+      );
       contract.samples = await Promise.all(
         samples.map(async (sample) => {
-          const experiments = (await Experiment.find({ sample: sample._id })).map((experiments) =>
-            experiments.toJSON()
-          );
+          const experiments = (
+            await Experiment.find({ sample: sample._id, deletedAt: undefined }).exec()
+          ).map((experiment) => experiment.toJSON());
           return { ...sample, experiments };
         })
       );
@@ -32,7 +36,7 @@ export class ContractService {
     options?: QueryFindOptions
   ): Promise<ContractDocument[]> {
     return Contract.find(
-      { ...condition, createdAt: { $gt: dayjs().subtract(3, 'month').startOf('month') } },
+      { ...condition, createdAt: { $gt: dayjs().subtract(3, 'month').startOf('month') }, deletedAt: undefined },
       projection,
       options
     ).sort({
@@ -45,7 +49,7 @@ export class ContractService {
     projection?: Partial<ContractDocument> | null,
     options?: QueryFindOptions
   ): Promise<ContractDocument[]> {
-    return Contract.find({ ...condition }, { ...projection }, { ...options, limit: 1000 })
+    return Contract.find({ ...condition, deletedAt: undefined }, { ...projection }, { ...options, limit: 1000 })
       .populate({ path: 'customer', model: Customer })
       .sort({
         updatedAt: -1,

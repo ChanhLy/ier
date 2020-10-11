@@ -4,6 +4,9 @@ import { Experiment } from '../experiments/experiments.model';
 import { Sample, SampleBase, SampleDocument } from './samples.model';
 
 export class SampleService {
+  async deleteSampleById(id: string): Promise<number> {
+    return Sample.findById(id).update({ deletedAt: new Date() }).exec();
+  }
   async createSample(value: SampleBase): Promise<SampleDocument> {
     const no =
       (
@@ -18,7 +21,7 @@ export class SampleService {
   }
 
   async findSampleById(id: string): Promise<SampleDocument | null> {
-    return Sample.findById(id).populate({ path: 'experiments', model: Experiment });
+    return Sample.findOne({ id, deletedAt: undefined }).populate({ path: 'experiments', model: Experiment });
   }
 
   async findSamples(
@@ -26,7 +29,7 @@ export class SampleService {
     projection?: Partial<SampleDocument> | null,
     options?: QueryFindOptions
   ): Promise<SampleDocument[]> {
-    return Sample.find({ ...condition }, { ...projection }, { ...options, limit: 1000 })
+    return Sample.find({ ...condition, deletedAt: undefined }, { ...projection }, { ...options, limit: 1000 })
       .sort({
         updatedAt: -1,
       })
@@ -39,7 +42,7 @@ export class SampleService {
     options?: QueryFindOptions
   ): Promise<SampleDocument[]> {
     return Sample.find(
-      { ...condition, createdAt: { $gt: dayjs().subtract(3, 'month').startOf('month') } },
+      { ...condition, createdAt: { $gt: dayjs().subtract(3, 'month').startOf('month') }, deletedAt: undefined },
       { ...projection },
       { ...options }
     ).sort({

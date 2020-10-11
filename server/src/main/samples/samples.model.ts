@@ -18,6 +18,7 @@ export type SampleBase = {
   readBy: string[];
 
   updatedAt: Date;
+  deletedAt: Date;
   contract: string | ContractBase | ContractDocument;
 };
 
@@ -34,6 +35,7 @@ export const sampleDefinition: SchemaDefinition = {
   readBy: [String],
   note: String,
   contract: { type: Schema.Types.ObjectId, ref: 'contracts' },
+  deletedAt: Date,
 };
 
 export const sampleSchema = new mongoose.Schema<SampleDocument>(sampleDefinition, { timestamps: true });

@@ -19,6 +19,7 @@ export type ContractBase = {
   readBy: string[];
 
   updatedAt: Date;
+  deletedAt: Date;
 };
 
 export type ContractDocument = mongoose.Document & ContractBase;
@@ -32,6 +33,7 @@ export const contractSchema = new mongoose.Schema<ContractDocument>(
 
     readBy: [String],
     note: String,
+    deletedAt: Date,
   },
   { timestamps: true }
 );
