@@ -2,6 +2,7 @@ export { CreateSamplesTable } from './components/CreateSamplesTable';
 export { SampleForm } from './components/SampleForm';
 export { SampleRoutes } from './components/SampleRoutes';
 export { SampleTable } from './components/SampleTable';
+export { ListSamplesPage } from './pages/ListSamplesPage';
 
 export interface Experiment {
   methods?: string[];

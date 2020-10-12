@@ -32,16 +32,17 @@ export function EditContract(props: Props) {
   const [loadingSamples, setLoadingSamples] = useState(false);
 
   useEffect(() => {
-    if (loadingSamples) {
-      Axios.get('/api/samples/', { params: { contract: contract._id } })
-        .then((response) => {
-          if (response.data) {
-            setSamples(response.data);
-          }
-        })
-        .finally(() => setLoadingSamples(false));
+    if (!loadingSamples) {
+      return;
     }
-  }, [loadingSamples]);
+    Axios.get('/api/samples/', { params: { contract: contract._id } })
+      .then((response) => {
+        if (response.data) {
+          setSamples(response.data);
+        }
+      })
+      .finally(() => setLoadingSamples(false));
+  }, [loadingSamples, contract._id]);
 
   const actions = { onEdit, onDelete };
   return (

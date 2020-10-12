@@ -7,6 +7,7 @@ export const ADD_SAMPLES_TO_CONTRACT = 'Them mau vao hop dong';
 export const DAY = 'ngày';
 
 export const LIST_CONTRACT = 'Danh sách hợp đồng';
+export const LIST_SAMPLE = 'Danh sách mẫu';
 
 export const CUSTOMER_INFORMATION = 'Thông tin khách hàng';
 export const CONTRACT_INFORMATION = 'Thông tin hợp đồng';

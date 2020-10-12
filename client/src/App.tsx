@@ -1,7 +1,7 @@
 import { Layout, Menu, message } from 'antd';
 import Axios from 'axios';
 import React, { useEffect, useState } from 'react';
-import { BrowserRouter, Link, Switch, useLocation } from 'react-router-dom';
+import { BrowserRouter, Link, useLocation } from 'react-router-dom';
 import './App.css';
 import { ContractsRoutes } from './contracts';
 import { SampleRoutes } from './samples';
@@ -82,10 +82,8 @@ export function Header() {
 function Content() {
   return (
     <Layout.Content>
-      <Switch>
-        <ContractsRoutes />
-        <SampleRoutes />
-      </Switch>
+      <ContractsRoutes />
+      <SampleRoutes />
     </Layout.Content>
   );
 }

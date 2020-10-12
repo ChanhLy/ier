@@ -18,7 +18,7 @@ export type SampleBase = {
   readBy: string[];
 
   updatedAt: Date;
-  deletedAt: Date;
+  deletedAt?: Date;
   contract: string | ContractBase | ContractDocument;
 };
 

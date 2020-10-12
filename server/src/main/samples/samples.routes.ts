@@ -16,6 +16,7 @@ sampleRouter.post('/', async (ctx) => {
 
 sampleRouter.get('/', async (ctx) => {
   const samples = await sampleService.findSamples(ctx.query);
+
   ctx.response.body = samples;
 });
 
