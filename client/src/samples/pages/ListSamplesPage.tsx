@@ -1,14 +1,21 @@
-import { Modal, PageHeader } from 'antd';
+import { Form, Modal, PageHeader, Select } from 'antd';
 import Axios from 'axios';
 import React, { ReactText, useEffect, useState } from 'react';
 import { Sample } from '..';
-import { DELETE_SAMPLE, LIST_SAMPLE } from '../../utils/constants';
+import { DatePicker } from '../../components';
+import { CUSTOMER_ID, DELETE_SAMPLE, LIST_SAMPLE } from '../../utils/constants';
 import { SampleTable } from '../components/SampleTable';
 
 export function ListSamplesPage() {
   const [samples, setSamples] = useState<Sample[]>([]);
 
   const [loading, setLoading] = useState(true);
+
+  const [contractIds, setContractIds] = useState<string[]>([]);
+
+  useEffect(() => {
+    Axios.get('/api/customers/id').then((response) => setContractIds(response?.data || []));
+  }, []);
 
   useEffect(() => {
     if (!loading) {
@@ -30,8 +37,14 @@ export function ListSamplesPage() {
     <>
       <PageHeader title={LIST_SAMPLE}></PageHeader>
       <div className='content'>
-        <br />
-        <br />
+        <Form layout='horizontal'>
+          <Form.Item name='date' label='Tháng năm'>
+            <DatePicker format='MMMM, YYYY' picker='month' />
+          </Form.Item>
+          <Form.Item name='contract' label={CUSTOMER_ID}>
+            <Select options={contractIds?.map((id) => ({ label: id, value: id }))}></Select>
+          </Form.Item>
+        </Form>
         <SampleTable dataSource={samples} actions={actions} loading={loading} />
       </div>
     </>

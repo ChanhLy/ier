@@ -3,8 +3,13 @@ import { FilterQuery, UpdateQuery } from 'mongoose';
 import { Customer, CustomerBase, CustomerDocument } from './customers.model';
 
 export class CustomerService {
-  findCustomers(conditions?: FilterQuery<CustomerDocument>): Promise<CustomerDocument[]> {
-    return Customer.find({ ...conditions, deletedAt: undefined }).exec();
+  findCustomers(
+    conditions?: FilterQuery<CustomerDocument>,
+    projection?: keyof CustomerDocument
+  ): Promise<CustomerDocument[]> {
+    return Customer.find({ ...conditions, deletedAt: undefined }, projection, { limit: 1000 })
+      .sort({ updatedAt: -1 })
+      .exec();
   }
 
   async updateCustomer(

@@ -46,14 +46,20 @@ export class ContractService {
 
   async findContracts(
     condition?: FilterQuery<ContractDocument>,
-    projection?: Partial<ContractDocument> | null,
+    projection?: keyof ContractDocument | null,
     options?: QueryFindOptions
   ): Promise<ContractDocument[]> {
-    return Contract.find({ ...condition, deletedAt: undefined }, { ...projection }, { ...options, limit: 1000 })
+    return Contract.find({ ...condition, deletedAt: undefined }, projection, { ...options, limit: 1000 })
       .populate({ path: 'customer', model: Customer })
       .sort({
         updatedAt: -1,
       });
+  }
+
+  async findContractIds(): Promise<ContractDocument[]> {
+    return Contract.find({}, '_id', { limit: 1000 }).populate({ path: 'customer', model: Customer }).sort({
+      updatedAt: -1,
+    });
   }
 
   async addReadByUser(contract: ContractDocument, userId: string): Promise<ContractDocument> {

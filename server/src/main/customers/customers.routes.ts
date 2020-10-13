@@ -6,6 +6,11 @@ const customerService = new CustomerService();
 
 const customerRouter = new Router({ prefix: '/customers' });
 
+customerRouter.get('/id', async (ctx) => {
+  const customers = await customerService.findCustomers(ctx.query, '_id');
+  ctx.response.body = customers.map((customer) => customer.toJSON()._id);
+});
+
 customerRouter.get('/', async (ctx) => {
   const customers = await customerService.findCustomers(ctx.query);
   ctx.response.body = customers;

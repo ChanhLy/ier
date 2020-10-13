@@ -102,7 +102,7 @@ export function ContractForm(props: Props) {
         name='resultReturnDate'
         rules={[{ required: true, message: 'Vui lòng nhập tên khách hàng!' }]}
       >
-        <DatePicker format='DD-MM-YYYY' showToday={false} renderExtraFooter={renderExtraFooter} />
+        <DatePicker format='DD/MM/YYYY' showToday={false} renderExtraFooter={renderExtraFooter} />
       </Item>
     );
   }
@@ -208,7 +208,7 @@ export function ContractForm(props: Props) {
         name='sampleReceivedDate'
         rules={[{ required: true, message: 'Vui lòng nhập tên khách hàng!' }]}
       >
-        <DatePicker format='DD-MM-YYYY' />
+        <DatePicker format='DD/MM/YYYY' />
       </Item>
     );
   }

@@ -1,5 +1,6 @@
 import { ConfigProvider } from 'antd';
 import viVN from 'antd/es/locale/vi_VN';
+import 'dayjs/locale/vi';
 import React from 'react';
 import ReactDOM from 'react-dom';
 import App from './App';
