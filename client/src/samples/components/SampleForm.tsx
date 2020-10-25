@@ -1,5 +1,5 @@
 import { MinusCircleOutlined, PlusOutlined } from '@ant-design/icons';
-import { Button, Col, Form, Input, message, Row, Select, Space } from 'antd';
+import { Button, Col, Form, Input, Row, Select, Space } from 'antd';
 import { useForm } from 'antd/lib/form/Form';
 import { Store } from 'antd/lib/form/interface';
 import React, { useEffect, useState } from 'react';
@@ -41,6 +41,9 @@ export function SampleForm(props: Props) {
 
   const [target, setTarget] = useState<string>();
   const [disabledSelectMethods, setDisabledSelectMethods] = useState(true);
+
+  const [loading, setLoading] = useState(false);
+
   return (
     <Form
       form={form}
@@ -71,75 +74,77 @@ export function SampleForm(props: Props) {
       <Form.Item label={SAMPLE_TYPE_TARGET} name='type' rules={[{ required: true, message: 'type required' }]}>
         <Select options={typeOptions} onChange={onChangeType}></Select>
       </Form.Item>
-      <Form.List name='experiments'>
-        {(fields, { add, remove }) => {
-          return (
-            <div>
-              {fields.map((field) => (
-                <Row key={field.key} style={{ display: 'flex' }}>
-                  <Col span={4}></Col>
-                  <Space align='start'>
-                    <Form.Item
-                      {...field}
-                      name={[field.name, 'target']}
-                      fieldKey={[field.fieldKey, 'target']}
-                      rules={[{ required: true, message: 'Missing targets' }]}
-                    >
-                      <Select
-                        placeholder={TARGET}
-                        options={targetOptions(type)}
-                        onChange={onChangeTarget}
-                        style={{ width: 200 }}
-                      />
-                    </Form.Item>
-                    <Form.Item {...field} name={[field.name, 'methods']} fieldKey={[field.fieldKey, 'methods']}>
-                      <Select
-                        mode='multiple'
-                        placeholder={METHOD}
-                        options={methodOptions(type, target)}
-                        style={{ width: 200 }}
-                        disabled={disabledSelectMethods}
-                      />
-                    </Form.Item>
+      {!props.initialValues && (
+        <Form.List name='experiments'>
+          {(fields, { add, remove }) => {
+            return (
+              <div>
+                {fields.map((field) => (
+                  <Row key={field.key} style={{ display: 'flex' }}>
+                    <Col span={4}></Col>
+                    <Space align='start'>
+                      <Form.Item
+                        {...field}
+                        name={[field.name, 'target']}
+                        fieldKey={[field.fieldKey, 'target']}
+                        rules={[{ required: true, message: 'Missing targets' }]}
+                      >
+                        <Select
+                          placeholder={TARGET}
+                          options={targetOptions(type)}
+                          onChange={onChangeTarget}
+                          style={{ width: 200 }}
+                        />
+                      </Form.Item>
+                      <Form.Item {...field} name={[field.name, 'methods']} fieldKey={[field.fieldKey, 'methods']}>
+                        <Select
+                          mode='multiple'
+                          placeholder={METHOD}
+                          options={methodOptions(type, target)}
+                          style={{ width: 200 }}
+                          disabled={disabledSelectMethods}
+                        />
+                      </Form.Item>
 
-                    <Button
-                      icon={<MinusCircleOutlined />}
-                      onClick={() => {
-                        remove(field.name);
-                      }}
-                    />
-                  </Space>
-                </Row>
-              ))}
+                      <Button
+                        icon={<MinusCircleOutlined />}
+                        onClick={() => {
+                          remove(field.name);
+                        }}
+                      />
+                    </Space>
+                  </Row>
+                ))}
 
-              <Form.Item>
-                <Button
-                  type='dashed'
-                  onClick={() => {
-                    add();
-                  }}
-                  block
-                  disabled={disabledAddTargetButton}
-                >
-                  <PlusOutlined /> {ADD_TARGET}
-                </Button>
-              </Form.Item>
-            </div>
-          );
-        }}
-      </Form.List>
+                <Form.Item>
+                  <Button
+                    type='dashed'
+                    onClick={() => {
+                      add();
+                    }}
+                    block
+                    disabled={disabledAddTargetButton}
+                  >
+                    <PlusOutlined /> {ADD_TARGET}
+                  </Button>
+                </Form.Item>
+              </div>
+            );
+          }}
+        </Form.List>
+      )}
 
       <Form.Item label={NOTE} name='note'>
         <Input.TextArea />
       </Form.Item>
 
-      {!props.id ? (
+      {!props.id && (
         <Form.Item style={{ marginLeft: 200 }}>
-          <Button htmlType='submit' type='primary'>
+          <Button htmlType='submit' type='primary' loading={loading}>
             {CONFIRM}
           </Button>
         </Form.Item>
-      ) : undefined}
+      )}
     </Form>
   );
 
@@ -154,12 +159,9 @@ export function SampleForm(props: Props) {
   }
 
   function onFinish(values: Store) {
-    console.log(values);
-
-    props.onFinish(values).catch((error) => {
-      console.error(error);
-      message.error('Lỗi máy chủ');
-    });
+    setLoading(true);
+    props.onFinish(values);
+    setLoading(false);
   }
 }
 

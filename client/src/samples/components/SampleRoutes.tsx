@@ -1,9 +1,8 @@
 import React from 'react';
 import { Route, Switch } from 'react-router-dom';
 import { URLs } from '../../utils/urls';
+import { EditSamplePage } from '../pages/EditSamplePage';
 import { ListSamplesPage } from '../pages/ListSamplesPage';
-import { CreateSample } from './CreateSample';
-import { EditSample } from './EditSample';
 
 export function SampleRoutes() {
   return (
@@ -11,11 +10,8 @@ export function SampleRoutes() {
       <Route exact={true} path={URLs.SAMPLES}>
         <ListSamplesPage />
       </Route>
-      <Route exact={true} path={URLs.SAMPLES_CREATE}>
-        <CreateSample />
-      </Route>
       <Route path={URLs.SAMPLES_ID}>
-        <EditSample />
+        <EditSamplePage />
       </Route>
     </Switch>
   );

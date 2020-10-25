@@ -20,12 +20,26 @@ sampleRouter.get('/', async (ctx) => {
   ctx.response.body = samples;
 });
 
+sampleRouter.get('/:id', async (ctx) => {
+  const sample = await sampleService.findSampleById(ctx.params.id);
+  if (!sample) {
+    ctx.throw(httpStatus.NOT_FOUND);
+  }
+  ctx.response.body = sample;
+});
+
 sampleRouter.delete('/:id', async (ctx) => {
   const deleted = await sampleService.deleteSampleById(ctx.params.id);
   if (!deleted) {
     return ctx.throw(httpStatus.NOT_FOUND);
   }
   ctx.response.status = httpStatus.OK;
+});
+
+sampleRouter.put('/:id', async (ctx) => {
+  const sample = await sampleService.updateSampleById(ctx.params.id, ctx.request.body);
+
+  ctx.response.body = sample;
 });
 
 export const sampleRoutes = sampleRouter.routes();

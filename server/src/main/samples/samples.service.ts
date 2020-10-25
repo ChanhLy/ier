@@ -7,6 +7,11 @@ export class SampleService {
   async deleteSampleById(_id: string): Promise<number> {
     return Sample.updateOne({ _id }, { deletedAt: new Date() }).exec();
   }
+
+  async updateSampleById(_id: string, data: Partial<SampleDocument>): Promise<SampleDocument | null> {
+    return Sample.findByIdAndUpdate(_id, data, {}).exec();
+  }
+
   async createSample(value: SampleBase): Promise<SampleDocument> {
     const no =
       (
