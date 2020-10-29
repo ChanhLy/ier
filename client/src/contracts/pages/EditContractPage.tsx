@@ -10,11 +10,14 @@ import { Contract } from '../contracts.model';
 
 export const EditContractPage = () => {
   const [contract, setContract] = useState<Contract>();
-  const { id } = useParams();
+  const { id } = useParams<{ id: string }>();
   const history = useHistory();
 
   useEffect(() => {
     Axios.get(APIs.CONTRACTS + '/' + id).then((response) => {
+      if (!response) {
+        return;
+      }
       const data = response.data as Contract;
       data.sampleReceivedDate = dayjs(data.sampleReceivedDate);
       data.resultReturnDate = dayjs(data.resultReturnDate);

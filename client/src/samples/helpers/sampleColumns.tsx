@@ -2,7 +2,8 @@ import { DeleteOutlined, EditOutlined } from '@ant-design/icons';
 import { Button, Space } from 'antd';
 import { ColumnType } from 'antd/lib/table';
 import React from 'react';
-import { Experiment, Sample } from '..';
+import { Sample } from '..';
+import { Experiment } from '../../experiments';
 import {
   AMOUNT,
   NOTE,

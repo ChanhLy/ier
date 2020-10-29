@@ -11,10 +11,11 @@ export class ContractService {
   }
 
   async findContractById(_id: string): Promise<ContractDocument | null> {
-    const contract = (
+    const contractDocument = (
       await Contract.findOne({ _id, deletedAt: undefined }).populate({ path: 'customer', model: Customer }).exec()
-    )?.toJSON();
-    if (contract) {
+    );
+    if (contractDocument) {
+      const contract = contractDocument.toJSON();
       const samples = (await Sample.find({ contract: contract._id, deletedAt: undefined }).exec()).map((sample) =>
         sample.toJSON()
       );
@@ -27,7 +28,7 @@ export class ContractService {
         })
       );
     }
-    return contract;
+    return contractDocument;
   }
 
   async findContractsLastThreeMonths(

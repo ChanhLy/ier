@@ -4,11 +4,12 @@ import Axios from 'axios';
 import React, { useEffect, useState } from 'react';
 import { useHistory, useParams } from 'react-router-dom';
 import { Sample } from '..';
+import { ExperimentTable } from '../../experiments/components/ExperimentTable';
 import { SAMPLE } from '../../utils/constants';
 import { SampleForm } from '../components/SampleForm';
 
 export function EditSamplePage() {
-  const { id } = useParams();
+  const { id } = useParams<{ id: string }>();
   const [sample, setSample] = useState<Sample>();
   const history = useHistory();
 
@@ -30,6 +31,7 @@ export function EditSamplePage() {
         ) : (
           <div style={{ width: 800 }}>
             <SampleForm initialValues={sample} onFinish={onEditSample} />
+            <ExperimentTable />
           </div>
         )}
       </div>

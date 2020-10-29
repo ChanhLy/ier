@@ -29,13 +29,13 @@ export function EditContract(props: Props) {
   const [visible, setVisible] = useState(false);
   const [loadingDeleteSample, setLoadingDeleteSample] = useState(false);
 
-  const [loadingSamples, setLoadingSamples] = useState(false);
+  const [loadingSamples, setLoadingSamples] = useState(true);
 
   useEffect(() => {
     if (!loadingSamples) {
       return;
     }
-    Axios.get('/api/samples/', { params: { contract: contract._id } })
+    Axios.get('/api/samples', { params: { contract: contract._id } })
       .then((response) => {
         if (response.data) {
           setSamples(response.data);
