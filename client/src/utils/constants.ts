@@ -52,3 +52,4 @@ export const ADD_NEW_SAMPLE = 'Thêm mẫu mới';
 export const DELETE_SAMPLE = 'Xóa mẫu';
 export const SUCCESSFULLY = 'thành công';
 export const FAILED = 'thất bại';
+export const DELETE_EXPERIMENT = 'Xóa thí nghiệm';
