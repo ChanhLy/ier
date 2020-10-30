@@ -1,7 +1,7 @@
 import { Layout, Menu, message } from 'antd';
 import Axios from 'axios';
 import React, { useEffect, useState } from 'react';
-import { BrowserRouter, Link, useLocation } from 'react-router-dom';
+import { BrowserRouter, Link, Redirect, useLocation } from 'react-router-dom';
 import './App.css';
 import { ContractsRoutes } from './contracts';
 import { ExperimentRoutes } from './experiments';
@@ -85,6 +85,7 @@ function Content() {
       <ContractsRoutes />
       <SampleRoutes />
       <ExperimentRoutes />
+      <Redirect to={URLs.CONTRACTS} />
     </Layout.Content>
   );
 }

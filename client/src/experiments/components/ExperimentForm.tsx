@@ -23,7 +23,7 @@ export function ExperimentForm(props: {
   }, [target]);
 
   const [form] = useForm();
-  useEffect(() => form.resetFields(), [props.initialValues]);
+  useEffect(() => form.resetFields(), [props.initialValues, form]);
 
   return (
     <Form

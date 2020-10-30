@@ -31,7 +31,7 @@ export function ListExperimentsPage() {
     if (id && id !== editingExperiment?._id) {
       Axios.get('/api/experiments/' + id).then((response) => response?.data && setEditingExperiment(response.data));
     }
-  }, [query]);
+  }, [query, editingExperiment]);
 
   return (
     <div>
