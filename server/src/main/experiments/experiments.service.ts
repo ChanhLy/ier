@@ -1,3 +1,4 @@
+import { Sample } from '../samples';
 import { Experiment, ExperimentBase, ExperimentDocument } from './experiments.model';
 
 export class ExperimentService {
@@ -14,6 +15,9 @@ export class ExperimentService {
   }
   findExperiments(query: Partial<ExperimentDocument>): Promise<ExperimentDocument[]> {
     return Experiment.find({ ...query, deletedAt: undefined }).exec();
+  }
+  findExperimentById(id: string): Promise<ExperimentDocument | null> {
+    return Experiment.findById(id).populate({ path: 'sample', model: Sample }).exec();
   }
   async createExperiments(value: ExperimentBase[]): Promise<ExperimentDocument[]> {
     return Experiment.insertMany(value);

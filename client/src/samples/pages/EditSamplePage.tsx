@@ -19,7 +19,11 @@ export function EditSamplePage() {
   const [experiments, setExperiments] = useState([]);
   const [loadingExperiments, setLoadingExperiments] = useState(true);
 
-  const { methods, target, actions } = experimentColumns({ onDelete: onDeleteExperiment, onEdit: onEditExperiment });
+  const { methods, target, actions } = experimentColumns({
+    onDelete: onDeleteExperiment,
+    onEdit: onEditExperiment,
+    experiments,
+  });
 
   useEffect(() => {
     if (!id) return;
@@ -50,9 +54,7 @@ export function EditSamplePage() {
           <div style={{ width: 800 }}>
             <SampleForm initialValues={sample} onFinish={onEditSample} />
             <Button onClick={onAddExperiment} type='primary'>
-              
               Thêm thí nghiệm
-            
             </Button>
             <ExperimentTable
               loading={loadingExperiments}

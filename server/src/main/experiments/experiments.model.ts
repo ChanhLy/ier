@@ -5,6 +5,9 @@ const name = 'experiments';
 export type ExperimentBase = {
   target: string;
   methods: string[];
+  unit: string;
+  result: string;
+  conductedBy: string;
   sample: Partial<SampleDocument>;
   deletedAt: Date;
 };
@@ -15,6 +18,9 @@ export const experimentDefinition: SchemaDefinition = {
   target: String,
   methods: [String],
   sample: { type: String, ref: 'sample' },
+  unit: String,
+  result: String,
+  conductedBy: String,
   deletedAt: Date,
 };
 

@@ -3,7 +3,7 @@ import { Button, Space, Table, Tag } from 'antd';
 import { ColumnType } from 'antd/lib/table';
 import React from 'react';
 import { Experiment } from '..';
-import { METHOD, SAMPLE_ID, TARGET } from '../../utils/constants';
+import { CONDUCTED_BY, METHOD, RESULT, SAMPLE_ID, TARGET, UNIT } from '../../utils/constants';
 
 interface Props {
   columns?: ColumnType<Experiment>[];
@@ -14,25 +14,40 @@ interface Props {
 }
 
 export function ExperimentTable(props: Props) {
-  const { onEdit, onDelete } = props;
-  const columns = props.columns || Object.values(experimentColumns({ onEdit, onDelete }));
+  const { onEdit, onDelete, experiments } = props;
+  const columns = props.columns || Object.values(experimentColumns({ onEdit, onDelete, experiments }));
 
   return (
     <Table<Experiment> loading={props.loading} columns={columns} dataSource={props.experiments || []} bordered></Table>
   );
 }
 
-export const experimentColumns: (actions: {
+export const experimentColumns: (props: {
   onEdit?: (experiment: Experiment) => void;
   onDelete?: (id: string | number) => void;
-}) => { [key: string]: ColumnType<Experiment> } = ({ onEdit, onDelete }) => ({
-  sample: { title: SAMPLE_ID, dataIndex: 'sample' },
+  experiments?: Experiment[];
+}) => { [key: string]: ColumnType<Experiment> } = ({ onEdit, onDelete, experiments = [] }) => ({
+  sample: {
+    title: SAMPLE_ID,
+    dataIndex: 'sample',
+    filters: [...Array.from(new Set(Object.values(experiments.map((experiment) => experiment.sample))))].map(
+      (sample) => ({
+        text: sample as string,
+        value: sample as string,
+      })
+    ),
+    onFilter: (value, experiment) => value === experiment.sample,
+  },
   target: { title: TARGET, dataIndex: 'target' },
   methods: {
     title: METHOD,
     dataIndex: 'methods',
     render: (methods: string[]) => methods.map((method) => <Tag>{method}</Tag>),
   },
+  unit: { title: UNIT, dataIndex: 'unit' },
+  result: { title: RESULT, dataIndex: 'result' },
+  conductedBy: { title: CONDUCTED_BY, dataIndex: 'conductedBy' },
+
   actions: {
     render: (value, record, index) => {
       return (

@@ -11,6 +11,12 @@ experimentRouter.get('/', async (ctx) => {
   ctx.body = experiments;
 });
 
+experimentRouter.get('/:id', async (ctx) => {
+  const experiment = await experimentService.findExperimentById(ctx.params.id);
+  !experiment && ctx.throw(httpStatus.NOT_FOUND);
+  ctx.body = experiment;
+});
+
 experimentRouter.post('/', async (ctx) => {
   try {
     const experiment = await experimentService.createExperiment(ctx.request.body);
