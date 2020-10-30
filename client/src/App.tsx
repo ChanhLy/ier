@@ -1,11 +1,14 @@
 import { Layout, Menu, message } from 'antd';
 import Axios from 'axios';
 import React, { useEffect, useState } from 'react';
-import { BrowserRouter, Link, Redirect, useLocation } from 'react-router-dom';
+import { BrowserRouter, Link, Redirect, Route, Switch, useLocation } from 'react-router-dom';
 import './App.css';
-import { ContractsRoutes } from './contracts';
-import { ExperimentRoutes } from './experiments';
-import { SampleRoutes } from './samples';
+import { CreateContractPage } from './contracts/pages/CreateContractPage';
+import { EditContractPage } from './contracts/pages/EditContractPage';
+import { ListContractsPage } from './contracts/pages/ListContractsPage';
+import { ListExperimentsPage } from './experiments/pages/ListExperimentsPage';
+import { ListSamplesPage } from './samples';
+import { EditSamplePage } from './samples/pages/EditSamplePage';
 import { UserContext } from './users/UserContext';
 import { CONTRACT, EXPERIMENT, FAILURE, SAMPLE } from './utils/constants';
 import { URLs } from './utils/urls';
@@ -82,10 +85,27 @@ export function Header() {
 function Content() {
   return (
     <Layout.Content>
-      <ContractsRoutes />
-      <SampleRoutes />
-      <ExperimentRoutes />
-      <Redirect to={URLs.CONTRACTS} />
+      <Switch>
+        <Route exact={true} path={URLs.CONTRACTS_CREATE}>
+          <CreateContractPage />
+        </Route>
+        <Route exact={true} path={URLs.CONTRACTS}>
+          <ListContractsPage />
+        </Route>
+        <Route path={URLs.CONTRACTS_ID}>
+          <EditContractPage />
+        </Route>
+        <Route exact={true} path={URLs.SAMPLES}>
+          <ListSamplesPage />
+        </Route>
+        <Route path={URLs.SAMPLES_ID}>
+          <EditSamplePage />
+        </Route>
+        <Route exact={true} path={URLs.EXPERIMENTS}>
+          <ListExperimentsPage />
+        </Route>
+        <Redirect to={URLs.CONTRACTS} />
+      </Switch>
     </Layout.Content>
   );
 }
