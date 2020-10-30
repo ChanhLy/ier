@@ -1,5 +1,6 @@
 export const CONTRACT = 'Hợp đồng';
 export const SAMPLE = 'Mẫu';
+export const EXPERIMENT = 'Thí nghiệm';
 export const CREATE_NEW_CONTRACT = 'Tạo hợp đồng mới';
 export const CREATE_NEW_CONTRACT_TITLE = 'TẠO HỢP ĐỒNG MỚI';
 export const EDITING_CONTRACT_TITLE = 'CHỈNH SỬA HỢP ĐỒNG MỚI';

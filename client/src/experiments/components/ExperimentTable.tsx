@@ -37,7 +37,7 @@ export const experimentColumns: (actions: {
     render: (value, record, index) => {
       return (
         <Space>
-          {onEdit && <Button icon={<EditOutlined />} onClick={() => onEdit(record)} />}
+          {onEdit && <Button icon={<EditOutlined />} onClick={() => onEdit(record)} type='primary' />}
           {onDelete && <Button icon={<DeleteOutlined />} onClick={() => onDelete(record._id || index)} danger />}
         </Space>
       );

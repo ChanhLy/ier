@@ -25,6 +25,6 @@
     "editor.formatOnSave": true,
     "editor.tabSize": 2,
     "prettier.printWidth": 120,
-    "typescript.tsdk": "server/node_modules/typescript/lib"
+    "typescript.tsdk": "client/node_modules/typescript/lib"
   }
 }

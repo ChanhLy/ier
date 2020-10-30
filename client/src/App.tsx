@@ -4,9 +4,10 @@ import React, { useEffect, useState } from 'react';
 import { BrowserRouter, Link, useLocation } from 'react-router-dom';
 import './App.css';
 import { ContractsRoutes } from './contracts';
+import { ExperimentRoutes } from './experiments';
 import { SampleRoutes } from './samples';
 import { UserContext } from './users/UserContext';
-import { CONTRACT, FAILURE, SAMPLE } from './utils/constants';
+import { CONTRACT, EXPERIMENT, FAILURE, SAMPLE } from './utils/constants';
 import { URLs } from './utils/urls';
 
 const source = Axios.CancelToken.source();
@@ -58,11 +59,7 @@ export function Header() {
   const location = useLocation();
 
   useEffect(() => {
-    if (location.pathname.includes(URLs.CONTRACTS)) {
-      setDefaultSelectedMenuItem([URLs.CONTRACTS]);
-    } else if (location.pathname.includes(URLs.SAMPLES)) {
-      setDefaultSelectedMenuItem([URLs.SAMPLES]);
-    }
+    setDefaultSelectedMenuItem([location.pathname]);
   }, [location.pathname]);
 
   return (
@@ -74,6 +71,9 @@ export function Header() {
         <Menu.Item key={URLs.SAMPLES}>
           <Link to={URLs.SAMPLES}>{SAMPLE}</Link>
         </Menu.Item>
+        <Menu.Item key={URLs.EXPERIMENTS}>
+          <Link to={URLs.EXPERIMENTS}>{EXPERIMENT}</Link>
+        </Menu.Item>
       </Menu>
     </Layout.Header>
   );
@@ -84,6 +84,7 @@ function Content() {
     <Layout.Content>
       <ContractsRoutes />
       <SampleRoutes />
+      <ExperimentRoutes />
     </Layout.Content>
   );
 }
