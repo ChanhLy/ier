@@ -1,13 +1,13 @@
 import Application = require('koa');
 import koaBodyParser = require('koa-body');
 import koaLogger = require('koa-logger');
-import Router from '@koa/router';
+import httpStatus from 'http-status';
 import compress from 'koa-compress';
 import { apiRoutes } from './routes';
 import koaSession = require('koa-session');
-import httpStatus = require('http-status');
-const router = new Router({ prefix: '/api' });
-router.get('/contracts', (ctx) => (ctx.body = 'a'));
+import koaStatic = require('koa-static');
+import path = require('path');
+
 const app = new Application();
 
 app.keys = [process.env.SECRET || 'laptop key secrets'];
@@ -36,5 +36,6 @@ app.use(async (context, next) => {
 });
 
 app.use(apiRoutes);
+app.use(koaStatic(path.join(__dirname, '..', '..', 'build')));
 
 export default app;
