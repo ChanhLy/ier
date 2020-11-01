@@ -33,6 +33,8 @@ export function SampleForm(props: Props) {
   useEffect(() => {
     if (props.visible) {
       form.resetFields();
+      form.setFieldsValue({ experiments: [] });
+      console.log(form.getFieldsValue());
     }
   }, [props.visible, form]);
 

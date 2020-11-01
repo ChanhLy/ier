@@ -2,15 +2,22 @@ import { Sample } from '../samples';
 import { Experiment, ExperimentBase, ExperimentDocument } from './experiments.model';
 
 export class ExperimentService {
-  seenAllByUser(userId: string) {
-    return Experiment.updateMany({ readBy: { $elemMatch: { $not: userId } } }, { $push: { readBy: userId } }).exec();
+  async seenAllByUser(userId: string): Promise<unknown> {
+    const results = await Experiment.updateMany(
+      { readBy: { $ne: userId } },
+      { $push: { readBy: userId } },
+      { timestamps: false }
+    ).exec();
+    console.log(results);
+
+    return results;
   }
   createExperiment(body: ExperimentBase): Promise<ExperimentDocument> {
     return Experiment.create(body);
   }
 
   async updateExperiment(_id: string, body: Partial<ExperimentDocument>): Promise<boolean> {
-    await Experiment.updateOne({ _id }, body).exec();
+    await Experiment.updateOne({ _id }, { ...body, readBy: [] }).exec();
     return true;
   }
 

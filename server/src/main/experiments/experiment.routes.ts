@@ -41,6 +41,11 @@ experimentRouter.delete('/:id', async (ctx) => {
   }
 });
 
+experimentRouter.put('/seen', async (ctx) => {
+  await experimentService.seenAllByUser(ctx.state.user.id);
+  ctx.response.status = httpStatus.OK;
+});
+
 experimentRouter.put('/:id', async (ctx) => {
   try {
     await experimentService.updateExperiment(ctx.params.id, ctx.request.body);
@@ -48,11 +53,6 @@ experimentRouter.put('/:id', async (ctx) => {
   } catch (error) {
     ctx.throw(error);
   }
-});
-
-experimentRouter.put('/seen', async (ctx) => {
-  await experimentService.seenAllByUser(ctx.state.user.id);
-  ctx.response.status = httpStatus.OK;
 });
 
 export const experimentRoutes = experimentRouter.routes();

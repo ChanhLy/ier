@@ -37,7 +37,7 @@ export function CreateContract() {
         width={800}
         okButtonProps={{ htmlType: 'submit', form: 'sampleForm' }}
       >
-        <SampleForm onFinish={onSubmitSample} visible={visible} id='sampleForm' />
+        {visible && <SampleForm onFinish={onSubmitSample} visible={visible} id='sampleForm' />}
       </Modal>
     </>
   );

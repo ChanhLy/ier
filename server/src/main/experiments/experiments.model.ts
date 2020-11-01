@@ -41,6 +41,10 @@ experimentSchema.post('updateOne', async function () {
   socket.emit('Refresh_Experiments');
 });
 
+experimentSchema.post('updateMany', async function () {
+  socket.emit('Refresh_Experiments');
+});
+
 export const Experiment =
   (mongoose.connection.models[name] as mongoose.Model<ExperimentDocument>) ||
   mongoose.model<ExperimentDocument>(name, experimentSchema);

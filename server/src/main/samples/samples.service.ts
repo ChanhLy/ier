@@ -9,7 +9,7 @@ export class SampleService {
   }
 
   async updateSampleById(_id: string, data: Partial<SampleDocument>): Promise<SampleDocument | null> {
-    return Sample.findByIdAndUpdate(_id, data, {}).exec();
+    return Sample.findByIdAndUpdate(_id, { ...data, readBy: [] }, {}).exec();
   }
 
   async createSample(value: SampleBase): Promise<SampleDocument> {

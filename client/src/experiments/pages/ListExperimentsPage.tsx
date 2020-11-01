@@ -1,6 +1,5 @@
 import { Button, Form, PageHeader, Space } from 'antd';
 import { Store } from 'antd/lib/form/interface';
-import confirm from 'antd/lib/modal/confirm';
 import Axios from 'axios';
 import React, { useEffect, useState } from 'react';
 import { useHistory, useLocation } from 'react-router-dom';
@@ -66,19 +65,11 @@ export function ListExperimentsPage() {
         <ExperimentTable
           loading={loading}
           experiments={experiments}
-          onDelete={onDeleteExperiment}
           onEdit={(experiment) => history.push('/experiments?_id=' + experiment._id)}
         />
       </div>
     </div>
   );
-
-  function onDeleteExperiment(id: React.ReactText) {
-    confirm({
-      title: 'Xóa mẫu',
-      onOk: () => Axios.delete('/api/experiments/' + id).finally(() => setLoading(true)),
-    });
-  }
 
   function onFinishEditingExperiment(values: Store) {
     setUpdating(true);

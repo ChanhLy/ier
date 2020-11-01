@@ -1,6 +1,7 @@
-import { DeleteOutlined, EditOutlined } from '@ant-design/icons';
+import { DeleteOutlined, EditOutlined, EyeOutlined } from '@ant-design/icons';
 import { Button, Space, Table, Tag } from 'antd';
 import { ColumnType } from 'antd/lib/table';
+import Axios from 'axios';
 import React, { useContext } from 'react';
 import { Experiment } from '..';
 import { UserContext } from '../../users/UserContext';
@@ -15,10 +16,9 @@ interface Props {
 }
 
 export function ExperimentTable(props: Props) {
-  const { onEdit, onDelete, experiments } = props;
-  const columns = props.columns || Object.values(experimentColumns({ onEdit, onDelete, experiments }));
-
   const user = useContext(UserContext);
+  const { onEdit, onDelete, experiments } = props;
+  const columns = props.columns || Object.values(experimentColumns({ onEdit, onDelete, experiments, userId: user.id }));
 
   return (
     <Table<Experiment>
@@ -42,6 +42,7 @@ export const experimentColumns: (props: {
   onEdit?: (experiment: Experiment) => void;
   onDelete?: (id: string | number) => void;
   experiments?: Experiment[];
+  userId?: string;
 }) => { [key: string]: ColumnType<Experiment> } = ({ onEdit, onDelete, experiments = [] }) => ({
   sample: {
     title: SAMPLE_ID,
@@ -65,10 +66,11 @@ export const experimentColumns: (props: {
   conductedBy: { title: CONDUCTED_BY, dataIndex: 'conductedBy' },
 
   actions: {
+    title: <Button icon={<EyeOutlined />} onClick={() => Axios.put('/api/experiments/seen')} type='primary' />,
     render: (value, record, index) => {
       return (
         <Space>
-          {onEdit && <Button icon={<EditOutlined />} onClick={() => onEdit(record)} type='primary' />}
+          {onEdit && <Button icon={<EditOutlined />} onClick={() => onEdit(record)} />}
           {onDelete && <Button icon={<DeleteOutlined />} onClick={() => onDelete(record._id || index)} danger />}
         </Space>
       );
