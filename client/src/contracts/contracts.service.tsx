@@ -2,7 +2,7 @@ import { message } from 'antd';
 import Axios from 'axios';
 import { SUCCESS } from '../utils/constants';
 
-const API_CONTRACTS = '/api/contracts/';
+const API_CONTRACTS = '/api/contracts';
 
 export async function createContract(value: any) {
   const response = await Axios.post(API_CONTRACTS, value);

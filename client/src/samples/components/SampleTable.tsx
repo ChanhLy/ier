@@ -1,7 +1,8 @@
 import { Table } from 'antd';
 import { ColumnsType } from 'antd/lib/table';
-import React from 'react';
+import React, { useContext } from 'react';
 import { Sample } from '..';
+import { UserContext } from '../../users/UserContext';
 import {
   actionColumn,
   Actions,
@@ -23,6 +24,8 @@ interface Props {
 }
 
 export function SampleTable(props: Props) {
+  const user = useContext(UserContext);
+
   const columns: ColumnsType<Sample> = [
     idColumn,
     symbolColumn,
@@ -36,5 +39,20 @@ export function SampleTable(props: Props) {
     actionColumn(props.actions),
   ];
 
-  return <Table<Sample> columns={columns} bordered dataSource={props.dataSource} loading={props.loading}></Table>;
+  return (
+    <Table<Sample>
+      columns={columns}
+      bordered
+      dataSource={props.dataSource}
+      loading={props.loading}
+      rowClassName={rowClassName}
+    />
+  );
+
+  function rowClassName(sample: Sample, index: number): string {
+    if (!sample.readBy?.includes(user.id)) {
+      return 'unread-row';
+    }
+    return '';
+  }
 }

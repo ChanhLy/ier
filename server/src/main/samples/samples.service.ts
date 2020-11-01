@@ -54,4 +54,12 @@ export class SampleService {
       updatedAt: -1,
     });
   }
+
+  async addReadByUser(sample: SampleDocument, userId: string): Promise<SampleDocument> {
+    if (!sample.readBy.includes(userId)) {
+      sample.readBy.push(userId);
+      return sample.save({ timestamps: false });
+    }
+    return sample;
+  }
 }

@@ -4,13 +4,18 @@ import confirm from 'antd/lib/modal/confirm';
 import Axios from 'axios';
 import React, { useEffect, useState } from 'react';
 import { useHistory, useLocation } from 'react-router-dom';
+import io from 'socket.io-client';
 import { Experiment } from '..';
 import { CONFIRM } from '../../utils/constants';
 import { ExperimentForm } from '../components/ExperimentForm';
 import { ExperimentTable } from '../components/ExperimentTable';
+
 function useQuery() {
   return new URLSearchParams(useLocation().search);
 }
+
+const socket = io();
+
 export function ListExperimentsPage() {
   const [experiments, setExperiments] = useState([]);
   const [loading, setLoading] = useState(true);
@@ -32,6 +37,15 @@ export function ListExperimentsPage() {
       Axios.get('/api/experiments/' + id).then((response) => response?.data && setEditingExperiment(response.data));
     }
   }, [query, editingExperiment]);
+
+  useEffect(() => {
+    socket.on('Refresh_Experiments', function () {
+      Axios.get('/api/experiments').then((response) => response?.data && setExperiments(response.data));
+    });
+    return () => {
+      socket.off('Refresh_Experiments');
+    };
+  }, []);
 
   return (
     <div>

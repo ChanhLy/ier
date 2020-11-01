@@ -1,7 +1,8 @@
-import { DeleteOutlined, EditOutlined } from '@ant-design/icons';
-import { Button, Space } from 'antd';
+import { DeleteOutlined } from '@ant-design/icons';
+import { Button } from 'antd';
 import { ColumnType } from 'antd/lib/table';
 import React from 'react';
+import { Link } from 'react-router-dom';
 import { Sample } from '..';
 import { Experiment } from '../../experiments';
 import {
@@ -37,7 +38,6 @@ function toTargetAndMethods(value: Experiment[]) {
     Array.isArray(value) &&
     value
       .map((experiment) => {
-        console.log(experiment);
         const target = experiment.target;
         const methods = experiment.methods?.join(',');
         return target + (methods ? ` (${methods})` : '');
@@ -45,14 +45,15 @@ function toTargetAndMethods(value: Experiment[]) {
       .join(', ') + ` (${value.length} chỉ tiêu)`
   );
 }
-export const idColumn: ColumnType<Sample> = { title: SAMPLE_ID, dataIndex: '_id' };
+export const idColumn: ColumnType<Sample> = {
+  title: SAMPLE_ID,
+  dataIndex: '_id',
+  render: (value) => <Link to={`/samples/${value}`}>{value}</Link>,
+};
 export const actionColumn: (actions: Actions) => ColumnType<Sample> = (actions) => ({
   dataIndex: '_id',
   render: (value, record, index) => (
-    <Space>
-      <Button icon={<EditOutlined />} onClick={() => actions.onEdit(value || index)} />
-      <Button icon={<DeleteOutlined />} onClick={() => actions.onDelete(value || index)} danger />
-    </Space>
+    <Button icon={<DeleteOutlined />} onClick={() => actions.onDelete(value || index)} danger />
   ),
 });
 

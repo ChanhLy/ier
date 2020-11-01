@@ -1,4 +1,5 @@
 import mongoose, { Schema, SchemaDefinition } from 'mongoose';
+import { socket } from '../..';
 import { ContractBase, ContractDocument } from '../contracts/contracts.model';
 import { ExperimentBase } from '../experiments';
 
@@ -32,13 +33,25 @@ export const sampleDefinition: SchemaDefinition = {
   amount: String,
   unit: String,
   type: { type: String, required: true },
-  readBy: [String],
+  readBy: { type: [String], default: [] },
   note: String,
   contract: { type: Schema.Types.ObjectId, ref: 'contracts' },
   deletedAt: Date,
 };
 
 export const sampleSchema = new mongoose.Schema<SampleDocument>(sampleDefinition, { timestamps: true });
+
+sampleSchema.post('save', async function () {
+  socket.emit('Refresh_Samples');
+});
+
+sampleSchema.post('insertMany', async function () {
+  socket.emit('Refresh_Samples');
+});
+
+sampleSchema.post('updateOne', async function () {
+  socket.emit('Refresh_Samples');
+});
 
 export const Sample =
   (mongoose.connection.models[name] as mongoose.Model<SampleDocument>) ||

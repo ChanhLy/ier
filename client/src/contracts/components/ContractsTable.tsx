@@ -38,7 +38,9 @@ export function ContractsTable() {
 
   useEffect(() => {
     socket.on('Refresh_Contracts', function () {
-      setLoading(true);
+      getContracts().then((value) => {
+        setContracts(value);
+      });
     });
     return () => {
       socket.off('Refresh_Contracts');

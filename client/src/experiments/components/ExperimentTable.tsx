@@ -1,8 +1,9 @@
 import { DeleteOutlined, EditOutlined } from '@ant-design/icons';
 import { Button, Space, Table, Tag } from 'antd';
 import { ColumnType } from 'antd/lib/table';
-import React from 'react';
+import React, { useContext } from 'react';
 import { Experiment } from '..';
+import { UserContext } from '../../users/UserContext';
 import { CONDUCTED_BY, METHOD, RESULT, SAMPLE_ID, TARGET, UNIT } from '../../utils/constants';
 
 interface Props {
@@ -17,9 +18,24 @@ export function ExperimentTable(props: Props) {
   const { onEdit, onDelete, experiments } = props;
   const columns = props.columns || Object.values(experimentColumns({ onEdit, onDelete, experiments }));
 
+  const user = useContext(UserContext);
+
   return (
-    <Table<Experiment> loading={props.loading} columns={columns} dataSource={props.experiments || []} bordered></Table>
+    <Table<Experiment>
+      loading={props.loading}
+      columns={columns}
+      dataSource={props.experiments || []}
+      bordered
+      rowClassName={rowClassName}
+    />
   );
+
+  function rowClassName(experiment: Experiment, index: number): string {
+    if (!experiment.readBy?.includes(user.id)) {
+      return 'unread-row';
+    }
+    return '';
+  }
 }
 
 export const experimentColumns: (props: {

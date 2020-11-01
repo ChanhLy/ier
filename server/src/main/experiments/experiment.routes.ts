@@ -13,7 +13,9 @@ experimentRouter.get('/', async (ctx) => {
 
 experimentRouter.get('/:id', async (ctx) => {
   const experiment = await experimentService.findExperimentById(ctx.params.id);
-  !experiment && ctx.throw(httpStatus.NOT_FOUND);
+  if (!experiment) return ctx.throw(httpStatus.NOT_FOUND);
+
+  await experimentService.addReadByUser(experiment, ctx.state.user.id);
   ctx.body = experiment;
 });
 
@@ -46,6 +48,11 @@ experimentRouter.put('/:id', async (ctx) => {
   } catch (error) {
     ctx.throw(error);
   }
+});
+
+experimentRouter.put('/seen', async (ctx) => {
+  await experimentService.seenAllByUser(ctx.state.user.id);
+  ctx.response.status = httpStatus.OK;
 });
 
 export const experimentRoutes = experimentRouter.routes();

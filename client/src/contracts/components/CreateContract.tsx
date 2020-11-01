@@ -1,8 +1,10 @@
 import { Button, Modal } from 'antd';
 import { Store } from 'antd/lib/form/interface';
 import React, { useState } from 'react';
+import { useHistory } from 'react-router-dom';
 import { CreateSamplesTable, Sample, SampleForm } from '../../samples';
 import { ADD_NEW_SAMPLE } from '../../utils/constants';
+import { URLs } from '../../utils/urls';
 import { createContract } from '../contracts.service';
 import { ContractForm } from './ContractForm';
 
@@ -14,6 +16,8 @@ export function CreateContract() {
 
   const [visible, setVisible] = useState(false);
   const actions = { onEdit, onDelete };
+
+  const history = useHistory();
 
   return (
     <>
@@ -51,7 +55,7 @@ export function CreateContract() {
     console.log(values);
 
     await createContract(values);
-    // history.push(URLs.CONTRACTS);
+    history.push(URLs.CONTRACTS);
   }
 
   async function onSubmitSample(values: Store) {

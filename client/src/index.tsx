@@ -9,7 +9,7 @@ import * as serviceWorker from './serviceWorker';
 
 ReactDOM.render(
   <React.StrictMode>
-    <ConfigProvider locale={viVN}>
+    <ConfigProvider locale={viVN} componentSize='small'>
       <App />
     </ConfigProvider>
   </React.StrictMode>,

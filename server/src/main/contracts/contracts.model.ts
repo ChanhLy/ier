@@ -31,7 +31,7 @@ export const contractSchema = new mongoose.Schema<ContractDocument>(
     sampleReceivedDate: { type: Date, required: true },
     resultReturnDate: { type: Date, required: true },
 
-    readBy: [String],
+    readBy: { type: [String], default: [] },
     note: String,
     deletedAt: Date,
   },
@@ -39,6 +39,14 @@ export const contractSchema = new mongoose.Schema<ContractDocument>(
 );
 
 contractSchema.post('save', async function () {
+  socket.emit('Refresh_Contracts');
+});
+
+contractSchema.post('insertMany', async function () {
+  socket.emit('Refresh_Contracts');
+});
+
+contractSchema.post('updateOne', async function () {
   socket.emit('Refresh_Contracts');
 });
 

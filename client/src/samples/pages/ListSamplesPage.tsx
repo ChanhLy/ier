@@ -2,9 +2,12 @@ import { Modal, PageHeader } from 'antd';
 import Axios from 'axios';
 import React, { ReactText, useEffect, useState } from 'react';
 import { useHistory } from 'react-router-dom';
+import io from 'socket.io-client';
 import { Sample } from '..';
 import { DELETE_SAMPLE, LIST_SAMPLE } from '../../utils/constants';
 import { SampleTable } from '../components/SampleTable';
+
+const socket = io();
 
 export function ListSamplesPage() {
   const [samples, setSamples] = useState<Sample[]>([]);
@@ -20,15 +23,20 @@ export function ListSamplesPage() {
       return;
     }
     Axios.get('/api/samples')
-      .then((response) => {
-        if (response.data) {
-          setSamples(response.data);
-        }
-      })
+      .then((response) => response?.data && setSamples(response.data))
       .finally(() => {
         setLoading(false);
       });
   }, [loading]);
+
+  useEffect(() => {
+    socket.on('Refresh_Samples', function () {
+      Axios.get('/api/samples').then((response) => response?.data && setSamples(response.data));
+    });
+    return () => {
+      socket.off('Refresh_Samples');
+    };
+  }, []);
 
   const actions = { onEdit, onDelete };
 

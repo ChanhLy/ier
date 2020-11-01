@@ -22,9 +22,9 @@ sampleRouter.get('/', async (ctx) => {
 
 sampleRouter.get('/:id', async (ctx) => {
   const sample = await sampleService.findSampleById(ctx.params.id);
-  if (!sample) {
-    ctx.throw(httpStatus.NOT_FOUND);
-  }
+  if (!sample) return ctx.throw(httpStatus.NOT_FOUND);
+
+  await sampleService.addReadByUser(sample, ctx.state.user.id);
   ctx.response.body = sample;
 });
 

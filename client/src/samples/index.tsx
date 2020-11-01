@@ -7,6 +7,7 @@ export { SampleTable } from './components/SampleTable';
 export { ListSamplesPage } from './pages/ListSamplesPage';
 
 export interface Sample {
+  readBy?: string[];
   _id?: string;
   symbol: string;
   location: string;
