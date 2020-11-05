@@ -23,7 +23,7 @@ import { getContracts } from '../contracts.service';
 const socket = io();
 
 export function ContractsTable() {
-  const user = useContext(UserContext);
+  const { user } = useContext(UserContext);
 
   const [loading, setLoading] = useState(true);
   const [contracts, setContracts] = useState([]);
@@ -59,7 +59,7 @@ export function ContractsTable() {
   );
 
   function rowClassName(contract: Contract, index: number): string {
-    if (!contract.readBy?.includes(user.id)) {
+    if (!contract.readBy?.includes(user.username)) {
       return 'unread-row';
     }
     return '';

@@ -22,14 +22,6 @@ if (process.env.NODE_ENV !== 'production') {
 }
 
 app.use(async (context, next) => {
-  context.state.user = {
-    id: '1',
-    username: 'admin',
-  };
-  await next();
-});
-
-app.use(async (context, next) => {
   try {
     await next();
   } catch (error) {

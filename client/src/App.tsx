@@ -1,6 +1,6 @@
-import { Layout, Menu, message } from 'antd';
+import { Button, Layout, Menu, message, Row } from 'antd';
 import Axios from 'axios';
-import React, { useEffect, useState } from 'react';
+import React, { useContext, useEffect, useState } from 'react';
 import { BrowserRouter, Link, Redirect, Route, Switch, useLocation } from 'react-router-dom';
 import './App.css';
 import { CreateContractPage } from './contracts/pages/CreateContractPage';
@@ -9,6 +9,8 @@ import { ListContractsPage } from './contracts/pages/ListContractsPage';
 import { ListExperimentsPage } from './experiments/pages/ListExperimentsPage';
 import { ListSamplesPage } from './samples';
 import { EditSamplePage } from './samples/pages/EditSamplePage';
+import { LoginPage } from './users/LoginPage';
+import { User } from './users/User';
 import { UserContext } from './users/UserContext';
 import { CONTRACT, EXPERIMENT, FAILURE, SAMPLE } from './utils/constants';
 import { URLs } from './utils/urls';
@@ -36,16 +38,23 @@ Axios.interceptors.response.use(
 );
 
 function App() {
+  const [user, setUser] = useState<User>(JSON.parse(localStorage.getItem('user') || '{}') || { username: '' });
+
   return (
     <BrowserRouter>
-      <UserContext.Provider value={{ id: '1' }}>
-        <Layout className='layout'>
-          <Header />
-          <Layout>
-            <Content />
-            <Footer />
+      <UserContext.Provider value={{ user, setUser }}>
+        <Switch>
+          <Route exact path='/login'>
+            <LoginPage />
+          </Route>
+          <Layout className='layout'>
+            <Header />
+            <Layout>
+              <Content />
+              <Footer />
+            </Layout>
           </Layout>
-        </Layout>
+        </Switch>
       </UserContext.Provider>
     </BrowserRouter>
   );
@@ -59,6 +68,8 @@ function Footer() {
 export function Header() {
   const [defaultSelectedMenuItem, setDefaultSelectedMenuItem] = useState(['']);
 
+  const { setUser } = useContext(UserContext);
+
   const location = useLocation();
 
   useEffect(() => {
@@ -67,24 +78,35 @@ export function Header() {
 
   return (
     <Layout.Header>
-      <Menu theme='dark' mode='horizontal' selectedKeys={defaultSelectedMenuItem}>
-        <Menu.Item key={URLs.CONTRACTS}>
-          <Link to={URLs.CONTRACTS}>{CONTRACT}</Link>
-        </Menu.Item>
-        <Menu.Item key={URLs.SAMPLES}>
-          <Link to={URLs.SAMPLES}>{SAMPLE}</Link>
-        </Menu.Item>
-        <Menu.Item key={URLs.EXPERIMENTS}>
-          <Link to={URLs.EXPERIMENTS}>{EXPERIMENT}</Link>
-        </Menu.Item>
-      </Menu>
+      <Row justify='space-between' align='middle'>
+        <Menu theme='dark' mode='horizontal' selectedKeys={defaultSelectedMenuItem}>
+          <Menu.Item key={URLs.CONTRACTS}>
+            <Link to={URLs.CONTRACTS}>{CONTRACT}</Link>
+          </Menu.Item>
+          <Menu.Item key={URLs.SAMPLES}>
+            <Link to={URLs.SAMPLES}>{SAMPLE}</Link>
+          </Menu.Item>
+          <Menu.Item key={URLs.EXPERIMENTS}>
+            <Link to={URLs.EXPERIMENTS}>{EXPERIMENT}</Link>
+          </Menu.Item>
+        </Menu>
+        <Button danger onClick={logout} size='middle'>
+          Đăng xuất
+        </Button>
+      </Row>
     </Layout.Header>
   );
+  function logout() {
+    localStorage.clear();
+    setUser({ username: '' });
+  }
 }
 
 function Content() {
+  const { user } = useContext(UserContext);
   return (
     <Layout.Content>
+      {!user.username && <Redirect to='/login' />}
       <Switch>
         <Route exact={true} path={URLs.CONTRACTS_CREATE}>
           <CreateContractPage />

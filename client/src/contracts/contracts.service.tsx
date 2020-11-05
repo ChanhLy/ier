@@ -11,7 +11,7 @@ export async function createContract(value: any) {
 
 export async function getContracts(params?: any) {
   const response = await Axios.get(API_CONTRACTS, { params });
-  return response.data;
+  return response?.data;
 }
 
 export async function updateContractId(id: string, data: any) {

@@ -15,7 +15,7 @@ const contractRouter = new Router({ prefix: '/contracts' });
 
 contractRouter.get('/:id', async (ctx) => {
   const contract = await contractService.findContractById(ctx.params.id);
-  if (contract) await contractService.addReadByUser(contract, ctx.state.user.id);
+  if (contract) await contractService.addReadByUser(contract, ctx.session?.user.username);
 
   ctx.response.body = contract;
 });

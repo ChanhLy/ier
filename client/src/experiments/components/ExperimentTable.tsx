@@ -16,9 +16,10 @@ interface Props {
 }
 
 export function ExperimentTable(props: Props) {
-  const user = useContext(UserContext);
+  const { user } = useContext(UserContext);
   const { onEdit, onDelete, experiments } = props;
-  const columns = props.columns || Object.values(experimentColumns({ onEdit, onDelete, experiments, userId: user.id }));
+  const columns =
+    props.columns || Object.values(experimentColumns({ onEdit, onDelete, experiments, username: user.username }));
 
   return (
     <Table<Experiment>
@@ -31,7 +32,7 @@ export function ExperimentTable(props: Props) {
   );
 
   function rowClassName(experiment: Experiment, index: number): string {
-    if (!experiment.readBy?.includes(user.id)) {
+    if (!experiment.readBy?.includes(user.username)) {
       return 'unread-row';
     }
     return '';
@@ -42,7 +43,7 @@ export const experimentColumns: (props: {
   onEdit?: (experiment: Experiment) => void;
   onDelete?: (id: string | number) => void;
   experiments?: Experiment[];
-  userId?: string;
+  username?: string;
 }) => { [key: string]: ColumnType<Experiment> } = ({ onEdit, onDelete, experiments = [] }) => ({
   sample: {
     title: SAMPLE_ID,

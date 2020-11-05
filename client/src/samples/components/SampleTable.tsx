@@ -24,7 +24,7 @@ interface Props {
 }
 
 export function SampleTable(props: Props) {
-  const user = useContext(UserContext);
+  const { user } = useContext(UserContext);
 
   const columns: ColumnsType<Sample> = [
     idColumn,
@@ -50,7 +50,7 @@ export function SampleTable(props: Props) {
   );
 
   function rowClassName(sample: Sample, index: number): string {
-    if (!sample.readBy?.includes(user.id)) {
+    if (!sample.readBy?.includes(user.username)) {
       return 'unread-row';
     }
     return '';
