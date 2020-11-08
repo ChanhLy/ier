@@ -1,9 +1,8 @@
 import { Table } from 'antd';
 import { ColumnsType } from 'antd/lib/table';
 import dayjs from 'dayjs';
-import React, { useContext, useEffect, useState } from 'react';
+import React, { useContext } from 'react';
 import { Link } from 'react-router-dom';
-import io from 'socket.io-client';
 import { UserContext } from '../../users/UserContext';
 import {
   ADDRESS,
@@ -18,42 +17,22 @@ import {
 } from '../../utils/constants';
 import { URLs } from '../../utils/urls';
 import { Contract } from '../contracts.model';
-import { getContracts } from '../contracts.service';
 
-const socket = io();
+interface Props {
+  contracts: Contract[];
+  loading: boolean;
+}
 
-export function ContractsTable() {
+export function ContractsTable(props: Props) {
   const { user } = useContext(UserContext);
-
-  const [loading, setLoading] = useState(true);
-  const [contracts, setContracts] = useState([]);
-  useEffect(() => {
-    if (loading) {
-      getContracts().then((value) => {
-        setLoading(false);
-        setContracts(value);
-      });
-    }
-  }, [loading]);
-
-  useEffect(() => {
-    socket.on('Refresh_Contracts', function () {
-      getContracts().then((value) => {
-        setContracts(value);
-      });
-    });
-    return () => {
-      socket.off('Refresh_Contracts');
-    };
-  }, []);
 
   return (
     <Table
       columns={contractColumns}
-      dataSource={contracts}
+      dataSource={props.contracts}
       rowKey='_id'
       bordered={true}
-      loading={loading}
+      loading={props.loading}
       rowClassName={rowClassName}
     />
   );

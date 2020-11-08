@@ -41,7 +41,7 @@ async function login(ctx: Context) {
 
 async function authenticate(ctx: Context, next: Next) {
   const userService = new UserService();
-  const username = ctx.session?.user.username;
+  const username = ctx.session?.user?.username;
   if (!username) {
     return ctx.throw(httpStatus.UNAUTHORIZED);
   }

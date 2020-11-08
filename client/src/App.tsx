@@ -38,7 +38,7 @@ Axios.interceptors.response.use(
 );
 
 function App() {
-  const [user, setUser] = useState<User>(JSON.parse(localStorage.getItem('user') || '{}') || { username: '' });
+  const [user, setUser] = useState<User>(JSON.parse(sessionStorage.getItem('user') || '{}') || { username: '' });
 
   return (
     <BrowserRouter>
