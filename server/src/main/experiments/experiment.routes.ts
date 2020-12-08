@@ -1,10 +1,14 @@
 import Router from '@koa/router';
 import httpStatus from 'http-status';
+import { socket } from '../..';
+import { authorizeRoles } from '../../app/auth';
 import { ExperimentService } from './experiments.service';
 
 const experimentService = new ExperimentService();
 
 const experimentRouter = new Router({ prefix: '/experiments' });
+
+experimentRouter.use(authorizeRoles(['lab']));
 
 experimentRouter.get('/', async (ctx) => {
   const experiments = await experimentService.findExperiments(ctx.query);
@@ -23,6 +27,7 @@ experimentRouter.post('/', async (ctx) => {
   try {
     const experiment = await experimentService.createExperiment(ctx.request.body);
     if (experiment) {
+      socket.emit('Refresh_Experiments');
       ctx.response.status = httpStatus.CREATED;
     } else {
       ctx.throw(httpStatus.INTERNAL_SERVER_ERROR);
@@ -49,6 +54,7 @@ experimentRouter.put('/seen', async (ctx) => {
 experimentRouter.put('/:id', async (ctx) => {
   try {
     await experimentService.updateExperiment(ctx.params.id, ctx.request.body);
+    socket.emit('Refresh_Experiments');
     ctx.response.status = httpStatus.OK;
   } catch (error) {
     ctx.throw(error);

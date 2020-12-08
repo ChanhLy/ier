@@ -20,8 +20,8 @@ export function LoginPage() {
   async function onFinish(values: Store) {
     Axios.post('/api/login', values).then((response) => {
       if (response?.status === 200) {
-        setUser({ username: values.username });
-        localStorage.setItem('user', JSON.stringify({ username: values.username }));
+        setUser(response.data);
+        localStorage.setItem('user', JSON.stringify(response.data));
         history.push('/');
       }
     });

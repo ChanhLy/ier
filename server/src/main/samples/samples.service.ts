@@ -4,6 +4,14 @@ import { Experiment } from '../experiments/experiments.model';
 import { Sample, SampleBase, SampleDocument } from './samples.model';
 
 export class SampleService {
+  async returnedContract(id: any) {
+    const sample = await this.findSampleById(id);
+    return sample && sample.update({ returned: !sample.returned }).exec();
+  }
+  async paidContract(id: any) {
+    const sample = await this.findSampleById(id);
+    return sample && sample.update({ paid: !sample.paid }).exec();
+  }
   async deleteSampleById(_id: string): Promise<number> {
     return Sample.updateOne({ _id }, { deletedAt: new Date() }).exec();
   }
@@ -61,5 +69,11 @@ export class SampleService {
       return sample.save({ timestamps: false });
     }
     return sample;
+  }
+
+  async updateSamples(query: any, update: Partial<SampleBase>): Promise<boolean> {
+    await Sample.updateMany(query, update).exec();
+
+    return true;
   }
 }

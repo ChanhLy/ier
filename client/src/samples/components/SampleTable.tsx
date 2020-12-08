@@ -12,6 +12,8 @@ import {
   idColumn,
   locationColumn,
   noteColumn,
+  paidColumn,
+  returnedColumn,
   symbolColumn,
   typeColumn,
   unitColumn,
@@ -35,6 +37,8 @@ export function SampleTable(props: Props) {
     unitColumn,
     typeColumn,
     experimentsColumn,
+    paidColumn,
+    returnedColumn,
     noteColumn,
     actionColumn(props.actions),
   ];

@@ -50,6 +50,7 @@
     "dayjs": "^1.9.4",
     "debug": "^4.2.0",
     "dotenv-flow": "^3.2.0",
+    "exceljs": "^4.2.0",
     "http-status": "^1.4.2",
     "jsonwebtoken": "^8.5.1",
     "koa": "^2.13.0",

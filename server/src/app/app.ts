@@ -13,7 +13,7 @@ const app = new Application();
 
 app.keys = [process.env.SECRET || 'laptop key secrets'];
 
-app.use(koaSession(app));
+app.use(koaSession({ maxAge: 864000000 }, app));
 app.use(koaLogger());
 app.use(koaBodyParser());
 app.use(serve('build'));

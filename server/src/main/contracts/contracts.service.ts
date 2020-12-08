@@ -1,9 +1,14 @@
 import dayjs from 'dayjs';
+import * as ExcelJS from 'exceljs';
+import { NOT_FOUND } from 'http-status';
 import { FilterQuery, QueryFindOptions } from 'mongoose';
-import { Customer } from '../customers/customers.model';
+import { Customer, CustomerBase } from '../customers/customers.model';
+import { CustomerService } from '../customers/customers.service';
 import { Experiment } from '../experiments/experiments.model';
 import { Sample } from '../samples';
 import { Contract, ContractBase, ContractDocument } from './contracts.model';
+
+const customerService = new CustomerService();
 
 export class ContractService {
   async createContract(data: ContractBase): Promise<ContractDocument> {
@@ -11,9 +16,9 @@ export class ContractService {
   }
 
   async findContractById(_id: string): Promise<ContractDocument | null> {
-    const contractDocument = (
-      await Contract.findOne({ _id, deletedAt: undefined }).populate({ path: 'customer', model: Customer }).exec()
-    );
+    const contractDocument = await Contract.findOne({ _id, deletedAt: undefined })
+      .populate({ path: 'customer', model: Customer })
+      .exec();
     if (contractDocument) {
       const contract = contractDocument.toJSON();
       const samples = (await Sample.find({ contract: contract._id, deletedAt: undefined }).exec()).map((sample) =>
@@ -72,6 +77,71 @@ export class ContractService {
   }
 
   async updateContractById(id: string, data: Partial<ContractDocument>): Promise<ContractDocument | null> {
+    const contract = await Contract.findById(id).exec();
+
+    contract && (await customerService.updateCustomerById(contract.customer as string, data.customer as CustomerBase));
+    delete data.customer;
     return Contract.findByIdAndUpdate(id, data, { new: true, runValidators: true }).exec();
+  }
+
+  async paidContract(id: string): Promise<ContractDocument | null> {
+    const contract = await this.findContractById(id);
+
+    contract && (await contract.updateOne({ paid: !contract.paid }).exec());
+
+    return this.findContractById(id);
+  }
+
+  async returnedContract(id: string): Promise<ContractDocument | null> {
+    const contract = await this.findContractById(id);
+
+    contract && (await contract.updateOne({ returned: !contract.returned }).exec());
+
+    return this.findContractById(id);
+  }
+
+  async printContract(contractId: string): Promise<ExcelJS.Buffer> {
+    const contract = await this.findContractById(contractId);
+    if (!contract) {
+      throw new Error(NOT_FOUND.toString());
+    }
+
+    const workbook = new ExcelJS.Workbook();
+    await workbook.xlsx.readFile(__dirname + '/contract.xlsx');
+
+    const worksheet = workbook.getWorksheet(1);
+    this.setSheetData(worksheet, contract);
+
+    const buffer = await workbook.xlsx.writeBuffer({ useStyles: true });
+    return buffer;
+  }
+
+  setSheetData(sheet: ExcelJS.Worksheet, contract: ContractDocument): void {
+    const { _id, name, tax, representative, phone, fax, address } = contract.customer as CustomerBase;
+    const { location, sampleReceivedDate, resultReturnDate } = contract;
+
+    sheet.getCell('A2').value = _id;
+    sheet.getCell('D4').value = name;
+    sheet.getCell('M4').value = tax;
+    sheet.getCell('D5').value = representative;
+    sheet.getCell('M5').value = phone;
+    sheet.getCell('Q5').value = fax;
+    sheet.getCell('D6').value = location;
+    sheet.getCell('O6').value = dayjs(sampleReceivedDate).format('DD/MM/YYYY');
+    sheet.getCell('D7').value = address;
+    sheet.getCell('O7').value = dayjs(resultReturnDate).format('DD/MM/YYYY');
+
+    const samples = contract.samples || [];
+    for (let i = 0; i < samples.length; i++) {
+      const row = i * 2 + 11;
+
+      sheet.getCell(`A${row}`).value = i + 1;
+      sheet.getCell(`B${row}`).value = samples[i].symbol;
+      sheet.getCell(`D${row}`).value = samples[i].location;
+      sheet.getCell(`I${row}`).value = samples[i].amount;
+      sheet.getCell(`K${row}`).value = samples[i].description;
+      const targets = samples[i].experiments?.map((experiment) => experiment.target);
+      sheet.getCell(`O${row}`).value = targets ? targets.join(',') + `(${targets.length})` : '';
+    }
   }
 }

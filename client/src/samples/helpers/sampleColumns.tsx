@@ -1,6 +1,7 @@
 import { DeleteOutlined } from '@ant-design/icons';
-import { Button } from 'antd';
+import { Button, Checkbox } from 'antd';
 import { ColumnType } from 'antd/lib/table';
+import Axios from 'axios';
 import React from 'react';
 import { Link } from 'react-router-dom';
 import { Sample } from '..';
@@ -8,6 +9,8 @@ import { Experiment } from '../../experiments';
 import {
   AMOUNT,
   NOTE,
+  PAID,
+  RETURNED,
   SAMPLE_DESCRIPTION,
   SAMPLE_ID,
   SAMPLE_SYMBOL,
@@ -61,3 +64,19 @@ export interface Actions {
   onEdit: (i: string | number) => void;
   onDelete: (i: string | number) => void;
 }
+
+export const paidColumn: ColumnType<Sample> = {
+  title: PAID,
+  dataIndex: 'paid',
+  render: (value: boolean, record, index) => (
+    <Checkbox defaultChecked={value} onChange={() => Axios.put('/api/samples/' + record._id + '/paid')} />
+  ),
+};
+
+export const returnedColumn: ColumnType<Sample> = {
+  title: RETURNED,
+  dataIndex: 'returned',
+  render: (value: boolean, record, index) => (
+    <Checkbox defaultChecked={value} onChange={() => Axios.put('/api/samples/' + record._id + '/returned')} />
+  ),
+};

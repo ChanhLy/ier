@@ -56,3 +56,5 @@ export const FAILED = 'thất bại';
 export const DELETE_EXPERIMENT = 'Xóa thí nghiệm';
 export const RESULT = 'Kết quả';
 export const CONDUCTED_BY = 'Người thưc hiện';
+export const PAID = 'Đã trả tiền';
+export const RETURNED = 'Đã trả mẫu';

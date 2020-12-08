@@ -19,6 +19,7 @@ import {
   REPRESENTATIVES,
   RESULT_RETURN_DATE,
   SAMPLE_RECEIVED_DATE,
+  SAMPLING_LOCATION,
   TAX_CODE,
 } from '../../utils/constants';
 import { Contract } from '../contracts.model';
@@ -54,6 +55,7 @@ export function ContractForm(props: Props) {
       <CustomerTax />
       <CustomerRepresentative />
       <CustomerFax />
+      <SamplingLocation />
       <SampleReceivedDate />
       <ResultReturnDate />
       <Note />
@@ -95,6 +97,18 @@ export function ContractForm(props: Props) {
     setIsSubmitting(false);
   }
 
+  function SamplingLocation() {
+    return (
+      <Item
+        label={SAMPLING_LOCATION}
+        name='location'
+        rules={[{ required: true, message: 'Vui lòng nhập ' + SAMPLING_LOCATION }]}
+      >
+        <Input />
+      </Item>
+    );
+  }
+
   function ResultReturnDate() {
     return (
       <Item
@@ -106,6 +120,7 @@ export function ContractForm(props: Props) {
       </Item>
     );
   }
+
   function SubmitButton() {
     return (
       <Item wrapperCol={{ offset: 4 }}>

@@ -15,6 +15,8 @@ export type SampleBase = {
   type: string;
   experiments: ExperimentBase[];
   note: string;
+  paid?: boolean;
+  returned?: boolean;
 
   readBy: string[];
 
@@ -37,6 +39,8 @@ export const sampleDefinition: SchemaDefinition = {
   note: String,
   contract: { type: Schema.Types.ObjectId, ref: 'contracts' },
   deletedAt: Date,
+  paid: Boolean,
+  returned: Boolean,
 };
 
 export const sampleSchema = new mongoose.Schema<SampleDocument>(sampleDefinition, { timestamps: true });

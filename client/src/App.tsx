@@ -1,7 +1,7 @@
 import { Button, Layout, Menu, message, Row } from 'antd';
 import Axios from 'axios';
 import React, { useContext, useEffect, useState } from 'react';
-import { BrowserRouter, Link, Redirect, Route, Switch, useLocation } from 'react-router-dom';
+import { BrowserRouter, Link, Redirect, Route, Switch, useHistory, useLocation } from 'react-router-dom';
 import './App.css';
 import { CreateContractPage } from './contracts/pages/CreateContractPage';
 import { EditContractPage } from './contracts/pages/EditContractPage';
@@ -38,7 +38,9 @@ Axios.interceptors.response.use(
 );
 
 function App() {
-  const [user, setUser] = useState<User>(JSON.parse(sessionStorage.getItem('user') || '{}') || { username: '' });
+  const [user, setUser] = useState<User>(
+    JSON.parse(localStorage.getItem('user') || '{}') || { username: '', role: '' }
+  );
 
   return (
     <BrowserRouter>
@@ -68,7 +70,8 @@ function Footer() {
 export function Header() {
   const [defaultSelectedMenuItem, setDefaultSelectedMenuItem] = useState(['']);
 
-  const { setUser } = useContext(UserContext);
+  const { user, setUser } = useContext(UserContext);
+  console.log(user);
 
   const location = useLocation();
 
@@ -76,19 +79,27 @@ export function Header() {
     setDefaultSelectedMenuItem([location.pathname]);
   }, [location.pathname]);
 
+  const history = useHistory();
+
   return (
     <Layout.Header>
       <Row justify='space-between' align='middle'>
         <Menu theme='dark' mode='horizontal' selectedKeys={defaultSelectedMenuItem}>
-          <Menu.Item key={URLs.CONTRACTS}>
-            <Link to={URLs.CONTRACTS}>{CONTRACT}</Link>
-          </Menu.Item>
-          <Menu.Item key={URLs.SAMPLES}>
-            <Link to={URLs.SAMPLES}>{SAMPLE}</Link>
-          </Menu.Item>
-          <Menu.Item key={URLs.EXPERIMENTS}>
-            <Link to={URLs.EXPERIMENTS}>{EXPERIMENT}</Link>
-          </Menu.Item>
+          {['admin'].includes(user.role) && (
+            <Menu.Item key={URLs.CONTRACTS}>
+              <Link to={URLs.CONTRACTS}>{CONTRACT}</Link>
+            </Menu.Item>
+          )}
+          {['admin'].includes(user.role) && (
+            <Menu.Item key={URLs.SAMPLES}>
+              <Link to={URLs.SAMPLES}>{SAMPLE}</Link>
+            </Menu.Item>
+          )}
+          {['admin', 'lab'].includes(user.role) && (
+            <Menu.Item key={URLs.EXPERIMENTS}>
+              <Link to={URLs.EXPERIMENTS}>{EXPERIMENT}</Link>
+            </Menu.Item>
+          )}
         </Menu>
         <Button danger onClick={logout} size='middle'>
           Đăng xuất
@@ -98,7 +109,8 @@ export function Header() {
   );
   function logout() {
     localStorage.clear();
-    setUser({ username: '' });
+    setUser({ username: '', role: '' });
+    history.push('/login');
   }
 }
 
@@ -108,25 +120,36 @@ function Content() {
     <Layout.Content>
       {!user.username && <Redirect to='/login' />}
       <Switch>
-        <Route exact={true} path={URLs.CONTRACTS_CREATE}>
-          <CreateContractPage />
-        </Route>
-        <Route exact={true} path={URLs.CONTRACTS}>
-          <ListContractsPage />
-        </Route>
-        <Route path={URLs.CONTRACTS_ID}>
-          <EditContractPage />
-        </Route>
-        <Route exact={true} path={URLs.SAMPLES}>
-          <ListSamplesPage />
-        </Route>
-        <Route path={URLs.SAMPLES_ID}>
-          <EditSamplePage />
-        </Route>
-        <Route exact={true} path={URLs.EXPERIMENTS}>
-          <ListExperimentsPage />
-        </Route>
-        <Redirect to={URLs.CONTRACTS} />
+        {['admin'].includes(user.role) && (
+          <Route exact={true} path={URLs.CONTRACTS_CREATE}>
+            <CreateContractPage />
+          </Route>
+        )}
+        {['admin'].includes(user.role) && (
+          <Route exact={true} path={URLs.CONTRACTS}>
+            <ListContractsPage />
+          </Route>
+        )}
+        {['admin'].includes(user.role) && (
+          <Route path={URLs.CONTRACTS_ID}>
+            <EditContractPage />
+          </Route>
+        )}
+        {['admin'].includes(user.role) && (
+          <Route exact={true} path={URLs.SAMPLES}>
+            <ListSamplesPage />
+          </Route>
+        )}
+        {['admin'].includes(user.role) && (
+          <Route path={URLs.SAMPLES_ID}>
+            <EditSamplePage />
+          </Route>
+        )}
+        {['admin', 'lab'].includes(user.role) && (
+          <Route exact={true} path={URLs.EXPERIMENTS}>
+            <ListExperimentsPage />
+          </Route>
+        )}
       </Switch>
     </Layout.Content>
   );
