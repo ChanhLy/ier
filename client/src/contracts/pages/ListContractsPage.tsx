@@ -12,7 +12,6 @@ const socket = io();
 
 export const ListContractsPage = () => {
   const [contracts, setContracts] = useState<Contract[]>([]);
-  const [contractsCsv, setContractsCsv] = useState<Contract[]>([]);
   const [loading, setLoading] = useState(true);
 
   useEffect(() => {
@@ -35,13 +34,6 @@ export const ListContractsPage = () => {
     }
   }, [loading]);
 
-  // useEffect(() => {
-  //   const csv = contracts.map((contract: Contract) => {
-  //     const { customerId, customer, resultReturnDate, sampleReceivedDate, samples, samplingLocation } = contract;
-  //     return { [CUSTOMER_ID]: customerId, [PHONE_NUMBER]: customer.phone };
-  //   });
-  // }, [contracts]);
-
   return (
     <div>
       <PageHeader title={LIST_CONTRACT}></PageHeader>
@@ -54,6 +46,4 @@ export const ListContractsPage = () => {
       <ContractsTable contracts={contracts} loading={loading} />
     </div>
   );
-
-  function toContractCSV() {}
 };
