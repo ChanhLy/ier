@@ -5,11 +5,13 @@ import { FilterQuery, QueryFindOptions } from 'mongoose';
 import { Customer, CustomerBase } from '../customers/customers.model';
 import { CustomerService } from '../customers/customers.service';
 import { Experiment } from '../experiments/experiments.model';
-import { Sample } from '../samples';
+import { ExperimentService } from '../experiments/experiments.service';
+import { Sample, SampleService } from '../samples';
 import { Contract, ContractBase, ContractDocument } from './contracts.model';
 
 const customerService = new CustomerService();
-
+const sampleService = new SampleService();
+const experimentService = new ExperimentService();
 export class ContractService {
   async createContract(data: ContractBase): Promise<ContractDocument> {
     return Contract.create(data);
@@ -110,13 +112,13 @@ export class ContractService {
     await workbook.xlsx.readFile(__dirname + '/contract.xlsx');
 
     const worksheet = workbook.getWorksheet(1);
-    this.setSheetData(worksheet, contract);
+    await this.setSheetData(worksheet, contract);
 
     const buffer = await workbook.xlsx.writeBuffer({ useStyles: true });
     return buffer;
   }
 
-  setSheetData(sheet: ExcelJS.Worksheet, contract: ContractDocument): void {
+  async setSheetData(sheet: ExcelJS.Worksheet, contract: ContractDocument): Promise<void> {
     const { _id, name, tax, representative, phone, fax, address } = contract.customer as CustomerBase;
     const { location, sampleReceivedDate, resultReturnDate } = contract;
 
@@ -131,16 +133,22 @@ export class ContractService {
     sheet.getCell('D7').value = address;
     sheet.getCell('O7').value = dayjs(resultReturnDate).format('DD/MM/YYYY');
 
-    const samples = contract.samples || [];
+    const samples = await sampleService.findSamples({ contract: contract._id });
     for (let i = 0; i < samples.length; i++) {
       const row = i * 2 + 11;
 
+      const sample = samples[i].toJSON();
+      console.log(sample);
+
       sheet.getCell(`A${row}`).value = i + 1;
-      sheet.getCell(`B${row}`).value = samples[i].symbol;
-      sheet.getCell(`D${row}`).value = samples[i].location;
-      sheet.getCell(`I${row}`).value = samples[i].amount;
-      sheet.getCell(`K${row}`).value = samples[i].description;
-      const targets = samples[i].experiments?.map((experiment) => experiment.target);
+      sheet.getCell(`B${row}`).value = sample.symbol;
+      sheet.getCell(`D${row}`).value = sample.location;
+      sheet.getCell(`I${row}`).value = sample.amount;
+      sheet.getCell(`K${row}`).value = sample.description;
+      const experiments = await experimentService.findExperiments({ sample: sample._id });
+      console.log(experiments);
+
+      const targets = experiments.map((experiment) => experiment.target);
       sheet.getCell(`O${row}`).value = targets ? targets.join(',') + `(${targets.length})` : '';
     }
   }
