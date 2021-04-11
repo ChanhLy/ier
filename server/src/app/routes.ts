@@ -3,6 +3,7 @@ import { contractRoutes } from '../main/contracts';
 import { customerRoutes } from '../main/customers';
 import { experimentRoutes } from '../main/experiments/experiment.routes';
 import { sampleRoutes } from '../main/samples/samples.routes';
+import { userRoutes } from '../main/users/users.routes';
 import { authenticate, login } from './auth';
 
 const router = new Router({ prefix: '/api' });
@@ -14,5 +15,6 @@ router.use(contractRoutes);
 router.use(sampleRoutes);
 router.use(customerRoutes);
 router.use(experimentRoutes);
+router.use(userRoutes);
 
 export const apiRoutes = router.routes();

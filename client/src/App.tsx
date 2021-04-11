@@ -1,7 +1,7 @@
 import { Button, Layout, Menu, message, Row } from 'antd';
 import Axios from 'axios';
 import React, { useContext, useEffect, useState } from 'react';
-import { BrowserRouter, Link, Redirect, Route, Switch, useHistory, useLocation } from 'react-router-dom';
+import { Link, Redirect, Route, Switch, useHistory, useLocation } from 'react-router-dom';
 import './App.css';
 import { CreateContractPage } from './contracts/pages/CreateContractPage';
 import { EditContractPage } from './contracts/pages/EditContractPage';
@@ -37,28 +37,34 @@ Axios.interceptors.response.use(
   }
 );
 
+const localStorageUser = JSON.parse(localStorage.getItem('user') || '{}') || { username: '', role: '' };
+
 function App() {
-  const [user, setUser] = useState<User>(
-    JSON.parse(localStorage.getItem('user') || '{}') || { username: '', role: '' }
-  );
+  const [user, setUser] = useState<User>(localStorageUser);
+
+  const history = useHistory();
+
+  useEffect(() => {
+    const request = Axios.get(`${URLs.USERS}/${user.username}`);
+    request.then((response) => setUser(response.data));
+    request.catch((reason) => history.push('/login'));
+  }, [user, history]);
 
   return (
-    <BrowserRouter>
-      <UserContext.Provider value={{ user, setUser }}>
-        <Switch>
-          <Route exact path='/login'>
-            <LoginPage />
-          </Route>
-          <Layout className='layout'>
-            <Header />
-            <Layout>
-              <Content />
-              <Footer />
-            </Layout>
+    <UserContext.Provider value={{ user, setUser }}>
+      <Switch>
+        <Route exact path='/login'>
+          <LoginPage />
+        </Route>
+        <Layout className='layout'>
+          <Header />
+          <Layout>
+            <Content />
+            <Footer />
           </Layout>
-        </Switch>
-      </UserContext.Provider>
-    </BrowserRouter>
+        </Layout>
+      </Switch>
+    </UserContext.Provider>
   );
 }
 

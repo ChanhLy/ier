@@ -3,6 +3,7 @@ import viVN from 'antd/es/locale/vi_VN';
 import 'dayjs/locale/vi';
 import React from 'react';
 import ReactDOM from 'react-dom';
+import { BrowserRouter } from 'react-router-dom';
 import App from './App';
 import './index.css';
 import * as serviceWorker from './serviceWorker';
@@ -10,7 +11,9 @@ import * as serviceWorker from './serviceWorker';
 ReactDOM.render(
   <React.StrictMode>
     <ConfigProvider locale={viVN} componentSize='small'>
-      <App />
+      <BrowserRouter>
+        <App />
+      </BrowserRouter>
     </ConfigProvider>
   </React.StrictMode>,
   document.getElementById('root')

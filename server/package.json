@@ -4,6 +4,7 @@
   "description": "IER",
   "main": "./src/index.ts",
   "scripts": {
+    "prod": "npm run build && pm2 start --node-args=\"-r dotenv/config\" dist --name ier",
     "start": "NODE_ENV=production node -r dotenv-flow/config ./dist",
     "dev": "NODE_ENV=development ts-node-dev -r dotenv-flow/config --respawn --clear --compiler typescript --transpile-only --project ./tsconfig.json ./src/index.ts",
     "test": "NODE_ENV=test mocha src --exit ",
