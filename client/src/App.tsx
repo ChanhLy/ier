@@ -1,8 +1,9 @@
 import { Button, Layout, Menu, message, Row } from 'antd';
 import Axios from 'axios';
-import React, { useContext, useEffect, useState } from 'react';
+import React, { ReactElement, useContext, useEffect, useState } from 'react';
 import { Link, Redirect, Route, Switch, useHistory, useLocation } from 'react-router-dom';
 import './App.css';
+import { PrivateRoute } from './components/PrivateRoute';
 import { CreateContractPage } from './contracts/pages/CreateContractPage';
 import { EditContractPage } from './contracts/pages/EditContractPage';
 import { ListContractsPage } from './contracts/pages/ListContractsPage';
@@ -21,34 +22,36 @@ export function cancelRequest() {
   source.cancel('Cancel');
 }
 
-Axios.interceptors.request.use((config) => {
-  config.cancelToken = source.token;
-  return config;
-});
-
-Axios.interceptors.response.use(
-  (response) => response,
-  (error) => {
-    if (Axios.isCancel(error)) {
-      return;
-    }
-    console.error(error);
-    message.error(FAILURE);
-  }
-);
-
 const localStorageUser = JSON.parse(localStorage.getItem('user') || '{}') || { username: '', role: '' };
 
 function App() {
   const [user, setUser] = useState<User>(localStorageUser);
-
   const history = useHistory();
 
   useEffect(() => {
-    const request = Axios.get(`${URLs.USERS}/${user.username}`);
-    request.then((response) => setUser(response.data));
-    request.catch((reason) => history.push('/login'));
-  }, [user, history]);
+    Axios.interceptors.request.use((config) => {
+      config.cancelToken = source.token;
+      return config;
+    });
+
+    Axios.interceptors.response.use(
+      (response) => response,
+      (error) => {
+        if (Axios.isCancel(error)) {
+          return;
+        }
+        switch (error.response.status) {
+          case 401:
+            history.push('/login');
+            break;
+
+          default:
+            message.error(FAILURE);
+            break;
+        }
+      }
+    );
+  }, [history]);
 
   return (
     <UserContext.Provider value={{ user, setUser }}>
@@ -56,13 +59,15 @@ function App() {
         <Route exact path='/login'>
           <LoginPage />
         </Route>
-        <Layout className='layout'>
-          <Header />
-          <Layout>
-            <Content />
-            <Footer />
+        <PrivateRoute>
+          <Layout className='layout'>
+            <Header />
+            <Layout>
+              <Content />
+              <Footer />
+            </Layout>
           </Layout>
-        </Layout>
+        </PrivateRoute>
       </Switch>
     </UserContext.Provider>
   );
@@ -73,46 +78,59 @@ function Footer() {
   return <Layout.Footer>IER ©{thisYear} Created by Chanh Ly</Layout.Footer>;
 }
 
+interface PrivateMenuItemProps {
+  roles: string[];
+  children: ReactElement;
+}
+function PrivateMenuItem(props: PrivateMenuItemProps) {
+  const { user } = useContext(UserContext);
+  if (props.roles.includes(user.role)) {
+    return props.children;
+  }
+  return null;
+}
+
 export function Header() {
-  const [defaultSelectedMenuItem, setDefaultSelectedMenuItem] = useState(['']);
-
-  const { user, setUser } = useContext(UserContext);
-  console.log(user);
-
   const location = useLocation();
-
-  useEffect(() => {
-    setDefaultSelectedMenuItem([location.pathname]);
-  }, [location.pathname]);
-
-  const history = useHistory();
 
   return (
     <Layout.Header>
       <Row justify='space-between' align='middle'>
-        <Menu theme='dark' mode='horizontal' selectedKeys={defaultSelectedMenuItem}>
-          {['admin'].includes(user.role) && (
-            <Menu.Item key={URLs.CONTRACTS}>
+        <Menu theme='dark' mode='horizontal' selectedKeys={[location.pathname]}>
+          <Menu.Item key={URLs.CONTRACTS}>
+            <PrivateMenuItem roles={['admin']}>
               <Link to={URLs.CONTRACTS}>{CONTRACT}</Link>
-            </Menu.Item>
-          )}
-          {['admin'].includes(user.role) && (
-            <Menu.Item key={URLs.SAMPLES}>
+            </PrivateMenuItem>
+          </Menu.Item>
+
+          <Menu.Item key={URLs.SAMPLES}>
+            <PrivateMenuItem roles={['admin']}>
               <Link to={URLs.SAMPLES}>{SAMPLE}</Link>
-            </Menu.Item>
-          )}
-          {['admin', 'lab'].includes(user.role) && (
-            <Menu.Item key={URLs.EXPERIMENTS}>
+            </PrivateMenuItem>
+          </Menu.Item>
+
+          <Menu.Item key={URLs.EXPERIMENTS}>
+            <PrivateMenuItem roles={['admin', 'lab']}>
               <Link to={URLs.EXPERIMENTS}>{EXPERIMENT}</Link>
-            </Menu.Item>
-          )}
+            </PrivateMenuItem>
+          </Menu.Item>
         </Menu>
-        <Button danger onClick={logout} size='middle'>
-          Đăng xuất
-        </Button>
+        <LogoutButton />
       </Row>
     </Layout.Header>
   );
+}
+
+function LogoutButton() {
+  const { setUser } = useContext(UserContext);
+  const history = useHistory();
+
+  return (
+    <Button danger onClick={logout} size='middle'>
+      Đăng xuất
+    </Button>
+  );
+
   function logout() {
     localStorage.clear();
     setUser({ username: '', role: '' });

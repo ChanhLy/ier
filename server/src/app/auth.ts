@@ -16,7 +16,7 @@ export function authorizeRoles(roles: string[] = []): (ctx: Context, next: Next)
   };
 }
 
-export async function login(ctx: Context) {
+export async function login(ctx: Context): Promise<unknown> {
   const userService = new UserService();
   const user = await userService.findByUsername(ctx.request.body.username);
 
@@ -36,7 +36,7 @@ export async function login(ctx: Context) {
   ctx.response.body = userSession;
 }
 
-export async function authenticate(ctx: Context, next: Next) {
+export async function authenticate(ctx: Context, next: Next): Promise<unknown> {
   const userService = new UserService();
   const username = ctx.session?.user?.username;
   if (!username) {

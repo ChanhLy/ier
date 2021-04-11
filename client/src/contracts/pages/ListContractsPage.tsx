@@ -38,7 +38,7 @@ export const ListContractsPage = () => {
     <div>
       <PageHeader title={LIST_CONTRACT}></PageHeader>
       <Row className='content' justify='space-between'>
-        <Button type='primary'>
+        <Button type='primary' size='large'>
           <Link to={URLs.CONTRACTS_CREATE}>{CREATE_NEW_CONTRACT}</Link>
         </Button>
         <Button>{/* <CSVLink data={[]}>Sổ nhận mẫu</CSVLink> */}</Button>
