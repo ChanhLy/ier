@@ -8,7 +8,7 @@ interface PrivateRouteProps {
 export function PrivateRoute(props: PrivateRouteProps) {
   const { user } = useContext(UserContext);
 
-  if (!user) {
+  if (!user?.username) {
     return <Redirect to='/login' />;
   }
 

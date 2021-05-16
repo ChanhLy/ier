@@ -22,10 +22,8 @@ export function cancelRequest() {
   source.cancel('Cancel');
 }
 
-const localStorageUser = JSON.parse(localStorage.getItem('user') || '{}') || { username: '', role: '' };
-
 function App() {
-  const [user, setUser] = useState<User>(localStorageUser);
+  const [user, setUser] = useState<User>({ username: '', role: '' });
   const history = useHistory();
 
   useEffect(() => {
