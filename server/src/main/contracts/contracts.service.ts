@@ -28,9 +28,9 @@ export class ContractService {
       );
       contract.samples = await Promise.all(
         samples.map(async (sample) => {
-          const experiments = (
-            await Experiment.find({ sample: sample._id, deletedAt: undefined }).exec()
-          ).map((experiment) => experiment.toJSON());
+          const experiments = (await Experiment.find({ sample: sample._id, deletedAt: undefined }).exec()).map(
+            (experiment) => experiment.toJSON()
+          );
           return { ...sample, experiments };
         })
       );
@@ -109,7 +109,7 @@ export class ContractService {
     }
 
     const workbook = new ExcelJS.Workbook();
-    await workbook.xlsx.readFile(__dirname + '/contract.xlsx');
+    await workbook.xlsx.readFile('xlsx/contract.xlsx');
 
     const worksheet = workbook.getWorksheet(1);
     await this.setSheetData(worksheet, contract);
@@ -138,7 +138,6 @@ export class ContractService {
       const row = i * 2 + 11;
 
       const sample = samples[i].toJSON();
-      console.log(sample);
 
       sheet.getCell(`A${row}`).value = i + 1;
       sheet.getCell(`B${row}`).value = sample.symbol;
@@ -146,7 +145,6 @@ export class ContractService {
       sheet.getCell(`I${row}`).value = sample.amount;
       sheet.getCell(`K${row}`).value = sample.description;
       const experiments = await experimentService.findExperiments({ sample: sample._id });
-      console.log(experiments);
 
       const targets = experiments.map((experiment) => experiment.target);
       sheet.getCell(`O${row}`).value = targets ? targets.join(',') + `(${targets.length})` : '';

@@ -48,7 +48,6 @@ contractRouter.put('/:id/returned', async (ctx) => {
   if (!contract) {
     return ctx.throw(NOT_FOUND);
   }
-  console.log(contract);
 
   await sampleService.updateSamples({ contract: id }, { returned: contract.returned });
 

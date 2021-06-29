@@ -8,7 +8,6 @@ export class ExperimentService {
       { $push: { readBy: userId } },
       { timestamps: false }
     ).exec();
-    console.log(results);
 
     return results;
   }
