@@ -54,7 +54,7 @@
     "exceljs": "^4.2.0",
     "http-status": "^1.4.2",
     "jsonwebtoken": "^8.5.1",
-    "koa": "^2.13.0",
+    "koa": "^3.0.1",
     "koa-body": "^4.2.0",
     "koa-bodyparser": "^4.3.0",
     "koa-compress": "^5.0.1",
